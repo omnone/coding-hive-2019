@@ -17,18 +17,21 @@ public class UserController {
     UserDao user_dao;
 
     //Return all users
+    @ResponseBody
     @GetMapping("/api/users")
     public List<User> show() {
         return user_dao.findAll();
     }
 
     //Return user by id
+    @ResponseBody
     @GetMapping("/api/users/{id}")
     public Optional<User> find(@PathVariable int id) {
         return user_dao.findById(id);
     }
 
     //Sign up user
+    @ResponseBody
     @PostMapping(value = "/api/users/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public User create(@RequestBody User user) {
