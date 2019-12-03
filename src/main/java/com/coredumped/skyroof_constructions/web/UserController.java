@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 //Routes controller of User
 @RestController
@@ -23,6 +23,10 @@ public class UserController {
     }
 
     //Return user by id
+    @GetMapping("/api/users/{id}")
+    public Optional<User> find(@PathVariable int id) {
+        return user_dao.findById(id);
+    }
 
     //Sign up user
     @PostMapping(value = "/api/users/{id}")
