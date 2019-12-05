@@ -1,9 +1,8 @@
 package com.coredumped.skyroof_constructions.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import org.hibernate.annotations.Generated;
+
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -17,9 +16,11 @@ public class Issue {
     private Long assignor;
     private Long assignee;
     private Long type_;
+    private String otherDetails;
 
     @Id
-    @Column(name = "issueID")
+    @GeneratedValue
+    @Column(name = "issueID",nullable = false)
     public Long getIssueID() {
         return issueID;
     }
@@ -29,7 +30,7 @@ public class Issue {
     }
 
     @Basic
-    @Column(name = "projectID")
+    @Column(name = "projectID",nullable = false)
     public Long getProjectID() {
         return projectID;
     }
@@ -39,7 +40,7 @@ public class Issue {
     }
 
     @Basic
-    @Column(name = "statusID")
+    @Column(name = "statusID",nullable = false)
     public Long getStatusID() {
         return statusID;
     }
@@ -49,7 +50,7 @@ public class Issue {
     }
 
     @Basic
-    @Column(name = "title")
+    @Column(name = "title",nullable = false)
     public String getTitle() {
         return title;
     }
@@ -59,7 +60,7 @@ public class Issue {
     }
 
     @Basic
-    @Column(name = "description_")
+    @Column(name = "description_",nullable = false)
     public String getDescription_() {
         return description_;
     }
@@ -69,7 +70,7 @@ public class Issue {
     }
 
     @Basic
-    @Column(name = "assignor")
+    @Column(name = "assignor",nullable = false)
     public Long getAssignor() {
         return assignor;
     }
@@ -79,7 +80,7 @@ public class Issue {
     }
 
     @Basic
-    @Column(name = "assignee")
+    @Column(name = "assignee",nullable = false)
     public Long getAssignee() {
         return assignee;
     }
@@ -90,7 +91,7 @@ public class Issue {
 
 
     @Basic
-    @Column(name = "type_")
+    @Column(name = "type_",nullable = false)
 
     public Long getType_() {
         return type_;
@@ -98,6 +99,16 @@ public class Issue {
 
     public void setType_(Long type_) {
         this.type_ = type_;
+    }
+
+
+    @Column(name = "otherDetails",nullable = true)
+    public String getOtherDetails() {
+        return otherDetails;
+    }
+
+    public void setOtherDetails(String otherDetails) {
+        this.otherDetails = otherDetails;
     }
 
 

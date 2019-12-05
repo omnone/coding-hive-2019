@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
+import javax.validation.constraints.Null;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,15 @@ public class IssueController {
 
     @Autowired
     private IssueDao issue_dao;
+
+
+    //Get issue with a specific id
+    @ResponseBody
+    @GetMapping("api/issues/{issue_id}")
+    public Optional<Issue> getIssueFromId(@PathVariable("issue_id") int issue_id){
+        Optional<Issue> myIssue = issue_dao.findById(issue_id); //TODO catch NoSuchElementException
+        return myIssue;
+    }
 
     //Return all issues for a project
     @ResponseBody
@@ -60,6 +70,32 @@ public class IssueController {
     }
     //To get all open issues call api/issues/open
     //To get all my open issues combine api/issues/open and api/issues/assignee=myId
+
+    //Create an issue --only field otherDetails can be null
+    @ResponseBody
+    @PostMapping("api/issues/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Issue addIssue(@RequestBody Issue issue) {
+        System.out.println(issue.toString()); //for testing
+        //TODO catch exception and send it to react
+        Issue save = issue_dao.save(issue);
+        return save;
+    }
+
+    //Update an issue
+    @PutMapping("api/issues/update")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void updateIssue(@RequestBody Issue issue){
+        issue_dao.updateIssue(issue);
+    }
+
+    //Delete an issue
+    @DeleteMapping("api/issues/delete/{issue_id}")
+    public void removeIssueFromId(@PathVariable("issue_id") int issue_id){
+        issue_dao.deleteById(issue_id);
+    }
+
+
 
 
 }

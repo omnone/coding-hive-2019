@@ -10,4 +10,5 @@ public interface IssueDao extends JpaRepository <Issue,Integer> {
     Issue findIssueByTitle(String title);
     List<Issue> findIssuesByAssignor(int id);
     List<Issue> findIssuesByStatusID(int id);
+    void updateIssue(Issue issue); //TODO implement
 }
