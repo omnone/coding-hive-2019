@@ -5,16 +5,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface UserDao  extends JpaRepository <User, Integer> {
-    //Add custom methods to interact with the database
-    @Override
-    <S extends User> S save(S s);
-    List<User> findDistinctByUserId(Integer userID);
-    List<User> findByUsername(String username);
-    List<User> findByEmail(String email);
+public interface UserDao extends JpaRepository<User, Integer> {
 
+    List<User> findDistinctByUserId(Integer userID);
+
+    Optional<User> findByusername(String username);
+
+    List<User> findByEmail(String email);
 
 
 }
