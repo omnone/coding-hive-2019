@@ -83,11 +83,11 @@ public class IssueController {
     }
 
     //Update an issue
-    @PutMapping("api/issues/update")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void updateIssue(@RequestBody Issue issue){
-        issue_dao.updateIssue(issue);
-    }
+//    @PutMapping("api/issues/update")
+//    @ResponseStatus(HttpStatus.ACCEPTED)
+//    public void updateIssue(@RequestBody Issue issue){
+//        issue_dao.updateIssue(issue);
+//    }
 
     //Delete an issue
     @DeleteMapping("api/issues/delete/{issue_id}")
