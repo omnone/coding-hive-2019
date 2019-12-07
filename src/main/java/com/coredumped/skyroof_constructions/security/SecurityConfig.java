@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .httpBasic();
 
         http.authorizeRequests().anyRequest().permitAll();
+        http.csrf().disable();
     }
 
    @Bean

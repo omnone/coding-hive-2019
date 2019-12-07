@@ -24,15 +24,15 @@ public class IssueController {
     //Get issue with a specific id
     @ResponseBody
     @GetMapping("api/issues/{issue_id}")
-    public Optional<Issue> getIssueFromId(@PathVariable("issue_id") int issue_id){
-        Optional<Issue> myIssue = issue_dao.findById(issue_id); //TODO catch NoSuchElementException
+    public Issue getIssueFromId(@PathVariable("issue_id") Long issue_id){
+        Issue myIssue = issue_dao.findByIssueID(issue_id); //TODO catch NoSuchElementException
         return myIssue;
     }
 
     //Return all issues for a project
     @ResponseBody
     @GetMapping("api/issues/{project_id}")
-    public List<Issue> getAllIssuesForProject(@PathVariable("project_id") int project_id) {
+    public List<Issue> getAllIssuesForProject(@PathVariable("project_id") Long project_id) {
         List<Issue> issues_for_project = (List<Issue>) issue_dao.findIssuesByProjectID(project_id);
         return issues_for_project;
     }
@@ -48,7 +48,7 @@ public class IssueController {
     //Return all issues from an assigner
     @ResponseBody
     @GetMapping("api/issues/{assigner}")
-    public List<Issue> getAllIssuesFromAssigner(@PathVariable("assigner") int assigner ) {
+    public List<Issue> getAllIssuesFromAssigner(@PathVariable("assigner") Long assigner ) {
         List<Issue> issues_from_assigner = (List<Issue>) issue_dao.findIssuesByAssignor(assigner);
         return issues_from_assigner;
     }
@@ -56,7 +56,7 @@ public class IssueController {
     //Return all issues from an assignee
     @ResponseBody
     @GetMapping("api/issues/{assignee}")
-    public List<Issue> getAllIssuesFromAssignee(@PathVariable("assignee") int assignee ) {
+    public List<Issue> getAllIssuesFromAssignee(@PathVariable("assignee") Long assignee ) {
         List<Issue> issues_from_assignee = (List<Issue>) issue_dao.findIssuesByAssignor(assignee);
         return issues_from_assignee;
     }
@@ -64,7 +64,7 @@ public class IssueController {
     //Return all issues that have a specific status
     @ResponseBody
     @GetMapping("api/issues/{status_id}")
-    public List<Issue> getAllIssuesFromStatus(@PathVariable("status_id") int status_id) {
+    public List<Issue> getAllIssuesFromStatus(@PathVariable("status_id") Long status_id) {
         List<Issue> issues_from_status = (List<Issue>) issue_dao.findIssuesByStatusID(status_id);
         return issues_from_status;
     }

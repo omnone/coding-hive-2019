@@ -33,7 +33,7 @@ public class UserController {
 
     //Sign up user
     @ResponseBody
-    @PostMapping(value = "/api/users/{id}")
+    @PostMapping(value = "/api/users/create")
     @ResponseStatus(HttpStatus.CREATED)
     public User create(@RequestBody User user) {
 

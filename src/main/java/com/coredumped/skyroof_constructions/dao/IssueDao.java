@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface IssueDao extends JpaRepository <Issue,Integer> {
-    List<Issue> findIssuesByProjectID(Integer projectID);
+    Issue findByIssueID(Long issue_id);
+    List<Issue> findIssuesByProjectID(Long projectID);
     Issue findIssueByTitle(String title);
-    List<Issue> findIssuesByAssignor(int id);
-    List<Issue> findIssuesByStatusID(int id);
+    List<Issue> findIssuesByAssignor(Long id);
+    List<Issue> findIssuesByStatusID(Long id);
     //void updateIssue(Issue issue); //TODO implement
 }

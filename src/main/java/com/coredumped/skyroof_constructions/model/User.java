@@ -11,6 +11,7 @@ public class User {
     private String password;
 
     @Id
+    @GeneratedValue
     @Column(name = "userID")
     public int getUserId() {
         return userId;
