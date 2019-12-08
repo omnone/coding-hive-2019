@@ -10,6 +10,7 @@ public class User {
     private String email;
     private String password;
 
+
     @Id
     @GeneratedValue
     @Column(name = "userID")
@@ -22,7 +23,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "username",unique = true)
+    @Column(name = "username", unique = true)
     public String getUsername() {
         return username;
     }
@@ -32,7 +33,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "email",unique = true)
+    @Column(name = "email", unique = true)
     public String getEmail() {
         return email;
     }

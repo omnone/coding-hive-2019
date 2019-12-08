@@ -40,6 +40,14 @@ public class UserController {
         return user_dao.findById(id);
     }
 
+    //Return user by email
+    @ResponseBody
+    @GetMapping("/api/users/email/{email}")
+    public List<User> find_email(@PathVariable String email) {
+
+        return user_dao.findByEmail(email);
+    }
+
     //Sign up user
     @ResponseBody
     @PostMapping(value = "/api/users/create")
@@ -56,7 +64,7 @@ public class UserController {
 
         return newUser;
     }
-    
+
     //User Authentication route
     @Autowired
     private AuthenticationManager authenticationManager;
