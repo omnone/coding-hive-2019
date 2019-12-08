@@ -5,8 +5,8 @@ public class SearchRequest {
     private String issue_title;
     private Long assignee_id;
     private Long assignor_id;
-    private Integer status_id;
-    private Integer category; //0 error 1 improvement 2 other
+    private Long status_id;
+    private Long category; //0 error 1 improvement 2 other
 
     //Constructor
     //By default all fields null
@@ -36,11 +36,11 @@ public class SearchRequest {
         return assignor_id;
     }
 
-    public Integer getStatus_id() {
+    public Long getStatus_id() {
         return status_id;
     }
 
-    public Integer getCategory() {
+    public Long getCategory() {
         return category;
     }
 
@@ -61,11 +61,11 @@ public class SearchRequest {
         this.assignor_id = assignor_id;
     }
 
-    public void setStatus_id(Integer status_id) {
+    public void setStatus_id(Long status_id) {
         this.status_id = status_id;
     }
 
-    public void setCategory(Integer category) {
+    public void setCategory(Long category) {
         this.category = category;
     }
 

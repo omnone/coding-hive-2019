@@ -26,7 +26,12 @@ public class IssueController {
     @ResponseBody
     @PostMapping("api/issues/search")
     public ArrayList<Issue> searchIssue(@RequestBody SearchRequest myRequest) {
-        return issue_dao.executeSearchQuerry(myRequest);
+        return issue_dao.searchQuery(myRequest.getProject_id(),
+                                     myRequest.getIssue_title(),
+                                     myRequest.getAssignee_id(),
+                                     myRequest.getAssignor_id(),
+                                     myRequest.getStatus_id(),
+                                     myRequest.getCategory());
 
     }
 
