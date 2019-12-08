@@ -47,6 +47,34 @@ public class UserController {
 
         return newUser;
     }
+    
+    //User Authentication route
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private Util util;
+
+    @PostMapping(value = "/api/auth")
+    public ResponseEntity createAuthToken(@RequestBody AuthenticationRequest authReq) throws Exception {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authReq.getUsername(), authReq.getPassword())
+            );
+        } catch (BadCredentialsException e) {
+            throw new Exception("Wrong username or password", e);
+        }
+
+        final UserDetails userDetails = userDetailsService
+                .loadUserByUsername(authReq.getUsername());
+
+        final String jsonwebtoken = util.generateToken(userDetails);
+
+        return ResponseEntity.ok(new AuthenticationResponse((jsonwebtoken)));
+    }
 
 
 }

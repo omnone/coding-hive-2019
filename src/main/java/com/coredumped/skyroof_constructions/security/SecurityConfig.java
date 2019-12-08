@@ -4,13 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
@@ -21,25 +25,47 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsService userDetailsService;
 
+
     //authentication
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
     }
 
-    //authorization
+    @Autowired
+    private jwtReqFilter tempFilter;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests().anyRequest().authenticated()
-//                .and()
-//                .httpBasic();
+//      http.csrf().disable()
+//              .authorizeRequests()
+//              .antMatchers("/api/auth").permitAll()
+//              .anyRequest().authenticated();
+//      http.addFilterBefore(tempFilter, UsernamePasswordAuthenticationFilter.class);
 
+        //Security disabled
         http.authorizeRequests().anyRequest().permitAll();
         http.csrf().disable();
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 8338865b61de35767f2baee13efc14b50eabe0d5
     }
 
-   @Bean
-    public PasswordEncoder getPasswordEncoder(){
+    @Override
+    @Bean
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
         return NoOpPasswordEncoder.getInstance();
-   }
+    }
+
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 }
