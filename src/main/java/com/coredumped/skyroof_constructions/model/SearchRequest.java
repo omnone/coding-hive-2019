@@ -7,8 +7,7 @@ public class SearchRequest {
     private Long assignee_id;
     private Long assignor_id;
     private int status_id;
-    private enum Category { error, improvement, other};
-    private Category category;
+    private int category; //0 error 1 improvement 2 other
 
 
     public Long getMy_user_id() {
@@ -35,7 +34,7 @@ public class SearchRequest {
         return status_id;
     }
 
-    public Category getCategory() {
+    public int getCategory() {
         return category;
     }
 
@@ -63,7 +62,7 @@ public class SearchRequest {
         this.status_id = status_id;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 
