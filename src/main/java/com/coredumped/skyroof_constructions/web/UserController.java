@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,6 +49,9 @@ public class UserController {
         return user_dao.findByEmail(email);
     }
 
+    @Autowired
+    PasswordEncoder bCryptEncoder;
+
     //Sign up user
     @ResponseBody
     @PostMapping(value = "/api/users/create")
@@ -57,10 +61,9 @@ public class UserController {
         User newUser = new User();
         newUser.setUsername(user.getUsername());
         newUser.setEmail(user.getEmail());
-        newUser.setPassword(user.getPassword());
+        newUser.setPassword(bCryptEncoder.encode(user.getPassword()));
 
-        //add exception handling
-        user_dao.save(user);
+        user_dao.save(newUser);
 
         return newUser;
     }
