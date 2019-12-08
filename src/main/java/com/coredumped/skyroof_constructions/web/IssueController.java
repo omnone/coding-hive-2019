@@ -1,20 +1,13 @@
 package com.coredumped.skyroof_constructions.web;
 
 import com.coredumped.skyroof_constructions.dao.IssueDao;
-import com.coredumped.skyroof_constructions.dao.ProjectDao;
 import com.coredumped.skyroof_constructions.model.Issue;
-import com.coredumped.skyroof_constructions.model.Project;
 import com.coredumped.skyroof_constructions.model.SearchRequest;
-import com.coredumped.skyroof_constructions.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
-import javax.validation.constraints.Null;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class IssueController {
@@ -34,6 +27,34 @@ public class IssueController {
                                      myRequest.getCategory());
 
     }
+    //Return all issues
+    @ResponseBody
+    @GetMapping("/api/issues")
+    public Iterable<Issue> show() {
+        return issue_dao.findAll();
+    }
+    //Sign up issue
+    @ResponseBody
+    @PostMapping(value = "/api/issues/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Issue create(@RequestBody Issue issue) {
+        Issue newIssue = new Issue();
+        newIssue.setIssueID(issue.getIssueID());
+        newIssue.setProjectID(issue.getProjectID());
+        newIssue.setStatusID(issue.getStatusID());
+        newIssue.setTitle(issue.getTitle());
+        newIssue.setDescription_(issue.getDescription_());
+        newIssue.setAssignor(issue.getAssignor());
+        newIssue.setAssignee(issue.getAssignee());
+        newIssue.setType_(issue.getType_());
+        newIssue.setOtherDetails(issue.getOtherDetails());
+        issue_dao.save(newIssue);
+        return newIssue;
+    }
 
-
+    @PutMapping("/api/issues/update")
+    public Issue update(@RequestBody Issue issue){
+        issue_dao.save(issue);
+        return issue_dao.save(issue);
+    }
 }

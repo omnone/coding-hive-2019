@@ -6,7 +6,10 @@ import com.coredumped.skyroof_constructions.security.AuthenticationRequest;
 import com.coredumped.skyroof_constructions.security.AuthenticationResponse;
 import com.coredumped.skyroof_constructions.security.Util;
 import com.coredumped.skyroof_constructions.services.CustomUserDetailsService;
+import com.fasterxml.classmate.AnnotationConfiguration;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.Session;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +71,32 @@ public class UserController {
 
         return newUser;
     }
+
+
+    /*san create einai apla ama dei oti exei idio userID kai epidi einai putmapping tote kanei update
+    gia na trexi prepei na dialexis to put sto postman
+     */
+    @PutMapping("/api/users/update")
+    public User update(@RequestBody User user){
+        user_dao.save(user);
+        return user_dao.save(user);
+    }
+
+    //delete user
+    /*gia na trexi prepei na dialexis to delete sto postman
+    * */
+    @DeleteMapping("/api/users/{id}")
+    public String delete(@PathVariable int id){
+        Optional<User> userz=user_dao.findById(id);
+        if(userz.isPresent()){
+            user_dao.delete(userz.get());
+            return "user is deleted with id"+id;
+        }else {
+            throw new RuntimeException("User not found for the id"+id);
+        }
+    }
+
+
 
     //User Authentication route
     @Autowired
