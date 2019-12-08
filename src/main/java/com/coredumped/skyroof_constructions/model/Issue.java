@@ -5,7 +5,7 @@ import org.hibernate.annotations.Generated;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
+@Entity(name = "Issue")
 public class Issue {
 
     private Long issueID;

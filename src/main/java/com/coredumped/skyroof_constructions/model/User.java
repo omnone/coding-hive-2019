@@ -3,7 +3,7 @@ package com.coredumped.skyroof_constructions.model;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
+@Entity(name = "User")
 public class User {
     private int userId;
     private String username;
@@ -22,7 +22,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "username")
+    @Column(name = "username",unique = true)
     public String getUsername() {
         return username;
     }
@@ -32,7 +32,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
     public String getEmail() {
         return email;
     }

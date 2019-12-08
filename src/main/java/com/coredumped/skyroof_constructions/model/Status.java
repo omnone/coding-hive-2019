@@ -3,7 +3,7 @@ package com.coredumped.skyroof_constructions.model;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
+@Entity(name = "Status")
 @Table(name = "Status_", schema = "skyroof_constructions", catalog = "")
 public class Status {
     private byte statusId;

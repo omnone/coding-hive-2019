@@ -3,7 +3,7 @@ package com.coredumped.skyroof_constructions.model;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
+@Entity(name = "Permission")
 @IdClass(PermissionPK.class)
 public class Permission {
     private int userId;
