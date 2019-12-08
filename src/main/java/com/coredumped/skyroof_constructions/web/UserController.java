@@ -2,8 +2,17 @@ package com.coredumped.skyroof_constructions.web;
 
 import com.coredumped.skyroof_constructions.dao.UserDao;
 import com.coredumped.skyroof_constructions.model.User;
+import com.coredumped.skyroof_constructions.security.AuthenticationRequest;
+import com.coredumped.skyroof_constructions.security.AuthenticationResponse;
+import com.coredumped.skyroof_constructions.security.Util;
+import com.coredumped.skyroof_constructions.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +40,14 @@ public class UserController {
         return user_dao.findById(id);
     }
 
+    //Return user by email
+    @ResponseBody
+    @GetMapping("/api/users/email/{email}")
+    public List<User> find_email(@PathVariable String email) {
+
+        return user_dao.findByEmail(email);
+    }
+
     //Sign up user
     @ResponseBody
     @PostMapping(value = "/api/users/create")
@@ -46,6 +63,34 @@ public class UserController {
         user_dao.save(user);
 
         return newUser;
+    }
+
+    //User Authentication route
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private Util util;
+
+    @PostMapping(value = "/api/auth")
+    public ResponseEntity createAuthToken(@RequestBody AuthenticationRequest authReq) throws Exception {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authReq.getUsername(), authReq.getPassword())
+            );
+        } catch (BadCredentialsException e) {
+            throw new Exception("Wrong username or password", e);
+        }
+
+        final UserDetails userDetails = userDetailsService
+                .loadUserByUsername(authReq.getUsername());
+
+        final String jsonwebtoken = util.generateToken(userDetails);
+
+        return ResponseEntity.ok(new AuthenticationResponse((jsonwebtoken)));
     }
 
 
