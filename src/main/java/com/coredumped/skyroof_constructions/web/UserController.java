@@ -2,8 +2,17 @@ package com.coredumped.skyroof_constructions.web;
 
 import com.coredumped.skyroof_constructions.dao.UserDao;
 import com.coredumped.skyroof_constructions.model.User;
+import com.coredumped.skyroof_constructions.security.AuthenticationRequest;
+import com.coredumped.skyroof_constructions.security.AuthenticationResponse;
+import com.coredumped.skyroof_constructions.security.Util;
+import com.coredumped.skyroof_constructions.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
