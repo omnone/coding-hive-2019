@@ -1,18 +1,24 @@
 package com.coredumped.skyroof_constructions.model;
 
 public class SearchRequest {
-    private Long my_user_id;
     private Long project_id;
     private String issue_title;
     private Long assignee_id;
     private Long assignor_id;
-    private int status_id;
-    private int category; //0 error 1 improvement 2 other
+    private Integer status_id;
+    private Integer category; //0 error 1 improvement 2 other
 
-
-    public Long getMy_user_id() {
-        return my_user_id;
+    //Constructor
+    //By default all fields null
+    SearchRequest() {
+        this.project_id = null;
+        this.issue_title = null;
+        this.assignee_id = null;
+        this.assignor_id = null;
+        this.status_id = null;
+        this.category = null;
     }
+
 
     public Long getProject_id() {
         return project_id;
@@ -30,17 +36,14 @@ public class SearchRequest {
         return assignor_id;
     }
 
-    public int getStatus_id() {
+    public Integer getStatus_id() {
         return status_id;
     }
 
-    public int getCategory() {
+    public Integer getCategory() {
         return category;
     }
 
-    public void setMy_user_id(Long my_user_id) {
-        this.my_user_id = my_user_id;
-    }
 
     public void setProject_id(Long project_id) {
         this.project_id = project_id;
@@ -58,18 +61,17 @@ public class SearchRequest {
         this.assignor_id = assignor_id;
     }
 
-    public void setStatus_id(int status_id) {
+    public void setStatus_id(Integer status_id) {
         this.status_id = status_id;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(Integer category) {
         this.category = category;
     }
 
     @Override
     public String toString() {
         return "SearchRequest{" +
-                "my_user_id=" + my_user_id +
                 ", project_id=" + project_id +
                 ", issue_title='" + issue_title + '\'' +
                 ", assignee_id=" + assignee_id +
