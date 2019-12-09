@@ -77,25 +77,24 @@ public class UserController {
     gia na trexi prepei na dialexis to put sto postman
      */
     @PutMapping("/api/users/update")
-    public User update(@RequestBody User user){
+    public User update(@RequestBody User user) {
         user_dao.save(user);
         return user_dao.save(user);
     }
 
     //delete user
     /*gia na trexi prepei na dialexis to delete sto postman
-    * */
+     * */
     @DeleteMapping("/api/users/{id}")
-    public String delete(@PathVariable int id){
-        Optional<User> userz=user_dao.findById(id);
-        if(userz.isPresent()){
+    public String delete(@PathVariable int id) {
+        Optional<User> userz = user_dao.findById(id);
+        if (userz.isPresent()) {
             user_dao.delete(userz.get());
-            return "user is deleted with id"+id;
-        }else {
-            throw new RuntimeException("User not found for the id"+id);
+            return "user is deleted with id" + id;
+        } else {
+            throw new RuntimeException("User not found for the id" + id);
         }
     }
-
 
 
     //User Authentication route
@@ -110,6 +109,8 @@ public class UserController {
 
     @PostMapping(value = "/api/auth")
     public ResponseEntity createAuthToken(@RequestBody AuthenticationRequest authReq) throws Exception {
+
+        System.out.println(authReq.getUsername() + authReq.getPassword());
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authReq.getUsername(), authReq.getPassword())
