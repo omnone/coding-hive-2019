@@ -3,11 +3,13 @@ package com.coredumped.skyroof_constructions.web;
 import com.coredumped.skyroof_constructions.dao.IssueDao;
 import com.coredumped.skyroof_constructions.model.Issue;
 import com.coredumped.skyroof_constructions.model.SearchRequest;
+import com.coredumped.skyroof_constructions.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @RestController
 public class IssueController {
@@ -27,13 +29,25 @@ public class IssueController {
                                      myRequest.getCategory());
 
     }
-    //Return all issues
+
+    /*Return all issues*/
     @ResponseBody
     @GetMapping("/api/issues")
     public Iterable<Issue> show() {
         return issue_dao.findAll();
     }
-    //Sign up issue
+    /*Return all issues*/
+
+
+    /*return issue by id*/
+    @ResponseBody
+    @GetMapping("/api/issues/{id}")
+    public Optional<Issue> find(@PathVariable int id) {
+        return issue_dao.findById(id);
+    }
+    /*return issue by id*/
+
+    /*create an issue*/
     @ResponseBody
     @PostMapping(value = "/api/issues/create")
     @ResponseStatus(HttpStatus.CREATED)
@@ -51,10 +65,27 @@ public class IssueController {
         issue_dao.save(newIssue);
         return newIssue;
     }
+    /*create an issue*/
 
+    /*update an issue*/
     @PutMapping("/api/issues/update")
     public Issue update(@RequestBody Issue issue){
         issue_dao.save(issue);
         return issue_dao.save(issue);
     }
+    /*update an issue*/
+
+    /*delete an issue*/
+    @DeleteMapping("/api/issues/{id}")
+    public String delete(@PathVariable int id){
+        Optional<Issue> issuez=issue_dao.findById(id);
+        if(issuez.isPresent()){
+            issue_dao.delete(issuez.get());
+            return "issue is deleted with id"+id;
+        }else {
+            throw new RuntimeException("Issue  not found for the id"+id);
+        }
+    }
+    /*delete an issue*/
+
 }
