@@ -1,34 +1,33 @@
-import React from 'react';
+import React from "react";
 
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import AddIcon from '@material-ui/icons/Add';
-import SearchIcon from '@material-ui/icons/Search';
-import { makeStyles } from '@material-ui/core/styles';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import AddIcon from "@material-ui/icons/Add";
+import SearchIcon from "@material-ui/icons/Search";
+import { makeStyles } from "@material-ui/core/styles";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Collapse from "@material-ui/core/Collapse";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 
 //////////////////////////////////////////////////////////////////////////////////////
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '100%',
+    width: "100%",
     maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.paper
   },
   nested: {
-    paddingLeft: theme.spacing(4),
-  },
+    paddingLeft: theme.spacing(4)
+  }
 }));
 
 //////////////////////////////////////////////////////////////////////////////////////
-
 
 export default function SideMenu(props) {
   const classes = useStyles();
@@ -49,16 +48,16 @@ export default function SideMenu(props) {
       }
       className={classes.root}
     >
-        <hr></hr>
-   
+      <hr></hr>
+
       <ListItem button onClick={handleClick}>
         <ListItemIcon>
-            <DashboardIcon />
+          <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="Διαχείριση Θεμάτων" />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
-      
+
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItem button className={classes.nested}>
@@ -80,11 +79,10 @@ export default function SideMenu(props) {
 
       <ListItem button>
         <ListItemIcon>
-        <ExitToAppIcon />
+          <ExitToAppIcon />
         </ListItemIcon>
-        <ListItemText primary="Αποσύνδεση" onClick={props.value}/>
+        <ListItemText primary="Αποσύνδεση" onClick={props.value} />
       </ListItem>
-    
     </List>
   );
 }
@@ -103,8 +101,6 @@ export default function SideMenu(props) {
 //       </ListItemIcon>
 //       <ListItemText primary="Αποσύνδεση Χρήστη" />
 //     </ListItem>
-   
+
 //   </div>
 // );
-
-
