@@ -53,6 +53,13 @@ public class UserController {
         return user_dao.findByEmail(email);
     }
 
+    //Return user by username
+    @ResponseBody
+    @GetMapping("api/users/{username}")
+    public Optional<User> findByUsername(@PathVariable String username) {
+        return user_dao.findByusername(username);
+    }
+
     @Autowired
     PasswordEncoder bCryptEncoder;
 
