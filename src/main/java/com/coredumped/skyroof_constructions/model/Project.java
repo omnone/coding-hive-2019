@@ -1,21 +1,43 @@
 package com.coredumped.skyroof_constructions.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity(name = "Project")
 public class Project {
     private long projectId;
     private String name;
+    private Set<Issue> issue = new HashSet();
 
     @Id
-    @Column(name = "projectID",columnDefinition = "UNSIGNED INT(8)")
+    @Column(name = "projectID", columnDefinition = "UNSIGNED INT(8)")
     public long getProjectId() {
         return projectId;
     }
 
     public void setProjectId(long projectId) {
         this.projectId = projectId;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "project", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    public Set<Issue> getIssue() {
+        return issue;
+    }
+
+    public void setIssue(Set<Issue> issue) {
+        this.issue = issue;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////
+
+    public Project() {
     }
 
     @Basic

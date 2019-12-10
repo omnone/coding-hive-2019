@@ -110,7 +110,7 @@ public class UserController {
     @PostMapping(value = "/api/auth")
     public ResponseEntity createAuthToken(@RequestBody AuthenticationRequest authReq) throws Exception {
 
-        System.out.println(authReq.getUsername() + authReq.getPassword());
+//        System.out.println(authReq.getUsername() + authReq.getPassword());
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authReq.getUsername(), authReq.getPassword())

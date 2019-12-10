@@ -21,8 +21,7 @@ public class ProjectController {
     @ResponseBody
     @GetMapping("/api/projects")
     public List<Project> getAllProjects() {
-        List<Project> all = (List<Project>) project_dao.findAll();
-        return all;
+        return project_dao.findAll();
     }
 
     //Return project by id
@@ -36,13 +35,12 @@ public class ProjectController {
 
     //Save new project
     @ResponseBody
-    @PostMapping(value = "/api/projects/{id}")
+    @PostMapping(value = "/api/projects/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Project addProject(@RequestBody Project project) {
         Project save = project_dao.save(project);
         return save;
     }
 
-    //No delete option for projects
 
 }
