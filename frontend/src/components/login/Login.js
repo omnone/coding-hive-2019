@@ -47,11 +47,16 @@ export class Login extends Component {
         console.log(JSON.stringify({username: this.state.username, password: this.state.password}) );
     });
 
+logout = () =>{
+    this.setState({isAuthenticated: false});
+    sessionStorage.removeItem("jwt");
+}
+
 //////////////////////////////////////////////////////////////////////////////////////
 //Render
     render() {
-        if (this.state.isAuthenticated === true) {    
-            return (<Home />)    
+        if (this.state.isAuthenticated === true || sessionStorage.getItem("jwt")) {    
+            return (<Home value={this.logout}/>);    
         }    
         else {   
         return (
