@@ -17,6 +17,8 @@ public class ProjectController {
     @Autowired
     private ProjectDao project_dao;
 
+    /////////////////////////////////////////////////////////////////////////////////
+
     //Return all projects
     @ResponseBody
     @GetMapping("/api/projects")
@@ -24,14 +26,18 @@ public class ProjectController {
         return project_dao.findAll();
     }
 
+    /////////////////////////////////////////////////////////////////////////////////
+
     //Return project by id
     @ResponseBody
     @GetMapping("/api/projects/{id}")
-    public Project getById(@PathVariable("id") int projectId) {
+    public Project getById(@PathVariable("id") Long projectId) {
         Optional<Project> oneProject = project_dao.findById(projectId);
 
         return oneProject.get();
     }
+
+    /////////////////////////////////////////////////////////////////////////////////
 
     //Save new project
     @ResponseBody

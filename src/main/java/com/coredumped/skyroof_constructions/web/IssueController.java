@@ -1,10 +1,9 @@
 package com.coredumped.skyroof_constructions.web;
 
 import com.coredumped.skyroof_constructions.dao.IssueDao;
+import com.coredumped.skyroof_constructions.dao.ProjectDao;
 import com.coredumped.skyroof_constructions.dao.StatusDao;
-import com.coredumped.skyroof_constructions.model.Issue;
-import com.coredumped.skyroof_constructions.model.SearchRequest;
-import com.coredumped.skyroof_constructions.model.Status;
+import com.coredumped.skyroof_constructions.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +13,17 @@ import java.util.Optional;
 
 @RestController
 public class IssueController {
+    /////////////////////////////////////////////////////////////////////////////////
 
     @Autowired
     private IssueDao issue_dao;
 
     @Autowired
     private StatusDao status_dao;
+
+    @Autowired
+    private ProjectDao projectDao;
+    /////////////////////////////////////////////////////////////////////////////////
 
     @ResponseBody
     @PostMapping("api/issues/search")
@@ -34,6 +38,7 @@ public class IssueController {
                 myRequest.getCategory());
 
     }
+    /////////////////////////////////////////////////////////////////////////////////
 
     /*Return all issues*/
     @ResponseBody
@@ -44,6 +49,7 @@ public class IssueController {
     }
     /*Return all issues*/
 
+    /////////////////////////////////////////////////////////////////////////////////
 
     /*return issue by id*/
     @ResponseBody
@@ -53,30 +59,31 @@ public class IssueController {
     }
     /*return issue by id*/
 
+    /////////////////////////////////////////////////////////////////////////////////
+
     /*create an issue*/
     @ResponseBody
     @PostMapping(value = "/api/issues/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public Issue create(@RequestBody Issue issue) {
+    public Issue create(@RequestBody CreateIssueRequest issueRequest) {
 
-        System.out.println(issue);
+        System.out.println(issueRequest);
+
         Issue newIssue = new Issue();
-        newIssue.setIssueID(issue.getIssueID());
-//        newIssue.setProjectID(issue.getProjectID());
-//        newIssue.setStatusID(issue.getStatusID());
-        newIssue.setTitle(issue.getTitle());
-        newIssue.setDescription_(issue.getDescription_());
-        newIssue.setAssignor(issue.getAssignor());
-        newIssue.setAssignee(issue.getAssignee());
-        newIssue.setType_(issue.getType_());
-        newIssue.setOtherDetails(issue.getOtherDetails());
+        newIssue.setIssueID(issueRequest.getIssueID());
+        newIssue.setTitle(issueRequest.getTitle());
+        newIssue.setDescription_(issueRequest.getDescription_());
+        newIssue.setAssignor(issueRequest.getAssignor());
+        newIssue.setAssignee(issueRequest.getAssignee());
+        newIssue.setType_(issueRequest.getType_());
+        newIssue.setOtherDetails(issueRequest.getOtherDetails());
+
+        Project temp_project;
+        temp_project = projectDao.findById(issueRequest.getProjectID()).orElse(null);
+        newIssue.setProject(temp_project);
 
         Status newStatus = new Status();
-
-//        newStatus.setStatusId(0);
         newStatus.setDescription("open");
-
-
         newStatus.setIssue(newIssue);
         newIssue.setStatus(newStatus);
 
@@ -84,6 +91,7 @@ public class IssueController {
         return newIssue;
     }
     /*create an issue*/
+    /////////////////////////////////////////////////////////////////////////////////
 
     /*update an issue*/
     @PutMapping("/api/issues/update")
@@ -92,6 +100,7 @@ public class IssueController {
         return issue_dao.save(issue);
     }
     /*update an issue*/
+    /////////////////////////////////////////////////////////////////////////////////
 
     /*delete an issue*/
     @DeleteMapping("/api/issues/{id}")
