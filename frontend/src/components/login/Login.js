@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import Home from "../Home";
-import Message from "../layout/Message";
 import TextField from "@material-ui/core/TextField";
+import Button from '@material-ui/core/Button';
+import ErrorIcon from '@material-ui/icons/Error';
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -13,6 +16,11 @@ export class Login extends Component {
     open: false,
     status : 1
   };
+
+  constructor(props) {
+    super(props);
+    this.myRef = React.createRef();
+  }
 
   //////////////////////////////////////////////////////////////////////////////////////
   //Methods
@@ -68,6 +76,18 @@ export class Login extends Component {
     localStorage.removeItem("jwt");
   };
 
+  clearFields = () =>{
+    this.setState({
+      username:"",
+      password:""
+    });
+
+    document.getElementById('password').value = "";
+    document.getElementById('username').value = "";
+
+
+  }
+
   //////////////////////////////////////////////////////////////////////////////////////
   //Render
   render() {
@@ -78,12 +98,11 @@ export class Login extends Component {
       return <Home value={this.logout} />;
     } else if (this.state.status === 403) {
       mess = (
-        <article class="message is-danger">
-          <div class="message-header">
-            <p>Η Σύνδεση σας απέτυχε!</p>
-            <button class="delete" aria-label="delete"></button>
+        <article className="message is-danger">
+          <div className="message-header">
+            <p><ErrorIcon/> Η Σύνδεση σας απέτυχε!</p>
           </div>
-          <div class="message-body">
+          <div className="message-body">
             Τα στοιχεία που δώσατε είναι λανθασμένα! Παρακαλώ δοκιμάστε ξανά.
           </div>
         </article>
@@ -92,30 +111,35 @@ export class Login extends Component {
 
     return (
       <div id="login">
-        {mess}
+       
 
-        <div className="container has-text-centered">
+        <div className="container has-text-centered" 
+        style={{
+          backgroundColor: 'rgba(0,0, 0, 0.4)',
+                    borderRadius:"7px",
+          padding:"10px",
+          marginTop:"3%",
+          width: "30%"
+          }}>
           <div
-            className="column is-4 is-offset-4"
+            className="column is-full"
             style={{
-              marginTop: "3%",
+              marginTop: "5%",
               marginBottom: "3%",
-              backgroundColor: "white"
+              backgroundColor: "white",
+              borderRadius:'7px',
+              witdh:'100%'
+
             }}
           >
             <h3 className="title has-text-black">Login</h3>
             <hr className="login-hr" />
             <p className="subtitle has-text-black">Please login to proceed.</p>
-            <div className="box">
+            <p> {mess}</p>
+            <div className="box" >
               <div className="field">
                 <div className="control has-icons-left">
-                  {/* <input
-                    className="input is-medium"
-                    onChange={this.handleChange}
-                    type="text"
-                    name="username"
-                    placeholder="Your Username"
-                  /> */}
+               
 
                   <TextField
                     variant="outlined"
@@ -130,21 +154,12 @@ export class Login extends Component {
                     onChange={this.handleChange}
                   />
 
-                  {/* <span className="icon is-small is-left">
-                    <i className="fa fa-user"></i>
-                  </span> */}
                 </div>
               </div>
 
               <div className="field">
                 <div className="control has-icons-left">
-                  {/* <input
-                    className="input is-medium"
-                    onChange={this.handleChange}
-                    type="password"
-                    name="password"
-                    placeholder="Your Password"
-                  /> */}
+            
 
                   <TextField
                     variant="outlined"
@@ -159,16 +174,10 @@ export class Login extends Component {
                     onChange={this.handleChange}
                   />
 
-                  {/* <span className="icon is-small is-left">
-                    <i className="fa fa-lock"></i>
-                  </span> */}
                 </div>
               </div>
               <div className="field">
-                <label className="checkbox">
-                  <input type="checkbox" />
-                  Remember me
-                </label>
+                 <Button onClick={this.clearFields}>Clear</Button>
               </div>
               <input
                 type="submit"
@@ -178,11 +187,11 @@ export class Login extends Component {
                 value="Login"
               />
             </div>
-            <p className="has-text-grey">
+            {/* <p className="has-text-grey">
               <a href="../">Sign Up</a> &nbsp;·&nbsp;
               <a href="../">Forgot Password</a> &nbsp;·&nbsp;
               <a href="../">Need Help?</a>
-            </p>
+            </p> */}
           </div>
         </div>
       </div>

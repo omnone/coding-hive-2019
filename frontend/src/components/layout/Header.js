@@ -12,7 +12,7 @@ export class Header extends Component {
           aria-label="main navigation"
         >
           <div className="navbar-brand">
-            <a className="navbar-item" href="https://bulma.io">
+            <a className="navbar-item" href="">
               <h1>Skyroof Constructions</h1>
             </a>
 

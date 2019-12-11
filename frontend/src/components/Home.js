@@ -175,9 +175,10 @@ export default function Dashboard(props) {
         <SideMenu value={props.value} />
         <Divider />
       </Drawer>
-      <main className={classes.content}>
+      <main className={classes.content}  style={{backgroundColor: 'rgba(255,255,255,0.95)'}}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
+        <Container maxWidth="lg" 
+        className={classes.container}>
           <Grid container spacing={3}>
             {/* Main Table */}
             <Grid item xs={12}>
