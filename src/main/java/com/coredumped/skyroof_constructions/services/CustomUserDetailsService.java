@@ -17,6 +17,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     UserDao userDao;
 
+    public Optional<User> getUser(String userName){
+        return userDao.findByusername(userName);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         Optional <User> user = userDao.findByusername(userName);

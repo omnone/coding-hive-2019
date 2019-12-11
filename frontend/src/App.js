@@ -5,7 +5,6 @@ import {BrowserRouter as Router,Route} from 'react-router-dom';
 
 import Header from './components/layout/Header';
 import Login from './components/login/Login';
-import Home from './components/Home';
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,13 +22,13 @@ class App extends React.Component {
 
   render() {
     return (
-      <Router>
+      // <Router>
           <div className="App">
           <Header/>
-          <Route path="/login" component={Login}/>
-          <Route path="/" exact component={Home}/>
+          {/* <Route path="/login" exact component={Login}/> */}
+          <Login/>
           </div>
-      </Router>
+      // </Router>
     );
   }
 }

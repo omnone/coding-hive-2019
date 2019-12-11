@@ -90,8 +90,6 @@ public class UserController {
     }
 
     //delete user
-    /*gia na trexi prepei na dialexis to delete sto postman
-     * */
     @DeleteMapping("/api/users/{id}")
     public String delete(@PathVariable int id) {
         Optional<User> userz = user_dao.findById(id);
@@ -117,7 +115,6 @@ public class UserController {
     @PostMapping(value = "/api/auth")
     public ResponseEntity createAuthToken(@RequestBody AuthenticationRequest authReq) throws Exception {
 
-//        System.out.println(authReq.getUsername() + authReq.getPassword());
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authReq.getUsername(), authReq.getPassword())
@@ -131,7 +128,9 @@ public class UserController {
 
         final String jsonwebtoken = util.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthenticationResponse((jsonwebtoken)));
+        final Optional<User> user = userDetailsService.getUser(authReq.getUsername());
+
+        return ResponseEntity.ok(new AuthenticationResponse((jsonwebtoken), user));
     }
 
 
