@@ -1,5 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+**Σε περίπτωση που το npm start βγάζει κάποιο error τρέξτε την εντολή: npm install react-scripts@2.1.8
 
 Ωραία Tutorial Spring+React: https://www.devdiaries.net/blog/Spring-Boot-2-PostgreSQL-JWT-React-Part-4/
 ## Available Scripts
