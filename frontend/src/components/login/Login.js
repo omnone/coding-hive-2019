@@ -1,20 +1,21 @@
 import React, { Component } from "react";
 import Home from "../Home";
 import TextField from "@material-ui/core/TextField";
-import Button from '@material-ui/core/Button';
-import ErrorIcon from '@material-ui/icons/Error';
-
-
+import Button from "@material-ui/core/Button";
+import ErrorIcon from "@material-ui/icons/Error";
 
 //////////////////////////////////////////////////////////////////////////////////////
 
 export class Login extends Component {
+  //state of main component
   state = {
     username: "",
     password: "",
     isAuthenticated: false,
     open: false,
-    status : 1
+    status: 1,
+    isCreateState: false,
+    isViewState: true
   };
 
   constructor(props) {
@@ -22,9 +23,22 @@ export class Login extends Component {
     this.myRef = React.createRef();
   }
 
+  //persist login parameters after a refresh
+  componentDidMount() {
+    let auth = localStorage.getItem("isAuthenticated");
+
+    if (auth === "true") {
+      this.setState({
+        isAuthenticated: true,
+        username: localStorage.getItem("username")
+      });
+    }
+  }
+
   //////////////////////////////////////////////////////////////////////////////////////
   //Methods
 
+  //handle login process
   login = () => {
     const user = {
       username: this.state.username,
@@ -48,14 +62,18 @@ export class Login extends Component {
 
         if (typeof jwtToken !== "undefined" && jwtToken !== null) {
           localStorage.setItem("jwt", jwtToken);
+          localStorage.setItem("isAuthenticated", true);
+          localStorage.setItem("username", this.state.username);
           this.setState({ isAuthenticated: true });
         } else {
           this.setState({ open: true, status: responseData["status"] });
+          localStorage.setItem("isAuthenticated", false);
         }
       })
       .catch(err => console.error(err));
   };
 
+  //set state for username and password
   handleChange = e =>
     this.setState(
       {
@@ -71,20 +89,28 @@ export class Login extends Component {
       }
     );
 
+  //if user is logging out remove jwt token from storage
   logout = () => {
     this.setState({ isAuthenticated: false });
     localStorage.removeItem("jwt");
   };
 
-  clearFields = () =>{
+  //clear login forms fields
+  clearFields = () => {
     this.setState({
-      username:"",
-      password:""
+      username: "",
+      password: ""
     });
 
-    document.getElementById('password').value = "";
-    document.getElementById('username').value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("username").value = "";
+  };
 
+  createIssue = () => {
+    this.setState({
+      isCreateState:true,
+      isViewState:false
+    });
 
   }
 
@@ -95,12 +121,22 @@ export class Login extends Component {
 
     if (this.state.isAuthenticated === true) {
       this.state.status = 1;
-      return <Home value={this.logout} />;
+      return <Home 
+               value={this.logout} 
+               username={this.state.username}  
+               create={this.createIssue}
+               isCreate = {this.state.isCreateState}
+               isView = {this.state.isViewState}
+               />;
     } else if (this.state.status === 403) {
+
+      //Login failed message
       mess = (
         <article className="message is-danger">
           <div className="message-header">
-            <p><ErrorIcon/> Η Σύνδεση σας απέτυχε!</p>
+            <p>
+              <ErrorIcon /> Η Σύνδεση σας απέτυχε!
+            </p>
           </div>
           <div className="message-body">
             Τα στοιχεία που δώσατε είναι λανθασμένα! Παρακαλώ δοκιμάστε ξανά.
@@ -111,36 +147,33 @@ export class Login extends Component {
 
     return (
       <div id="login">
-       
-
-        <div className="container has-text-centered" 
-        style={{
-          backgroundColor: 'rgba(0,0, 0, 0.4)',
-                    borderRadius:"7px",
-          padding:"10px",
-          marginTop:"3%",
-          width: "30%"
-          }}>
+        <div
+          className="container has-text-centered"
+          style={{
+            backgroundColor: "rgba(0,0, 0, 0.4)",
+            borderRadius: "7px",
+            padding: "10px",
+            marginTop: "3%",
+            width: "30%"
+          }}
+        >
           <div
             className="column is-full"
             style={{
               marginTop: "5%",
               marginBottom: "3%",
               backgroundColor: "white",
-              borderRadius:'7px',
-              witdh:'100%'
-
+              borderRadius: "7px",
+              witdh: "100%"
             }}
           >
             <h3 className="title has-text-black">Login</h3>
             <hr className="login-hr" />
             <p className="subtitle has-text-black">Please login to proceed.</p>
             <p> {mess}</p>
-            <div className="box" >
+            <div className="box">
               <div className="field">
                 <div className="control has-icons-left">
-               
-
                   <TextField
                     variant="outlined"
                     margin="normal"
@@ -153,14 +186,11 @@ export class Login extends Component {
                     autoFocus
                     onChange={this.handleChange}
                   />
-
                 </div>
               </div>
 
               <div className="field">
                 <div className="control has-icons-left">
-            
-
                   <TextField
                     variant="outlined"
                     margin="normal"
@@ -173,11 +203,10 @@ export class Login extends Component {
                     autoComplete="password"
                     onChange={this.handleChange}
                   />
-
                 </div>
               </div>
               <div className="field">
-                 <Button onClick={this.clearFields}>Clear</Button>
+                <Button onClick={this.clearFields}>Clear</Button>
               </div>
               <input
                 type="submit"
@@ -187,11 +216,6 @@ export class Login extends Component {
                 value="Login"
               />
             </div>
-            {/* <p className="has-text-grey">
-              <a href="../">Sign Up</a> &nbsp;·&nbsp;
-              <a href="../">Forgot Password</a> &nbsp;·&nbsp;
-              <a href="../">Need Help?</a>
-            </p> */}
           </div>
         </div>
       </div>

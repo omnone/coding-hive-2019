@@ -127,6 +127,17 @@ export default function Dashboard(props) {
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
+  //get the state of the main frame in order to view the proper page
+  let mainFrame;
+
+  if (props.isCreate) {
+    // *******Edw tha prepei na mpei to component tis formas gia na dimiourgisei
+    // o xristis ena issue
+    mainFrame = <h1>Create Issue</h1>;
+  } else if (props.isView) {
+    mainFrame = <Table />;
+  }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -172,18 +183,25 @@ export default function Dashboard(props) {
         </div>
         {/* SideMenu */}
         <Divider />
-        <SideMenu value={props.value} />
+        <SideMenu
+          value={props.value}
+          username={props.username}
+          create={props.create}
+        />
         <Divider />
       </Drawer>
-      <main className={classes.content}  style={{backgroundColor: 'rgba(255,255,255,0.95)'}}>
+      <main
+        className={classes.content}
+        style={{ backgroundColor: "rgba(255,255,255,0.95)" }}
+      >
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" 
-        className={classes.container}>
+        <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             {/* Main Table */}
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <Table />
+                {/* render the main frame */}
+                {mainFrame}
               </Paper>
             </Grid>
           </Grid>
