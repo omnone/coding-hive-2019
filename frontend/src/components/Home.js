@@ -127,16 +127,29 @@ export default function Dashboard(props) {
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
+  //////////////////////////////////////////////////////////////////////////////////////
+
+  //Edw fortonontai ta components pou tha deixnei to kendriko frame analoga to state
   //get the state of the main frame in order to view the proper page
-  let mainFrame;
+  let mainFrame,subtitle;
 
   if (props.isCreate) {
     // *******Edw tha prepei na mpei to component tis formas gia na dimiourgisei
     // o xristis ena issue
     mainFrame = <h1>Create Issue</h1>;
-  } else if (props.isView) {
+    subtitle = "Δημιουργία";
+  } else if (props.isSearch) {
     mainFrame = <Table />;
+    subtitle = "Αναζήτηση";
+
   }
+  // }else if (props.isUpdate) {
+  //   update component here
+  // }
+
+
+
+  //////////////////////////////////////////////////////////////////////////////////////
 
   return (
     <div className={classes.root}>
@@ -158,6 +171,7 @@ export default function Dashboard(props) {
           >
             <MenuIcon />
           </IconButton>
+          
           <Typography
             component="h1"
             variant="h6"
@@ -165,7 +179,7 @@ export default function Dashboard(props) {
             noWrap
             className={classes.title}
           >
-            Dashboard
+            Διαχείριση Θεμάτων - {subtitle}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -187,6 +201,7 @@ export default function Dashboard(props) {
           value={props.value}
           username={props.username}
           create={props.create}
+          search={props.search}
         />
         <Divider />
       </Drawer>

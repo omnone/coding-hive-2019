@@ -69,7 +69,7 @@ export default function SideMenu(props) {
             </ListItemIcon>
             <ListItemText primary="Δημιουργία" />
           </ListItem>
-          <ListItem button className={classes.nested}>
+          <ListItem button className={classes.nested} onClick={props.search} >
             <ListItemIcon>
               <SearchIcon />
             </ListItemIcon>

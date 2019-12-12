@@ -15,7 +15,7 @@ export class Login extends Component {
     open: false,
     status: 1,
     isCreateState: false,
-    isViewState: true
+    isSearchState: true
   };
 
   constructor(props) {
@@ -109,9 +109,15 @@ export class Login extends Component {
   createIssue = () => {
     this.setState({
       isCreateState:true,
-      isViewState:false
+      isSearchState:false
     });
+  }
 
+  searchIssue = () => {
+    this.setState({
+      isCreateState:false,
+      isSearchState:true
+    });
   }
 
   //////////////////////////////////////////////////////////////////////////////////////
@@ -125,8 +131,9 @@ export class Login extends Component {
                value={this.logout} 
                username={this.state.username}  
                create={this.createIssue}
+               search= {this.searchIssue}
                isCreate = {this.state.isCreateState}
-               isView = {this.state.isViewState}
+               isSearch = {this.state.isSearchState}
                />;
     } else if (this.state.status === 403) {
 
