@@ -142,7 +142,7 @@ export class Login extends Component {
         <article className="message is-danger">
           <div className="message-header">
             <p>
-              <ErrorIcon /> Η Σύνδεση σας απέτυχε!
+              <ErrorIcon /> Η σύνδεση σας απέτυχε!
             </p>
           </div>
           <div className="message-body">

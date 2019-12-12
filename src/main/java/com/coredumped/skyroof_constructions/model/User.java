@@ -1,8 +1,6 @@
 package com.coredumped.skyroof_constructions.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -10,6 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity(name = "User")
+//@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="userId")
 public class User {
     private int userId;
     private String username;

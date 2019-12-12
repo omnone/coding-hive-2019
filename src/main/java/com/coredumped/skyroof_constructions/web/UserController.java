@@ -1,6 +1,7 @@
 package com.coredumped.skyroof_constructions.web;
 
 import com.coredumped.skyroof_constructions.dao.UserDao;
+import com.coredumped.skyroof_constructions.model.CreateUserRequest;
 import com.coredumped.skyroof_constructions.model.User;
 import com.coredumped.skyroof_constructions.security.AuthenticationRequest;
 import com.coredumped.skyroof_constructions.security.AuthenticationResponse;
@@ -11,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -67,7 +69,7 @@ public class UserController {
     @ResponseBody
     @PostMapping(value = "/api/users/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public User create(@RequestBody User user) {
+    public User create(@RequestBody CreateUserRequest user) {
 
         User newUser = new User();
         newUser.setUsername(user.getUsername());
