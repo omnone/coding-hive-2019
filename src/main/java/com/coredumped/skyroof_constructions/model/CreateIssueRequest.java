@@ -5,12 +5,12 @@ public class CreateIssueRequest {
     private Long projectID;
     private String title;
     private String description_;
-    private Long assignor;
-    private Long assignee;
+    private int assignor;
+    private int assignee;
     private Long type_;
     private String otherDetails;
 
-    public CreateIssueRequest(Long issueID, Long projectID, String title, String description_, Long assignor, Long assignee, Long type_, String otherDetails) {
+    public CreateIssueRequest(Long issueID, Long projectID, String title, String description_, int assignor, int assignee, Long type_, String otherDetails) {
         this.issueID = issueID;
         this.projectID = projectID;
         this.title = title;
@@ -53,19 +53,19 @@ public class CreateIssueRequest {
         this.description_ = description_;
     }
 
-    public Long getAssignor() {
+    public Integer getAssignor() {
         return assignor;
     }
 
-    public void setAssignor(Long assignor) {
+    public void setAssignor(int assignor) {
         this.assignor = assignor;
     }
 
-    public Long getAssignee() {
+    public Integer getAssignee() {
         return assignee;
     }
 
-    public void setAssignee(Long assignee) {
+    public void setAssignee(int assignee) {
         this.assignee = assignee;
     }
 

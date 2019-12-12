@@ -3,6 +3,7 @@ package com.coredumped.skyroof_constructions.web;
 import com.coredumped.skyroof_constructions.dao.IssueDao;
 import com.coredumped.skyroof_constructions.dao.ProjectDao;
 import com.coredumped.skyroof_constructions.dao.StatusDao;
+import com.coredumped.skyroof_constructions.dao.UserDao;
 import com.coredumped.skyroof_constructions.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,9 @@ public class IssueController {
 
     @Autowired
     private ProjectDao projectDao;
+
+    @Autowired
+    private UserDao userDao;
     /////////////////////////////////////////////////////////////////////////////////
 
     @ResponseBody
@@ -73,14 +77,22 @@ public class IssueController {
         newIssue.setIssueID(issueRequest.getIssueID());
         newIssue.setTitle(issueRequest.getTitle());
         newIssue.setDescription_(issueRequest.getDescription_());
-        newIssue.setAssignor(issueRequest.getAssignor());
-        newIssue.setAssignee(issueRequest.getAssignee());
+//        newIssue.setAssignor(issueRequest.getAssignor());
+//        newIssue.setAssignee(issueRequest.getAssignee());
         newIssue.setType_(issueRequest.getType_());
         newIssue.setOtherDetails(issueRequest.getOtherDetails());
 
         Project temp_project;
         temp_project = projectDao.findById(issueRequest.getProjectID()).orElse(null);
         newIssue.setProject(temp_project);
+
+        User assignor,assignee;
+
+        assignee = userDao.findDistinctByUserId(issueRequest.getAssignee());
+        assignor = userDao.findDistinctByUserId(issueRequest.getAssignor());
+
+        newIssue.setAssignee(assignee);
+        newIssue.setAssignor(assignor);
 
         Status newStatus = new Status();
         newStatus.setDescription("open");

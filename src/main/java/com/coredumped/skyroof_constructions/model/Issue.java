@@ -11,12 +11,12 @@ import java.util.Objects;
 public class Issue {
 
     private Long issueID;
-//    private Long projectID;
+    //    private Long projectID;
     //    private Long statusID;
     private String title;
     private String description_;
-    private Long assignor;
-    private Long assignee;
+    private User assignor;
+    private User assignee;
     private Long type_;
     private String otherDetails;
     private Status status;
@@ -60,7 +60,32 @@ public class Issue {
     public void setProject(Project project) {
         this.project = project;
     }
-/////////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////////////////////
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "assignee", nullable = false)
+    @JsonManagedReference
+    public User getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(User assignee) {
+        this.assignee = assignee;
+    }
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "assignor", nullable = false)
+    @JsonManagedReference
+    public User getAssignor() {
+        return assignor;
+    }
+
+    public void setAssignor(User assignor) {
+        this.assignor = assignor;
+    }
+
+
 //
 //    @Basic
 //    @Column(name = "projectID", nullable = false)
@@ -102,25 +127,25 @@ public class Issue {
         this.description_ = description_;
     }
 
-    @Basic
-    @Column(name = "assignor", nullable = false)
-    public Long getAssignor() {
-        return assignor;
-    }
+//    @Basic
+//    @Column(name = "assignor", nullable = false)
+//    public Long getAssignor() {
+//        return assignor;
+//    }
+//
+//    public void setAssignor(Long assignor) {
+//        this.assignor = assignor;
+//    }
 
-    public void setAssignor(Long assignor) {
-        this.assignor = assignor;
-    }
-
-    @Basic
-    @Column(name = "assignee", nullable = false)
-    public Long getAssignee() {
-        return assignee;
-    }
-
-    public void setAssignee(Long assignee) {
-        this.assignee = assignee;
-    }
+//    @Basic
+//    @Column(name = "assignee", nullable = false)
+//    public Long getAssignee() {
+//        return assignee;
+//    }
+//
+//    public void setAssignee(Long assignee) {
+//        this.assignee = assignee;
+//    }
 
 
     @Basic

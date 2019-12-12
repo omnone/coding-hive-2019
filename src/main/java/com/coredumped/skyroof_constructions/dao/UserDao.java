@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface UserDao extends JpaRepository<User, Integer> {
 
-    List<User> findDistinctByUserId(Integer userID);
+    User findDistinctByUserId(Integer userID);
 
     Optional<User> findByusername(String username);
 

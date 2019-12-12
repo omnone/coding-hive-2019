@@ -1,14 +1,23 @@
 package com.coredumped.skyroof_constructions.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity(name = "User")
 public class User {
     private int userId;
     private String username;
     private String email;
+    @JsonIgnore
     private String password;
+    private Set<Issue> issues_as_assignee = new HashSet();
+    private Set<Issue> issues_as_assignor = new HashSet();
 
 
     @Id
@@ -22,6 +31,29 @@ public class User {
         this.userId = userId;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "assignee", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    public Set<Issue> getIssues_as_assignee() {
+        return issues_as_assignee;
+    }
+
+    public void setIssues_as_assignee(Set<Issue> issues_as_assignee) {
+        this.issues_as_assignee = issues_as_assignee;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "assignor", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    public Set<Issue> getIssues_as_assignor() {
+        return issues_as_assignor;
+    }
+
+    public void setIssues_as_assignor(Set<Issue> issues_as_assignor) {
+        this.issues_as_assignor = issues_as_assignor;
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
     @Basic
     @Column(name = "username", unique = true)
     public String getUsername() {
