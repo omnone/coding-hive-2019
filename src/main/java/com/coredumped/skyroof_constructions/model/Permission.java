@@ -5,17 +5,17 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Entity(name = "Permission")
+@Entity(name = "permission")
 public class Permission {
     private int permissionTableId;
     private User user;
-    private long projectId;
+    private Project project;
     private byte permissionId;
 
 
     @GeneratedValue
     @Id
-    @Column(name = "permissionTableId",nullable = false)
+    @Column(name = "permission_tableid",nullable = false)
     public int getPermissionTableId() {
         return permissionTableId;
     }
@@ -34,14 +34,15 @@ public class Permission {
         this.user = user;
     }
 
-    @Basic
-    @Column(name = "projectID",nullable = false)
-    public long getProjectId() {
-        return projectId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "projectID",nullable = false)
+    @JsonManagedReference
+    public Project getProject() {
+        return project;
     }
 
-    public void setProjectId(long projectId) {
-        this.projectId = projectId;
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     @Basic
@@ -61,11 +62,11 @@ public class Permission {
         Permission that = (Permission) o;
         return user == that.user &&
                 permissionId == that.permissionId &&
-                Objects.equals(projectId, that.projectId);
+                Objects.equals(project, that.project);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, projectId, permissionId);
+        return Objects.hash(user, project, permissionId);
     }
 }

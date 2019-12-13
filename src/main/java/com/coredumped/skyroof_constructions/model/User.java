@@ -14,11 +14,12 @@ public class User {
     private int userId;
     private String username;
     private String email;
+    private Set<Permission> permission = new HashSet();
     @JsonIgnore
     private String password;
     private Set<Issue> issues_as_assignee = new HashSet();
     private Set<Issue> issues_as_assignor = new HashSet();
-    private Set<Permission> permission = new HashSet();
+
 
 
 

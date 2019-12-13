@@ -13,6 +13,8 @@ public class Project {
     private long projectId;
     private String name;
     private Set<Issue> issue = new HashSet();
+    private Set<Permission> permission = new HashSet();
+
 
     @Id
     @Column(name = "projectID", columnDefinition = "UNSIGNED INT(8)")
@@ -36,6 +38,16 @@ public class Project {
     }
 
     /////////////////////////////////////////////////////////////////////////////////
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "project", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    public Set<Permission> getPermission() {
+        return permission;
+    }
+
+    public void setPermission(Set<Permission> permission) {
+        this.permission = permission;
+    }
 
     public Project() {
     }
