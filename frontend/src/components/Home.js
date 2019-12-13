@@ -137,7 +137,7 @@ export default function Dashboard(props) {
   if (props.isCreate) {
     // *******Edw tha prepei na mpei to component tis formas gia na dimiourgisei
     // o xristis ena issue
-    mainFrame = <CreatePage/>;
+    mainFrame = <CreatePage  search={props.search} />;
     subtitle = "Δημιουργία";
   } else if (props.isSearch) {
     mainFrame = <Table />;

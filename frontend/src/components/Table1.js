@@ -37,6 +37,14 @@ export class Table1 extends Component {
       .catch(err => console.error(err));
   }
 
+  delete = () => {
+   alert("delete clicked");
+
+  }
+
+
+
+
   render() {
     const columns = [
       "Έργο",
@@ -62,7 +70,7 @@ export class Table1 extends Component {
         type = "Error";
       } else if (issue.type_ === 1) {
         type = "Improvement";
-      } else if (issue.type_ === 3) {
+      } else if (issue.type_ === 2) {
         type = "Other";
       }
 
@@ -74,7 +82,7 @@ export class Table1 extends Component {
         issue.status.description,
         type,
         <div>
-          <Button variant="contained" color="secondary">
+          <Button onClick={this.delete} variant="contained" color="secondary">
             ΔΙΑΓΡΑΦΗ
           </Button>
           -
