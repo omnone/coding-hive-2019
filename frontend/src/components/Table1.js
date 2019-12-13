@@ -5,6 +5,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Button from "@material-ui/core/Button";
+import MUIDataTable from "mui-datatables";
 
 export class Table1 extends Component {
   constructor(props) {
@@ -37,8 +38,26 @@ export class Table1 extends Component {
   }
 
   render() {
-    const tableRows = this.state.issues.map((issue, index) => {
+    const columns = [
+      "Έργο",
+      "Τίτλος",
+      "Εντολέας",
+      "Εντολοδόχος",
+      "Κατάσταση",
+      "Κατηγορία",
+      "Actions"
+    ];
+
+    const data = [];
+
+    const options = {
+      filterType: "dropdown",
+      responsive: "scroll"
+    };
+
+     this.state.issues.map((issue, index) => {
       let type;
+
       if (issue.type_ === 0) {
         type = "Error";
       } else if (issue.type_ === 1) {
@@ -47,46 +66,84 @@ export class Table1 extends Component {
         type = "Other";
       }
 
-      return (
-        <TableRow key={index}>
-          <TableCell>{issue.project.name}</TableCell>
-          <TableCell>{issue.title}</TableCell>
-          <TableCell>{issue.assignor.username}</TableCell>
-          <TableCell>{issue.assignee.username}</TableCell>
-          <TableCell>{issue.status.description}</TableCell>
-          <TableCell>{type}</TableCell>
-
-          <TableCell>
-            <Button variant="contained" color="primary">
-              ΤΡΟΠΟΠΟΙΗΣΗ
-            </Button>
-          </TableCell>
-          <TableCell>
-            <Button variant="contained" color="secondary">
-              ΔΙΑΓΡΑΦΗ
-            </Button>
-          </TableCell>
-        </TableRow>
-      );
+      data.push([
+        issue.project.name,
+        issue.title,
+        issue.assignor.username,
+        issue.assignee.username,
+        issue.status.description,
+        type,
+        <div>
+          <Button variant="contained" color="secondary">
+            ΔΙΑΓΡΑΦΗ
+          </Button>
+          -
+          <Button variant="contained" color="primary">
+            ΤΡΟΠΟΠΟΙΗΣΗ
+          </Button>
+        </div>
+      ]);
     });
 
     return (
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Έργο</TableCell>
-            <TableCell>Τίτλος</TableCell>
-            <TableCell>Εντολέας</TableCell>
-            <TableCell>Εντολοδόχος</TableCell>
-            <TableCell>Κατάσταση</TableCell>
-            <TableCell>Κατηγορία</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        
-        <TableBody>{tableRows}</TableBody>
-      </Table>
+      <MUIDataTable
+        title={"Θέματα"}
+        data={data}
+        columns={columns}
+        options={options}
+      />
     );
+
+    // const tableRows = this.state.issues.map((issue, index) => {
+    //   let type;
+    //   if (issue.type_ === 0) {
+    //     type = "Error";
+    //   } else if (issue.type_ === 1) {
+    //     type = "Improvement";
+    //   } else if (issue.type_ === 3) {
+    //     type = "Other";
+    //   }
+
+    //   return (
+    //     <TableRow key={index}>
+    //       <TableCell>{issue.project.name}</TableCell>
+    //       <TableCell>{issue.title}</TableCell>
+    //       <TableCell>{issue.assignor.username}</TableCell>
+    //       <TableCell>{issue.assignee.username}</TableCell>
+    //       <TableCell>{issue.status.description}</TableCell>
+    //       <TableCell>{type}</TableCell>
+
+    //       <TableCell>
+    //         <Button variant="contained" color="primary">
+    //           ΤΡΟΠΟΠΟΙΗΣΗ
+    //         </Button>
+    //       </TableCell>
+    //       <TableCell>
+    //         <Button variant="contained" color="secondary">
+    //           ΔΙΑΓΡΑΦΗ
+    //         </Button>
+    //       </TableCell>
+    //     </TableRow>
+    //   );
+    // });
+
+    // return (
+    //   <Table size="small">
+    //     <TableHead>
+    //       <TableRow>
+    //         <TableCell>Έργο</TableCell>
+    //         <TableCell>Τίτλος</TableCell>
+    //         <TableCell>Εντολέας</TableCell>
+    //         <TableCell>Εντολοδόχος</TableCell>
+    //         <TableCell>Κατάσταση</TableCell>
+    //         <TableCell>Κατηγορία</TableCell>
+    //         <TableCell>Actions</TableCell>
+    //       </TableRow>
+    //     </TableHead>
+
+    //     <TableBody>{tableRows}</TableBody>
+    //   </Table>
+    // );
   }
 }
 

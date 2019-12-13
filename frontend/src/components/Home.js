@@ -16,7 +16,8 @@ import Link from "@material-ui/core/Link";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
-import SideMenu from "./Side";
+import SideMenu from "./layout/Side";
+import CreatePage from "./CreateIssue";
 import Table from "./Table1";
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -136,7 +137,7 @@ export default function Dashboard(props) {
   if (props.isCreate) {
     // *******Edw tha prepei na mpei to component tis formas gia na dimiourgisei
     // o xristis ena issue
-    mainFrame = <h1>Create Issue</h1>;
+    mainFrame = <CreatePage/>;
     subtitle = "Δημιουργία";
   } else if (props.isSearch) {
     mainFrame = <Table />;

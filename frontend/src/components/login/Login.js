@@ -3,6 +3,7 @@ import Home from "../Home";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import ErrorIcon from "@material-ui/icons/Error";
+import $ from 'jquery';
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -68,6 +69,8 @@ export class Login extends Component {
         } else {
           this.setState({ open: true, status: responseData["status"] });
           localStorage.setItem("isAuthenticated", false);
+          $('#password').attr('error',true);
+          // document.getElementById("password").
         }
       })
       .catch(err => console.error(err));
@@ -91,7 +94,12 @@ export class Login extends Component {
 
   //if user is logging out remove jwt token from storage
   logout = () => {
-    this.setState({ isAuthenticated: false });
+    this.setState({ 
+      isAuthenticated: false,
+      isCreateState:false,
+      isSearchState:true });
+      
+    localStorage.clear();
     localStorage.removeItem("jwt");
   };
 
@@ -180,7 +188,7 @@ export class Login extends Component {
             <p> {mess}</p>
             <div className="box">
               <div className="field">
-                <div className="control has-icons-left">
+                <div className="control has-icons-left" >
                   <TextField
                     variant="outlined"
                     margin="normal"
@@ -192,6 +200,7 @@ export class Login extends Component {
                     autoComplete="username"
                     autoFocus
                     onChange={this.handleChange}
+                    error={this.state.status === 403}
                   />
                 </div>
               </div>
@@ -208,6 +217,7 @@ export class Login extends Component {
                     type="password"
                     id="password"
                     autoComplete="password"
+                    error={this.state.status === 403}
                     onChange={this.handleChange}
                   />
                 </div>
