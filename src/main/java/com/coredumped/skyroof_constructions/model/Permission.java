@@ -4,13 +4,24 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity(name = "Permission")
-@IdClass(PermissionPK.class)
 public class Permission {
+    private int permissionTableId;
     private int userId;
     private long projectId;
     private byte permissionId;
 
+
+    @GeneratedValue
     @Id
+    @Column(name = "permissionTableId",nullable = false)
+    public int getPermissionTableId() {
+        return permissionTableId;
+    }
+    public void setPermissionTableId(int permissionTableId) {
+        this.permissionTableId = permissionTableId;
+    }
+
+    @Basic
     @Column(name = "userID", nullable = false)
     public int getUserId() {
         return userId;
@@ -20,7 +31,7 @@ public class Permission {
         this.userId = userId;
     }
 
-    @Id
+    @Basic
     @Column(name = "projectID",nullable = false)
     public long getProjectId() {
         return projectId;
