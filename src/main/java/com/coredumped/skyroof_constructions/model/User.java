@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,6 +18,8 @@ public class User {
     private String password;
     private Set<Issue> issues_as_assignee = new HashSet();
     private Set<Issue> issues_as_assignor = new HashSet();
+    private Set<Permission> permission = new HashSet();
+
 
 
     @Id
@@ -29,6 +32,18 @@ public class User {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    public Set<Permission> getPermission() {
+        return permission;
+    }
+
+    public void setPermission(Set<Permission> permission) {
+        this.permission = permission;
+    }
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "assignee", cascade = CascadeType.REMOVE)
