@@ -1,8 +1,11 @@
 # coding-hive
 
 **Tips:**
-Για να ανοίξουμε το project στο intelij:
-https://www.lagomframework.com/documentation/1.5.x/java/IntellijMaven.html
+1. Για να ανοίξουμε το project στο intelij:
+ https://www.lagomframework.com/documentation/1.5.x/java/IntellijMaven.html
+ 
+2. **Για το bug του npm** : npm install react-scripts@2.1.8
+
 ##
 **Search request**
 #####
