@@ -9,8 +9,9 @@ public class CreateIssueRequest {
     private int assignee;
     private Long type_;
     private String otherDetails;
+    private String statusDescription;
 
-    public CreateIssueRequest(Long issueID, Long projectID, String title, String description_, int assignor, int assignee, Long type_, String otherDetails) {
+    public CreateIssueRequest(Long issueID, Long projectID, String title, String description_, int assignor, int assignee, Long type_, String otherDetails, String statusDescription) {
         this.issueID = issueID;
         this.projectID = projectID;
         this.title = title;
@@ -19,6 +20,15 @@ public class CreateIssueRequest {
         this.assignee = assignee;
         this.type_ = type_;
         this.otherDetails = otherDetails;
+        this.statusDescription = statusDescription;
+    }
+
+    public String getStatusDescription() {
+        return statusDescription;
+    }
+
+    public void setStatusDescription(String statusDescription) {
+        this.statusDescription = statusDescription;
     }
 
     public Long getIssueID() {

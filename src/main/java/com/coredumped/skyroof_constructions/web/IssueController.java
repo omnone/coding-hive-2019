@@ -30,10 +30,11 @@ public class IssueController {
     /////////////////////////////////////////////////////////////////////////////////
 
     @ResponseBody
-    @PostMapping("api/issues/search")
+    @PostMapping(value = "/api/issues/search")
     public ArrayList<Issue> searchIssue(@RequestBody SearchRequest myRequest) {
 
         System.out.print("Search:" + myRequest);
+
         return issue_dao.searchQuery(myRequest.getProject_id(),
                 myRequest.getIssue_title(),
                 myRequest.getAssignee_id(),

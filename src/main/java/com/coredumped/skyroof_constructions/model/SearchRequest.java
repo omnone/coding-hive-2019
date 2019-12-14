@@ -3,8 +3,8 @@ package com.coredumped.skyroof_constructions.model;
 public class SearchRequest {
     private Long project_id;
     private String issue_title;
-    private Long assignee_id;
-    private Long assignor_id;
+    private Integer assignee_id;
+    private Integer assignor_id;
     private Long status_id;
     private Long category; //0 error 1 improvement 2 other
 
@@ -28,11 +28,11 @@ public class SearchRequest {
         return issue_title;
     }
 
-    public Long getAssignee_id() {
+    public Integer getAssignee_id() {
         return assignee_id;
     }
 
-    public Long getAssignor_id() {
+    public Integer getAssignor_id() {
         return assignor_id;
     }
 
@@ -53,11 +53,11 @@ public class SearchRequest {
         this.issue_title = issue_title;
     }
 
-    public void setAssignee_id(Long assignee_id) {
+    public void setAssignee_id(Integer assignee_id) {
         this.assignee_id = assignee_id;
     }
 
-    public void setAssignor_id(Long assignor_id) {
+    public void setAssignor_id(Integer assignor_id) {
         this.assignor_id = assignor_id;
     }
 
