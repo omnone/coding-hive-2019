@@ -23,6 +23,7 @@ public class PermissionController {
     @GetMapping("api/permissions")
     public List<Permission> findAll() {return permission_dao.findAll(); }
 
+    //testing
     @ResponseBody
     @GetMapping("api/permissions/{userId}")
     public Optional<Permission> findByUserId(@PathVariable int userId) {

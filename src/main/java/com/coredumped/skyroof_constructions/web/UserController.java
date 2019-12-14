@@ -2,6 +2,7 @@ package com.coredumped.skyroof_constructions.web;
 
 import com.coredumped.skyroof_constructions.dao.UserDao;
 import com.coredumped.skyroof_constructions.model.CreateUserRequest;
+import com.coredumped.skyroof_constructions.model.Permission;
 import com.coredumped.skyroof_constructions.model.User;
 import com.coredumped.skyroof_constructions.security.AuthenticationRequest;
 import com.coredumped.skyroof_constructions.security.AuthenticationResponse;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.websocket.Session;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 //Routes controller of User
 @RestController
@@ -45,6 +47,13 @@ public class UserController {
     public Optional<User> find(@PathVariable int id) {
 
         return user_dao.findById(id);
+    }
+
+    //Return permissions for user with id id
+    @ResponseBody
+    @GetMapping("api/users/{id}/permission")
+    public Set<Permission> findPerm(@PathVariable int id){
+        return user_dao.findPermissions(id);
     }
 
     //Return user by email
