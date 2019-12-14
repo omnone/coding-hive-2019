@@ -73,43 +73,85 @@ public class IssueController {
 
         System.out.println(issueRequest);
 
-        Issue newIssue = new Issue();
-        newIssue.setIssueID(issueRequest.getIssueID());
-        newIssue.setTitle(issueRequest.getTitle());
-        newIssue.setDescription_(issueRequest.getDescription_());
-//        newIssue.setAssignor(issueRequest.getAssignor());
-//        newIssue.setAssignee(issueRequest.getAssignee());
-        newIssue.setType_(issueRequest.getType_());
-        newIssue.setOtherDetails(issueRequest.getOtherDetails());
+        Issue issueTemp = new Issue();
+        issueTemp.setIssueID(issueRequest.getIssueID());
+        issueTemp.setTitle(issueRequest.getTitle());
+        issueTemp.setDescription_(issueRequest.getDescription_());
+        issueTemp.setType_(issueRequest.getType_());
+        issueTemp.setOtherDetails(issueRequest.getOtherDetails());
 
+//        find requested project by its id
         Project temp_project;
         temp_project = projectDao.findById(issueRequest.getProjectID()).orElse(null);
-        newIssue.setProject(temp_project);
+        issueTemp.setProject(temp_project);
 
-        User assignor,assignee;
-
+//        find assignor and assignee users from their ids
+        User assignor, assignee;
         assignee = userDao.findDistinctByUserId(issueRequest.getAssignee());
         assignor = userDao.findDistinctByUserId(issueRequest.getAssignor());
 
-        newIssue.setAssignee(assignee);
-        newIssue.setAssignor(assignor);
+        issueTemp.setAssignee(assignee);
+        issueTemp.setAssignor(assignor);
 
+        //create a new status for issue
         Status newStatus = new Status();
         newStatus.setDescription("open");
-        newStatus.setIssue(newIssue);
-        newIssue.setStatus(newStatus);
+        newStatus.setIssue(issueTemp);
+        issueTemp.setStatus(newStatus);
 
-        issue_dao.save(newIssue);
-        return newIssue;
+        issue_dao.save(issueTemp);
+        return issueTemp;
     }
     /*create an issue*/
     /////////////////////////////////////////////////////////////////////////////////
 
     /*update an issue*/
     @PutMapping("/api/issues/update")
-    public Issue update(@RequestBody Issue issue) {
-        issue_dao.save(issue);
-        return issue_dao.save(issue);
+    public Issue update(@RequestBody CreateIssueRequest issueRequest) {
+
+//        Example of update issue request:
+//        {
+//            "issueID" : "7",
+//                "projectID" : "2" ,
+//                "statusID" : "1" ,
+//                "title" : "updatedissue2" ,
+//                "description_" : "oskjdijdojsdpoijsoidj" ,
+//                "assignor" : "1" ,
+//                "assignee" : "5633" ,
+//                "type_" : "2" ,
+//                "otherDetails" : "sd" ,
+//                "statusDescription" : "closed"
+//        }
+
+        Issue issue_to_update = issue_dao.getOne(issueRequest.getIssueID());
+
+        issue_to_update.setIssueID(issueRequest.getIssueID());
+        issue_to_update.setTitle(issueRequest.getTitle());
+        issue_to_update.setDescription_(issueRequest.getDescription_());
+        issue_to_update.setType_(issueRequest.getType_());
+        issue_to_update.setOtherDetails(issueRequest.getOtherDetails());
+
+        Project temp_project;
+        temp_project = projectDao.findById(issueRequest.getProjectID()).orElse(null);
+        issue_to_update.setProject(temp_project);
+
+        User assignor, assignee;
+
+        assignee = userDao.findDistinctByUserId(issueRequest.getAssignee());
+        assignor = userDao.findDistinctByUserId(issueRequest.getAssignor());
+
+        issue_to_update.setAssignee(assignee);
+        issue_to_update.setAssignor(assignor);
+
+        Status newStatus = issue_to_update.getStatus();
+        newStatus.setDescription(issueRequest.getStatusDescription());
+        newStatus.setIssue(issue_to_update);
+        issue_to_update.setStatus(newStatus);
+
+
+        return issue_dao.save(issue_to_update);
+
+
     }
     /*update an issue*/
     /////////////////////////////////////////////////////////////////////////////////
