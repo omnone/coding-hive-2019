@@ -37,13 +37,23 @@ export class Table1 extends Component {
       .catch(err => console.error(err));
   }
 
-  delete = () => {
-   alert("delete clicked");
-
-  }
-
-
-
+  delete = (issueId) => {
+    const deleteConfig = {
+      method: "DELETE",
+      headers: {
+        Accept: "*/*"
+      }
+    };
+    fetch("/api/issues/" + issueId, deleteConfig)
+      .then(function(response) {
+        if(response.ok) {
+          alert(issueId + " : deleted successfully ");
+        }
+      })
+      .then(function() {
+        window.location.reload();
+      });
+    }
 
   render() {
     const columns = [
@@ -82,7 +92,7 @@ export class Table1 extends Component {
         issue.status.description,
         type,
         <div>
-          <Button onClick={this.delete} variant="contained" color="secondary">
+          <Button onClick={() => this.delete(issue.issueID)} variant="contained" color="secondary">
             ΔΙΑΓΡΑΦΗ
           </Button>
           -
