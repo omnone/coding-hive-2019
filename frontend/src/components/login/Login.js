@@ -3,7 +3,9 @@ import Home from "../Home";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import ErrorIcon from "@material-ui/icons/Error";
-import $ from 'jquery';
+import Alert from "react-bootstrap/Alert";
+
+import $ from "jquery";
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -69,7 +71,7 @@ export class Login extends Component {
         } else {
           this.setState({ open: true, status: responseData["status"] });
           localStorage.setItem("isAuthenticated", false);
-          $('#password').attr('error',true);
+          $("#password").attr("error", true);
           // document.getElementById("password").
         }
       })
@@ -92,15 +94,14 @@ export class Login extends Component {
       }
     );
 
-  
-
   //if user is logging out remove jwt token from storage
   logout = () => {
-    this.setState({ 
+    this.setState({
       isAuthenticated: false,
-      isCreateState:false,
-      isSearchState:true });
-      
+      isCreateState: false,
+      isSearchState: true
+    });
+
     localStorage.clear();
     localStorage.removeItem("jwt");
   };
@@ -118,17 +119,17 @@ export class Login extends Component {
 
   createIssue = () => {
     this.setState({
-      isCreateState:true,
-      isSearchState:false
+      isCreateState: true,
+      isSearchState: false
     });
-  }
+  };
 
   searchIssue = () => {
     this.setState({
-      isCreateState:false,
-      isSearchState:true
+      isCreateState: false,
+      isSearchState: true
     });
-  }
+  };
 
   //////////////////////////////////////////////////////////////////////////////////////
   //Render
@@ -137,28 +138,40 @@ export class Login extends Component {
 
     if (this.state.isAuthenticated === true) {
       this.state.status = 1;
-      return <Home 
-               value={this.logout} 
-               username={this.state.username}  
-               create={this.createIssue}
-               search= {this.searchIssue}
-               isCreate = {this.state.isCreateState}
-               isSearch = {this.state.isSearchState}
-               />;
+      return (
+        <Home
+          value={this.logout}
+          username={this.state.username}
+          create={this.createIssue}
+          search={this.searchIssue}
+          isCreate={this.state.isCreateState}
+          isSearch={this.state.isSearchState}
+        />
+      );
     } else if (this.state.status === 403) {
-
       //Login failed message
+      // mess = (
+      //   <article className="message is-danger">
+      //     <div className="message-header">
+      //       <p>
+      //         <ErrorIcon /> Η σύνδεση σας απέτυχε!
+      //       </p>
+      //     </div>
+      //     <div className="message-body">
+      //       Τα στοιχεία που δώσατε είναι λανθασμένα! Παρακαλώ δοκιμάστε ξανά.
+      //     </div>
+      //   </article>
+      // );
+
       mess = (
-        <article className="message is-danger">
-          <div className="message-header">
-            <p>
-              <ErrorIcon /> Η σύνδεση σας απέτυχε!
-            </p>
-          </div>
-          <div className="message-body">
-            Τα στοιχεία που δώσατε είναι λανθασμένα! Παρακαλώ δοκιμάστε ξανά.
-          </div>
-        </article>
+        <Alert
+          variant="danger"
+          style={{
+            backgroundColor: "rgb(248, 215, 218)"
+          }}
+        >
+          < ErrorIcon / > Η σύνδεση απέτυχε! Παρακαλώ δοκιμάστε ξανά.
+        </Alert>
       );
     }
 
@@ -190,7 +203,7 @@ export class Login extends Component {
             <p> {mess}</p>
             <div className="box">
               <div className="field">
-                <div className="control has-icons-left" >
+                <div className="control has-icons-left">
                   <TextField
                     variant="outlined"
                     margin="normal"

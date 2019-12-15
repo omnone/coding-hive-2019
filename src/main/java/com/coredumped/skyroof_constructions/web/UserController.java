@@ -66,7 +66,7 @@ public class UserController {
 
     //Return user by username
     @ResponseBody
-    @GetMapping("api/users/{username}")
+    @GetMapping("api/users/username/{username}")
     public Optional<User> findByUsername(@PathVariable String username) {
         return user_dao.findByusername(username);
     }
@@ -139,9 +139,11 @@ public class UserController {
 
         final String jsonwebtoken = util.generateToken(userDetails);
 
-        final Optional<User> user = userDetailsService.getUser(authReq.getUsername());
+        final User user = userDetailsService.getUser(authReq.getUsername()).orElse(null);
 
-        return ResponseEntity.ok(new AuthenticationResponse((jsonwebtoken), user));
+        Set<Permission> permissions = user_dao.findPermissions(user.getUserId());
+
+        return ResponseEntity.ok(new AuthenticationResponse((jsonwebtoken), user, permissions));
     }
 
 

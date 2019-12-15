@@ -96,7 +96,7 @@ public class IssueController {
 
         //create a new status for issue
         Status newStatus = new Status();
-        newStatus.setDescription("open");
+        newStatus.setDescription(issueRequest.getStatusDescription());
         newStatus.setIssue(issueTemp);
         issueTemp.setStatus(newStatus);
 

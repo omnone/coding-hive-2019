@@ -21,8 +21,6 @@ public class User {
     private Set<Issue> issues_as_assignor = new HashSet();
 
 
-
-
     @Id
     @GeneratedValue
     @Column(name = "userID")
@@ -44,8 +42,7 @@ public class User {
     public void setPermission(Set<Permission> permission) {
         this.permission = permission;
     }
-
-
+    
     //////////////////////////////////////////////////////////////////////////////////////////////////
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "assignee", cascade = CascadeType.REMOVE)
     @JsonBackReference

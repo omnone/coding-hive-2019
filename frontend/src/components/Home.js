@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC, ChangeEvent, FormEvent, useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -132,23 +132,25 @@ export default function Dashboard(props) {
 
   //Edw fortonontai ta components pou tha deixnei to kendriko frame analoga to state
   //get the state of the main frame in order to view the proper page
-  let mainFrame,subtitle;
+  let mainFrame, subtitle,searchbar;
+  const [mess, setMessage] = useState("");
 
   if (props.isCreate) {
     // *******Edw tha prepei na mpei to component tis formas gia na dimiourgisei
     // o xristis ena issue
-    mainFrame = <CreatePage  search={props.search} />;
+    mainFrame = <CreatePage search={props.search} mess={setMessage} />;
     subtitle = "Δημιουργία";
   } else if (props.isSearch) {
     mainFrame = <Table />;
+    searchbar =  <Paper className={classes.paper} style={{marginBottom:'5px'}}>
+                {/* searchbar*/}
+                <h3>Search Bar Here-</h3>
+              </Paper>;
     subtitle = "Αναζήτηση";
-
   }
   // }else if (props.isUpdate) {
   //   update component here
   // }
-
-
 
   //////////////////////////////////////////////////////////////////////////////////////
 
@@ -172,7 +174,7 @@ export default function Dashboard(props) {
           >
             <MenuIcon />
           </IconButton>
-          
+
           <Typography
             component="h1"
             variant="h6"
@@ -210,11 +212,12 @@ export default function Dashboard(props) {
         className={classes.content}
         style={{ backgroundColor: "rgba(255,255,255,0.95)" }}
       >
-        <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             {/* Main Table */}
             <Grid item xs={12}>
+              {mess}
+              {searchbar}
               <Paper className={classes.paper}>
                 {/* render the main frame */}
                 {mainFrame}

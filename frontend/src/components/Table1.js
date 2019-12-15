@@ -1,16 +1,14 @@
 import React, { Component } from "react";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+
 import Button from "@material-ui/core/Button";
 import MUIDataTable from "mui-datatables";
 
 export class Table1 extends Component {
   constructor(props) {
     super(props);
-    this.state = { issues: [] };
+    this.state = {
+      issues: []
+    };
   }
 
   componentDidMount() {
@@ -37,33 +35,54 @@ export class Table1 extends Component {
       .catch(err => console.error(err));
   }
 
-  delete = (issueId) => {
+  delete = issueId => {
+    const jwtToken = localStorage.getItem("jwt");
+
+    console.log(jwtToken);
+
     const deleteConfig = {
       method: "DELETE",
       headers: {
-        Accept: "*/*"
+        Authorization: "Bearer " + jwtToken,
+        Accept: "application/json",
+        "Content-Type": "application/json"
       }
     };
+
     fetch("/api/issues/" + issueId, deleteConfig)
       .then(function(response) {
-        if(response.ok) {
-          alert(issueId + " : deleted successfully ");
+        if (response.ok) {
+          console.log(issueId + " : deleted successfully ");
         }
       })
       .then(function() {
         window.location.reload();
       });
-    }
+  };
 
   render() {
+    // this.getIssues();
+
     const columns = [
-      "Έργο",
-      "Τίτλος",
-      "Εντολέας",
-      "Εντολοδόχος",
-      "Κατάσταση",
-      "Κατηγορία",
-      "Actions"
+      {
+        name: "ID",
+        options: {
+          display: "excluded"
+        }
+      },
+      { name: "Έργο" },
+      { name: "Τίτλος" },
+      { name: "Εντολέας" },
+      { name: "Εντολοδόχος" },
+      { name: "Κατάσταση" },
+      { name: "Κατηγορία" },
+      {
+        name: "Actions",
+        options: {
+          download: false,
+          print: false
+        }
+      }
     ];
 
     const data = [];
@@ -73,7 +92,7 @@ export class Table1 extends Component {
       responsive: "scroll"
     };
 
-     this.state.issues.map((issue, index) => {
+    this.state.issues.map((issue, index) => {
       let type;
 
       if (issue.type_ === 0) {
@@ -85,6 +104,7 @@ export class Table1 extends Component {
       }
 
       data.push([
+        issue.project.projectId,
         issue.project.name,
         issue.title,
         issue.assignor.username,
@@ -92,13 +112,17 @@ export class Table1 extends Component {
         issue.status.description,
         type,
         <div>
-          <Button onClick={() => this.delete(issue.issueID)} variant="contained" color="secondary">
-            ΔΙΑΓΡΑΦΗ
-          </Button>
+          <Button
+            onClick={() => this.delete(issue.issueID)}
+            variant="contained"
+            color="secondary"
+          >
+            ΔΙΑΓΡΑΦΗ{" "}
+          </Button>{" "}
           -
           <Button variant="contained" color="primary">
-            ΤΡΟΠΟΠΟΙΗΣΗ
-          </Button>
+            ΤΡΟΠΟΠΟΙΗΣΗ{" "}
+          </Button>{" "}
         </div>
       ]);
     });

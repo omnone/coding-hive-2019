@@ -45,15 +45,6 @@ public class Permission {
         this.project = project;
     }
 
-    @Basic
-    @Column(name = "permissionID",nullable = false)
-    public byte getPermissionId() {
-        return permissionId;
-    }
-
-    public void setPermissionId(byte permissionId) {
-        this.permissionId = permissionId;
-    }
 
     @Override
     public boolean equals(Object o) {

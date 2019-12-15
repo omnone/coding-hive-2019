@@ -22,13 +22,10 @@ class App extends React.Component {
 
   render() {
     return (
-      // <Router>
           <div className="App">
           <Header/>
-          {/* <Route path="/login" exact component={Login}/> */}
           <Login/>
           </div>
-      // </Router>
     );
   }
 }
