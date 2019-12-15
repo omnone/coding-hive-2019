@@ -38,7 +38,7 @@ public class Issue {
 
     /////////////////////////////////////////////////////////////////////////////////
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "statusID", nullable = false)
     @JsonManagedReference
     public Status getStatus() {
