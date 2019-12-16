@@ -3,23 +3,16 @@ import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import DeleteIcon from "@material-ui/icons/Delete";
-import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import SnackbarContent from "@material-ui/core/SnackbarContent";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import Alert from "react-bootstrap/Alert";
 import ErrorIcon from "@material-ui/icons/Error";
-import UpdateIcon from '@material-ui/icons/Update';
-import CancelIcon from '@material-ui/icons/Cancel';
-
-
-
+import UpdateIcon from "@material-ui/icons/Update";
+import CancelIcon from "@material-ui/icons/Cancel";
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -42,7 +35,7 @@ export class UpdateIssue extends Component {
     this.state = {
       issues: [],
       tags: [],
-      issue:"",
+      issue: "",
       users: [],
       searchTextProjects: "",
       searchTextAssignor: "",
@@ -71,7 +64,7 @@ export class UpdateIssue extends Component {
       }
     };
 
-    fetch("/api/issues/"+this.props.issue, fetchConfig)
+    fetch("/api/issues/" + this.props.issue, fetchConfig)
       .then(response => response.json())
       .then(responseData => {
         this.setState({
@@ -81,34 +74,30 @@ export class UpdateIssue extends Component {
         //console.log(this.state.issue);
 
         this.setState({
-            issueID: this.state.issue.issueID,
-            projectID: this.state.issue.project.projectId,
-            statusDescription: this.state.issue.status.description,
-            title: this.state.issue.title,
-            description_: this.state.issue.description_,
-            assignor: this.state.issue.assignor.userId,
-            assignee: this.state.issue.assignee.userId,
-            type_: this.state.issue.type_,
-            otherDetails: this.state.issue.otherDetails,
-            searchTextProjects: this.state.issue.project.name,
-            searchTextAssignor: this.state.issue.assignor.username,
-            searchTextAssignee: this.state.issue.assignee.username
-          });
-
-        
+          issueID: this.state.issue.issueID,
+          projectID: this.state.issue.project.projectId,
+          statusDescription: this.state.issue.status.description,
+          title: this.state.issue.title,
+          description_: this.state.issue.description_,
+          assignor: this.state.issue.assignor.userId,
+          assignee: this.state.issue.assignee.userId,
+          type_: this.state.issue.type_,
+          otherDetails: this.state.issue.otherDetails,
+          searchTextProjects: this.state.issue.project.name,
+          searchTextAssignor: this.state.issue.assignor.username,
+          searchTextAssignee: this.state.issue.assignee.username
+        });
       })
       .catch(err => console.error(err));
 
-      fetch("/api/issues", fetchConfig)
+    fetch("/api/issues", fetchConfig)
       .then(response => response.json())
       .then(responseData => {
         this.setState({
           issues: responseData
         });
-
       })
       .catch(err => console.error(err));
-
 
     fetch("/api/projects", fetchConfig)
       .then(response => response.json())
@@ -131,7 +120,6 @@ export class UpdateIssue extends Component {
 
   //Create new issue request
   CreateIssue = () => {
-
     const errors = [];
 
     if (this.state.projectID === "") {
@@ -179,7 +167,10 @@ export class UpdateIssue extends Component {
           Συμπληρώστε τα πεδία : {errors.toString()}
         </Alert>
       );
-    }else if((this.props.userId != this.state.assignor)&& (this.state.statusDescription ==='Closed')){
+    } else if (
+      this.props.userId !== this.state.assignor &&
+      this.state.statusDescription === "Closed"
+    ) {
       this.props.mess(
         <Alert
           variant="danger"
@@ -188,68 +179,64 @@ export class UpdateIssue extends Component {
           }}
         >
           <ErrorIcon />
-         Δεν έχετε δικαίωμα να κλείσετε το συγκεκριμένο θέμα.
+          Δεν έχετε δικαίωμα να κλείσετε το συγκεκριμένο θέμα.
         </Alert>
       );
-    }else {
-        const jwtToken = localStorage.getItem("jwt");
+    } else {
+      const jwtToken = localStorage.getItem("jwt");
 
-        const fetchConfig = {
-          method: "PUT",
-          headers: {
-            Authorization: "Bearer " + jwtToken,
-            Accept: "application/json",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            issueID : this.state.issueID,
-            projectID: this.state.projectID,
-            title: this.state.title,
-            description_: this.state.description_,
-            assignor: this.state.assignor,
-            assignee: this.state.assignee,
-            type_: this.state.type_,
-            otherDetails: this.state.otherDetails,
-            statusDescription: this.state.statusDescription
-          })
-        };
-    
-        fetch("/api/issues/update", fetchConfig).then(response => {
-          //console.log(response.status);
-    
-          if (response.status === 200) {
-            this.props.mess(
-              <Alert
-                variant="success"
-                style={{
-                  backgroundColor: "rgb(212, 237, 218)"
-                }}
-              >
-                <CheckCircleIcon /> Το θέμα με τίτλο: "{this.state.title}"
-               αναννεώθηκε επιτυχώς!
-              </Alert>
-            );
-          } else {
-            this.props.mess(
-              <Alert
-                variant="danger"
-                style={{
-                  backgroundColor: "rgb(248, 215, 218)"
-                }}
-              >
-                <ErrorIcon /> Η αναννέωση του θέματος με τίτλο: "{this.state.title}
-                " απέτυχε.
-              </Alert>
-            );
-          }
-        });
-    
-        this.props.search();
+      const fetchConfig = {
+        method: "PUT",
+        headers: {
+          Authorization: "Bearer " + jwtToken,
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          issueID: this.state.issueID,
+          projectID: this.state.projectID,
+          title: this.state.title,
+          description_: this.state.description_,
+          assignor: this.state.assignor,
+          assignee: this.state.assignee,
+          type_: this.state.type_,
+          otherDetails: this.state.otherDetails,
+          statusDescription: this.state.statusDescription
+        })
+      };
+
+      fetch("/api/issues/update", fetchConfig).then(response => {
+        //console.log(response.status);
+
+        if (response.status === 200) {
+          this.props.mess(
+            <Alert
+              variant="success"
+              style={{
+                backgroundColor: "rgb(212, 237, 218)"
+              }}
+            >
+              <CheckCircleIcon /> Το θέμα με τίτλο: "{this.state.title}"
+              αναννεώθηκε επιτυχώς!
+            </Alert>
+          );
+        } else {
+          this.props.mess(
+            <Alert
+              variant="danger"
+              style={{
+                backgroundColor: "rgb(248, 215, 218)"
+              }}
+            >
+              <ErrorIcon /> Η αναννέωση του θέματος με τίτλο: "
+              {this.state.title}" απέτυχε.
+            </Alert>
+          );
+        }
+      });
+
+      this.props.search();
     }
-
-
-
-    
   };
 
   //////////////////////////////////////////////////////////////////////////////////////
@@ -268,7 +255,7 @@ export class UpdateIssue extends Component {
             assignee: this.state.assignee,
             type_: this.state.type_,
             otherDetails: this.state.otherDetails,
-            statusDescription:this.state.statusDescription
+            statusDescription: this.state.statusDescription
           })
         );
       }
@@ -354,14 +341,8 @@ export class UpdateIssue extends Component {
   //////////////////////////////////////////////////////////////////////////////////////
 
   render() {
-
     const projects = [];
     const users = [];
-
-    const options = {
-      filterType: "dropdown",
-      responsive: "scroll"
-    };
 
     this.state.issues.map((issue, index) => {
       projects.push(issue);
@@ -385,7 +366,7 @@ export class UpdateIssue extends Component {
                 clearText="Clear"
                 options={projects}
                 required
-                shrink='true'           
+                shrink="true"
                 inputValue={this.state.searchTextProjects}
                 onChange={this.onProjectChange}
                 getOptionLabel={option => option.name}
@@ -410,8 +391,7 @@ export class UpdateIssue extends Component {
                 variant="outlined"
                 value={this.state.title}
                 onChange={this.handleChange}
-                shrink='true'           
-
+                shrink="true"
               />
             </Grid>
             <Grid item xs={12}>
@@ -425,7 +405,7 @@ export class UpdateIssue extends Component {
                 fullWidth
                 autoComplete="billing address-line1"
                 onChange={this.handleChange}
-                shrink='true'
+                shrink="true"
               />
             </Grid>
             <Grid item xs={12}>
@@ -438,14 +418,14 @@ export class UpdateIssue extends Component {
                 fullWidth
                 autoComplete="billing address-line2"
                 onChange={this.handleChange}
-                shrink='true'           
-                   />
+                shrink="true"
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <Autocomplete
                 id="assignor"
                 disabled
-                shrink='true'           
+                shrink="true"
                 options={users}
                 inputValue={this.state.searchTextAssignor}
                 // onChange={this.onAssignorChange}
@@ -464,7 +444,7 @@ export class UpdateIssue extends Component {
               <Autocomplete
                 id="assignee"
                 options={users}
-                shrink='true'           
+                shrink="true"
                 inputValue={this.state.searchTextAssignee}
                 onChange={this.onAssigneeChange}
                 getOptionLabel={option => option.username}
@@ -487,20 +467,17 @@ export class UpdateIssue extends Component {
                   width: "100%"
                 }}
               >
-                <InputLabel id="statuslabel">
-                  Κατάσταση
-                </InputLabel>
+                <InputLabel id="statuslabel">Κατάσταση</InputLabel>
                 <Select
                   labelId="statuslabel"
                   value={this.state.statusDescription}
                   onChange={this.handleChangeStatus}
                 >
                   <MenuItem value=""> Επιλέξτε κατάσταση... </MenuItem>
-                  <MenuItem value={'Open'}> Open </MenuItem>
-                  <MenuItem value={'Closed'}> Closed</MenuItem>
-                  <MenuItem value={'Reopen'}> Reopen</MenuItem>
-                 <MenuItem value={'Resolved'}> Resolved</MenuItem>
-
+                  <MenuItem value={"Open"}> Open </MenuItem>
+                  <MenuItem value={"Closed"}> Closed</MenuItem>
+                  <MenuItem value={"Reopen"}> Reopen</MenuItem>
+                  <MenuItem value={"Resolved"}> Resolved</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -509,9 +486,7 @@ export class UpdateIssue extends Component {
                 variant="outlined"
                 style={{ margin: "spacing(1)", minWidth: "120", width: "100%" }}
               >
-                <InputLabel id="typelabel">
-                  Κατηγορία
-                </InputLabel>
+                <InputLabel id="typelabel">Κατηγορία</InputLabel>
                 <Select
                   labelId="typelabel"
                   id="type"

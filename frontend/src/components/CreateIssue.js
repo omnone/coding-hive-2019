@@ -7,11 +7,9 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import SnackbarContent from "@material-ui/core/SnackbarContent";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import Alert from "react-bootstrap/Alert";
 import ErrorIcon from "@material-ui/icons/Error";
@@ -326,11 +324,6 @@ export class CreateIssue extends Component {
   render() {
     const projects = [];
     const users = [];
-
-    const options = {
-      filterType: "dropdown",
-      responsive: "scroll"
-    };
 
     this.state.issues.map((issue, index) => {
       projects.push(issue);

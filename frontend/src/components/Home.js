@@ -152,7 +152,13 @@ export default function Dashboard(props) {
     subtitle = "Δημιουργία";
   } else if (props.isSearch) {
     mainFrame = (
-      <Table mess={setMessage} update={props.update} issue={setIssue} permissions={props.permissions} id={props.id}/>
+      <Table
+        mess={setMessage}
+        update={props.update}
+        issue={setIssue}
+        permissions={props.permissions}
+        id={props.id}
+      />
     );
     searchbar = (
       <Paper className={classes.paper} style={{ marginBottom: "5px" }}>

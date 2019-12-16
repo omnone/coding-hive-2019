@@ -8,22 +8,22 @@ import Button from "@material-ui/core/Button";
 import MUIDataTable from "mui-datatables";
 
 export class Table1 extends Component {
-  state= {
-    userId :""
-  }
+  state = {
+    userId: ""
+  };
 
   constructor(props) {
     super(props);
     this.state = {
       issues: [],
-      userid:""
+      userid: ""
     };
 
     console.log(this.props);
   }
 
   componentDidMount() {
-    console.log("user id "+this.props.id);
+    console.log("user id " + this.props.id);
     this.setState({
       userId: this.props.id
     });
@@ -31,10 +31,10 @@ export class Table1 extends Component {
     this.getIssues();
   }
 
-  updateIssue = (issueId) =>{
+  updateIssue = issueId => {
     this.props.issue(issueId);
     return this.props.update;
-  }
+  };
 
   getIssues = () => {
     const jwtToken = localStorage.getItem("jwt");
@@ -50,7 +50,7 @@ export class Table1 extends Component {
       }
     };
 
-    fetch("/api/issues/"+this.props.id, fetchConfig)
+    fetch("/api/issues/" + this.props.id, fetchConfig)
       .then(response => response.json())
       .then(responseData => {
         this.setState({
@@ -148,63 +148,81 @@ export class Table1 extends Component {
 
       let permission_to_apply;
 
-      this.props.permissions.map((perm)=>{
-        if(perm.project.projectId === issue.project.projectId){
+      this.props.permissions.map(perm => {
+        if (perm.project.projectId === issue.project.projectId) {
           permission_to_apply = perm.permissionId;
         }
-      })
+      });
 
       let buttons;
       // console.log(issue.project.name+perm.permissionId);
 
-      if(permission_to_apply === 0){
-        buttons =  <div>
-        <Button
-          disabled
-          onClick={() => this.delete(issue.issueID, issue.title)}
-          variant="contained"
-          color="secondary"
-        >
-          ΔΙΑΓΡΑΦΗ{" "}
-        </Button>{" "}
-        
-        <Button 
-        disabled
-        variant="contained" 
-        color="primary" 
-        onClick={this.updateIssue(issue.issueID)}>
-          ΤΡΟΠΟΠΟΙΗΣΗ{" "}
-        </Button>{" "}
-      </div>
-      }else if (permission_to_apply === 1){
-        buttons =  <div>
-        <Button
-          disabled
-          onClick={() => this.delete(issue.issueID, issue.title)}
-          variant="contained"
-          color="secondary"
-        >
-          ΔΙΑΓΡΑΦΗ{" "}
-        </Button>{" "}
-        
-        <Button variant="contained" color="primary" onClick={this.updateIssue(issue.issueID)}>
-          ΤΡΟΠΟΠΟΙΗΣΗ{" "}
-        </Button>{" "}
-      </div>
-      }else{
-        buttons =  <div>
-        <Button
-          onClick={() => this.delete(issue.issueID, issue.title)}
-          variant="contained"
-          color="secondary"
-        >
-          ΔΙΑΓΡΑΦΗ{" "}
-        </Button>{" "}
-        
-        <Button variant="contained" color="primary" onClick={this.updateIssue(issue.issueID)}>
-          ΤΡΟΠΟΠΟΙΗΣΗ{" "}
-        </Button>{" "}
-      </div>
+      if (permission_to_apply === 0) {
+        buttons = (
+          <div>
+            <Button
+              disabled
+              id="delete-button"
+              onClick={() => this.delete(issue.issueID, issue.title)}
+              variant="contained"
+              color="secondary"
+            >
+              ΔΙΑΓΡΑΦΗ{" "}
+            </Button>{" "}
+            <Button
+              disabled
+              id="update-button"
+              variant="contained"
+              color="primary"
+              onClick={this.updateIssue(issue.issueID)}
+            >
+              ΤΡΟΠΟΠΟΙΗΣΗ{" "}
+            </Button>{" "}
+          </div>
+        );
+      } else if (permission_to_apply === 1) {
+        buttons = (
+          <div>
+            <Button
+              disabled
+              id="delete-button"
+              onClick={() => this.delete(issue.issueID, issue.title)}
+              variant="contained"
+              color="secondary"
+            >
+              ΔΙΑΓΡΑΦΗ{" "}
+            </Button>{" "}
+            <Button
+              id="update-button"
+              variant="contained"
+              color="primary"
+              onClick={this.updateIssue(issue.issueID)}
+            >
+              ΤΡΟΠΟΠΟΙΗΣΗ{" "}
+            </Button>{" "}
+          </div>
+        );
+      } else {
+        buttons = (
+          <div>
+            <Button
+              id="delete-button"
+              onClick={() => this.delete(issue.issueID, issue.title)}
+              variant="contained"
+              color="secondary"
+            >
+              ΔΙΑΓΡΑΦΗ{" "}
+            </Button>{" "}
+            <Button
+              id="update-button"
+              variant="contained"
+              color="primary"
+              onClick={this.updateIssue(issue.issueID)}
+            >
+              ΤΡΟΠΟΠΟΙΗΣΗ{" "}
+            </Button>{" "}
+          </div>
+        );
       }
 
       data.push([
@@ -227,57 +245,6 @@ export class Table1 extends Component {
         options={options}
       />
     );
-
-    // const tableRows = this.state.issues.map((issue, index) => {
-    //   let type;
-    //   if (issue.type_ === 0) {
-    //     type = "Error";
-    //   } else if (issue.type_ === 1) {
-    //     type = "Improvement";
-    //   } else if (issue.type_ === 3) {
-    //     type = "Other";
-    //   }
-
-    //   return (
-    //     <TableRow key={index}>
-    //       <TableCell>{issue.project.name}</TableCell>
-    //       <TableCell>{issue.title}</TableCell>
-    //       <TableCell>{issue.assignor.username}</TableCell>
-    //       <TableCell>{issue.assignee.username}</TableCell>
-    //       <TableCell>{issue.status.description}</TableCell>
-    //       <TableCell>{type}</TableCell>
-
-    //       <TableCell>
-    //         <Button variant="contained" color="primary">
-    //           ΤΡΟΠΟΠΟΙΗΣΗ
-    //         </Button>
-    //       </TableCell>
-    //       <TableCell>
-    //         <Button variant="contained" color="secondary">
-    //           ΔΙΑΓΡΑΦΗ
-    //         </Button>
-    //       </TableCell>
-    //     </TableRow>
-    //   );
-    // });
-
-    // return (
-    //   <Table size="small">
-    //     <TableHead>
-    //       <TableRow>
-    //         <TableCell>Έργο</TableCell>
-    //         <TableCell>Τίτλος</TableCell>
-    //         <TableCell>Εντολέας</TableCell>
-    //         <TableCell>Εντολοδόχος</TableCell>
-    //         <TableCell>Κατάσταση</TableCell>
-    //         <TableCell>Κατηγορία</TableCell>
-    //         <TableCell>Actions</TableCell>
-    //       </TableRow>
-    //     </TableHead>
-
-    //     <TableBody>{tableRows}</TableBody>
-    //   </Table>
-    // );
   }
 }
 

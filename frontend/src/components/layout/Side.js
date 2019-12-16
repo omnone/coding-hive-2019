@@ -13,9 +13,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-
-
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -53,7 +51,7 @@ export default function SideMenu(props) {
     >
       <hr></hr>
 
-      <ListItem button onClick={handleClick} style={{whiteSpace: 'normal'}}>
+      <ListItem button onClick={handleClick} style={{ whiteSpace: "normal" }}>
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
@@ -63,13 +61,23 @@ export default function SideMenu(props) {
 
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button className={classes.nested} onClick={props.create} >
+          <ListItem
+            id="create-button"
+            button
+            className={classes.nested}
+            onClick={props.create}
+          >
             <ListItemIcon>
               <AddIcon />
             </ListItemIcon>
             <ListItemText primary="Δημιουργία" />
           </ListItem>
-          <ListItem button className={classes.nested} onClick={props.search} >
+          <ListItem
+            id="search-button"
+            button
+            className={classes.nested}
+            onClick={props.search}
+          >
             <ListItemIcon>
               <SearchIcon />
             </ListItemIcon>
@@ -80,7 +88,7 @@ export default function SideMenu(props) {
 
       <hr></hr>
 
-      <ListItem button>
+      <ListItem button id="signout-button">
         <ListItemIcon>
           <ExitToAppIcon />
         </ListItemIcon>

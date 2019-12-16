@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import  Navbar from "react-bootstrap/Navbar";
+import Navbar from "react-bootstrap/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export class Header extends Component {
