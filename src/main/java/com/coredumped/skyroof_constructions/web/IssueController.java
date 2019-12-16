@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -59,8 +60,8 @@ public class IssueController {
     /*return issue by id*/
     @ResponseBody
     @GetMapping("/api/issues/{id}")
-    public Optional<Issue> find(@PathVariable Long id) {
-        return issue_dao.findById(id);
+    public List<Issue> findByUser(@PathVariable Integer id) {
+        return issue_dao.findByUser(id);
     }
     /*return issue by id*/
 

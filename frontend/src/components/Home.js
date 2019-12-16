@@ -18,6 +18,8 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
 import SideMenu from "./layout/Side";
 import CreatePage from "./CreateIssue";
+import UpdatePage from "./UpdateIssue";
+
 import Table from "./Table1";
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -120,6 +122,9 @@ const useStyles = makeStyles(theme => ({
 export default function Dashboard(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [mess, setMessage] = useState("");
+  const [issue, setIssue] = useState("");
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -132,25 +137,41 @@ export default function Dashboard(props) {
 
   //Edw fortonontai ta components pou tha deixnei to kendriko frame analoga to state
   //get the state of the main frame in order to view the proper page
-  let mainFrame, subtitle,searchbar;
-  const [mess, setMessage] = useState("");
+  let mainFrame, subtitle, searchbar;
 
   if (props.isCreate) {
-    // *******Edw tha prepei na mpei to component tis formas gia na dimiourgisei
-    // o xristis ena issue
-    mainFrame = <CreatePage search={props.search} mess={setMessage} />;
+    mainFrame = (
+      <CreatePage
+        search={props.search}
+        mess={setMessage}
+        user={props.username}
+        id={props.id}
+        permissions={props.permissions}
+      />
+    );
     subtitle = "Δημιουργία";
   } else if (props.isSearch) {
-    mainFrame = <Table />;
-    searchbar =  <Paper className={classes.paper} style={{marginBottom:'5px'}}>
-                {/* searchbar*/}
-                <h3>Search Bar Here-</h3>
-              </Paper>;
+    mainFrame = (
+      <Table mess={setMessage} update={props.update} issue={setIssue} permissions={props.permissions} id={props.id}/>
+    );
+    searchbar = (
+      <Paper className={classes.paper} style={{ marginBottom: "5px" }}>
+        {/* searchbar*/}
+        <h3>Search Bar Here-</h3>
+      </Paper>
+    );
     subtitle = "Αναζήτηση";
+  } else if (props.isUpdate) {
+    mainFrame = (
+      <UpdatePage
+        search={props.search}
+        mess={setMessage}
+        issue={issue}
+        id={props.id}
+      />
+    );
+    subtitle = "Τροποποίηση";
   }
-  // }else if (props.isUpdate) {
-  //   update component here
-  // }
 
   //////////////////////////////////////////////////////////////////////////////////////
 

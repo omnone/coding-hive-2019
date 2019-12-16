@@ -1,17 +1,42 @@
 import React, { Component } from "react";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import ErrorIcon from "@material-ui/icons/Error";
+
+import Alert from "react-bootstrap/Alert";
 
 import Button from "@material-ui/core/Button";
 import MUIDataTable from "mui-datatables";
 
 export class Table1 extends Component {
+  state= {
+    userId :""
+  }
+
   constructor(props) {
     super(props);
     this.state = {
-      issues: []
+      issues: [],
+      userid:""
     };
+
+    console.log(this.props);
   }
 
   componentDidMount() {
+    console.log("user id "+this.props.id);
+    this.setState({
+      userId: this.props.id
+    });
+
+    this.getIssues();
+  }
+
+  updateIssue = (issueId) =>{
+    this.props.issue(issueId);
+    return this.props.update;
+  }
+
+  getIssues = () => {
     const jwtToken = localStorage.getItem("jwt");
 
     console.log(jwtToken);
@@ -25,7 +50,7 @@ export class Table1 extends Component {
       }
     };
 
-    fetch("/api/issues", fetchConfig)
+    fetch("/api/issues/"+this.props.id, fetchConfig)
       .then(response => response.json())
       .then(responseData => {
         this.setState({
@@ -33,9 +58,9 @@ export class Table1 extends Component {
         });
       })
       .catch(err => console.error(err));
-  }
+  };
 
-  delete = issueId => {
+  delete = (issueId, issueTitle) => {
     const jwtToken = localStorage.getItem("jwt");
 
     console.log(jwtToken);
@@ -49,20 +74,38 @@ export class Table1 extends Component {
       }
     };
 
-    fetch("/api/issues/" + issueId, deleteConfig)
-      .then(function(response) {
-        if (response.ok) {
-          console.log(issueId + " : deleted successfully ");
-        }
-      })
-      .then(function() {
-        window.location.reload();
-      });
+    fetch("/api/issues/" + issueId, deleteConfig).then(response => {
+      if (response.status === 200) {
+        this.props.mess(
+          <Alert
+            variant="success"
+            style={{
+              backgroundColor: "rgb(212, 237, 218)"
+            }}
+          >
+            <CheckCircleIcon /> Το θέμα με τίτλο: "{issueTitle}" διαγράφτηκε
+            επιτυχώς!
+          </Alert>
+        );
+      } else {
+        this.props.mess(
+          <Alert
+            variant="danger"
+            style={{
+              backgroundColor: "rgb(248, 215, 218)"
+            }}
+          >
+            <ErrorIcon /> Η διαγραφή του θέματος με τίτλο: "{issueTitle}"
+            απέτυχε.
+          </Alert>
+        );
+      }
+    });
+    this.getIssues();
   };
 
   render() {
-    // this.getIssues();
-
+    console.log(this.props.permissions);
     const columns = [
       {
         name: "ID",
@@ -103,6 +146,67 @@ export class Table1 extends Component {
         type = "Other";
       }
 
+      let permission_to_apply;
+
+      this.props.permissions.map((perm)=>{
+        if(perm.project.projectId === issue.project.projectId){
+          permission_to_apply = perm.permissionId;
+        }
+      })
+
+      let buttons;
+      // console.log(issue.project.name+perm.permissionId);
+
+      if(permission_to_apply === 0){
+        buttons =  <div>
+        <Button
+          disabled
+          onClick={() => this.delete(issue.issueID, issue.title)}
+          variant="contained"
+          color="secondary"
+        >
+          ΔΙΑΓΡΑΦΗ{" "}
+        </Button>{" "}
+        
+        <Button 
+        disabled
+        variant="contained" 
+        color="primary" 
+        onClick={this.updateIssue(issue.issueID)}>
+          ΤΡΟΠΟΠΟΙΗΣΗ{" "}
+        </Button>{" "}
+      </div>
+      }else if (permission_to_apply === 1){
+        buttons =  <div>
+        <Button
+          disabled
+          onClick={() => this.delete(issue.issueID, issue.title)}
+          variant="contained"
+          color="secondary"
+        >
+          ΔΙΑΓΡΑΦΗ{" "}
+        </Button>{" "}
+        
+        <Button variant="contained" color="primary" onClick={this.updateIssue(issue.issueID)}>
+          ΤΡΟΠΟΠΟΙΗΣΗ{" "}
+        </Button>{" "}
+      </div>
+      }else{
+        buttons =  <div>
+        <Button
+          onClick={() => this.delete(issue.issueID, issue.title)}
+          variant="contained"
+          color="secondary"
+        >
+          ΔΙΑΓΡΑΦΗ{" "}
+        </Button>{" "}
+        
+        <Button variant="contained" color="primary" onClick={this.updateIssue(issue.issueID)}>
+          ΤΡΟΠΟΠΟΙΗΣΗ{" "}
+        </Button>{" "}
+      </div>
+      }
+
       data.push([
         issue.project.projectId,
         issue.project.name,
@@ -111,19 +215,7 @@ export class Table1 extends Component {
         issue.assignee.username,
         issue.status.description,
         type,
-        <div>
-          <Button
-            onClick={() => this.delete(issue.issueID)}
-            variant="contained"
-            color="secondary"
-          >
-            ΔΙΑΓΡΑΦΗ{" "}
-          </Button>{" "}
-          -
-          <Button variant="contained" color="primary">
-            ΤΡΟΠΟΠΟΙΗΣΗ{" "}
-          </Button>{" "}
-        </div>
+        buttons
       ]);
     });
 

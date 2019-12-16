@@ -14,15 +14,29 @@ export class Login extends Component {
   state = {
     username: "",
     password: "",
+    userId: "",
     isAuthenticated: false,
     open: false,
     status: 1,
     isCreateState: false,
+    isUpdateState: false,
     isSearchState: true
   };
 
   constructor(props) {
     super(props);
+    this.state = {
+      permissions_pr: [],
+      username: "",
+      password: "",
+      userId: "",
+      isAuthenticated: false,
+      open: false,
+      status: 1,
+      isCreateState: false,
+      isUpdateState: false,
+      isSearchState: true
+    };
     this.myRef = React.createRef();
   }
 
@@ -31,9 +45,12 @@ export class Login extends Component {
     let auth = localStorage.getItem("isAuthenticated");
 
     if (auth === "true") {
+      let perms = localStorage.getItem("permissions");
       this.setState({
         isAuthenticated: true,
-        username: localStorage.getItem("username")
+        username: localStorage.getItem("username"),
+        userId: localStorage.getItem("userId"),
+        permissions_pr: JSON.parse(perms)
       });
     }
   }
@@ -61,13 +78,21 @@ export class Login extends Component {
         console.log(responseData);
 
         const jwtToken = responseData["jwt"];
-        console.log(jwtToken);
+        const permissions = responseData["user"].permission;
 
         if (typeof jwtToken !== "undefined" && jwtToken !== null) {
           localStorage.setItem("jwt", jwtToken);
           localStorage.setItem("isAuthenticated", true);
           localStorage.setItem("username", this.state.username);
-          this.setState({ isAuthenticated: true });
+          localStorage.setItem("userId", responseData["user"].userId);
+          localStorage.setItem("permissions", JSON.stringify(permissions));
+
+          this.setState({
+            isAuthenticated: true,
+            permissions_pr: permissions,
+            userId: responseData["user"].userId
+          });
+          console.log(this.state.permissions_pr + "perms");
         } else {
           this.setState({ open: true, status: responseData["status"] });
           localStorage.setItem("isAuthenticated", false);
@@ -99,6 +124,7 @@ export class Login extends Component {
     this.setState({
       isAuthenticated: false,
       isCreateState: false,
+      isUpdateState: false,
       isSearchState: true
     });
 
@@ -120,14 +146,24 @@ export class Login extends Component {
   createIssue = () => {
     this.setState({
       isCreateState: true,
-      isSearchState: false
+      isSearchState: false,
+      isUpdateState: false
     });
   };
 
   searchIssue = () => {
     this.setState({
       isCreateState: false,
-      isSearchState: true
+      isSearchState: true,
+      isUpdateState: false
+    });
+  };
+
+  updateIssue = () => {
+    this.setState({
+      isCreateState: false,
+      isSearchState: false,
+      isUpdateState: true
     });
   };
 
@@ -142,10 +178,14 @@ export class Login extends Component {
         <Home
           value={this.logout}
           username={this.state.username}
+          id={this.state.userId}
           create={this.createIssue}
           search={this.searchIssue}
+          update={this.updateIssue}
           isCreate={this.state.isCreateState}
           isSearch={this.state.isSearchState}
+          isUpdate={this.state.isUpdateState}
+          permissions={this.state.permissions_pr}
         />
       );
     } else if (this.state.status === 403) {
@@ -170,7 +210,7 @@ export class Login extends Component {
             backgroundColor: "rgb(248, 215, 218)"
           }}
         >
-          < ErrorIcon / > Η σύνδεση απέτυχε! Παρακαλώ δοκιμάστε ξανά.
+          <ErrorIcon /> Η σύνδεση απέτυχε! Παρακαλώ δοκιμάστε ξανά.
         </Alert>
       );
     }

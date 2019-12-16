@@ -34,7 +34,7 @@ public class User {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.REMOVE)
-    @JsonBackReference
+    @JsonManagedReference
     public Set<Permission> getPermission() {
         return permission;
     }

@@ -1,5 +1,7 @@
 package com.coredumped.skyroof_constructions.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -16,6 +18,7 @@ public class Permission {
     @GeneratedValue
     @Id
     @Column(name = "permission_tableid",nullable = false)
+    @JsonIgnore
     public int getPermissionTableId() {
         return permissionTableId;
     }
@@ -25,7 +28,7 @@ public class Permission {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userID", nullable = false)
-    @JsonManagedReference
+    @JsonBackReference
     public User getUser() {
         return user;
     }
@@ -45,6 +48,15 @@ public class Permission {
         this.project = project;
     }
 
+    @Basic
+    @Column(name = "permissionID")
+    public byte getPermissionId() {
+        return permissionId;
+    }
+
+    public void setPermissionId(byte permissionId) {
+        this.permissionId = permissionId;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -2,6 +2,7 @@ package com.coredumped.skyroof_constructions.dao;
 
 import com.coredumped.skyroof_constructions.model.Issue;
 import com.coredumped.skyroof_constructions.model.SearchRequest;
+import com.coredumped.skyroof_constructions.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -13,6 +14,9 @@ import java.util.List;
 
 @Repository
 public interface IssueDao extends JpaRepository<Issue, Long> {
+
+    @Query("SELECT issue FROM Issue issue WHERE issue.assignee.userId = ?1 or issue.assignor.userId = ?1")
+    List<Issue> findByUser(Integer userID);
 
     @Query("SELECT issue FROM Issue issue WHERE (issue.project.projectId = ?1 OR ?1 is null ) " +
             "AND (issue.title = ?2 OR ?2 is null) " +

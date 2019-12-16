@@ -42,15 +42,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/api/auth").permitAll()
-                .anyRequest().authenticated();
-        http.addFilterBefore(tempFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/api/auth").permitAll()
+//                .anyRequest().authenticated();
+//        http.addFilterBefore(tempFilter, UsernamePasswordAuthenticationFilter.class);
 
         //Security disabled
-//        http.authorizeRequests().anyRequest().permitAll();
-//        http.csrf().disable();
+        http.authorizeRequests().anyRequest().permitAll();
+        http.csrf().disable();
 
     }
 
