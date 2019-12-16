@@ -77,10 +77,11 @@ export class Login extends Component {
       .then(responseData => {
         console.log(responseData);
 
-        const jwtToken = responseData["jwt"];
-        const permissions = responseData["user"].permission;
 
-        if (typeof jwtToken !== "undefined" && jwtToken !== null) {
+        if (responseData["status"]!==403) {
+          const permissions = responseData["user"].permission;
+          const jwtToken = responseData["jwt"];
+
           localStorage.setItem("jwt", jwtToken);
           localStorage.setItem("isAuthenticated", true);
           localStorage.setItem("username", this.state.username);
@@ -93,7 +94,7 @@ export class Login extends Component {
             userId: responseData["user"].userId
           });
           console.log(this.state.permissions_pr + "perms");
-        } else {
+        }else{
           this.setState({ open: true, status: responseData["status"] });
           localStorage.setItem("isAuthenticated", false);
           $("#password").attr("error", true);
@@ -122,7 +123,13 @@ export class Login extends Component {
   //if user is logging out remove jwt token from storage
   logout = () => {
     this.setState({
+      permissions_pr: [],
+      username: "",
+      password: "",
+      userId: "",
       isAuthenticated: false,
+      open: false,
+      status: 1,
       isCreateState: false,
       isUpdateState: false,
       isSearchState: true
@@ -189,20 +196,6 @@ export class Login extends Component {
         />
       );
     } else if (this.state.status === 403) {
-      //Login failed message
-      // mess = (
-      //   <article className="message is-danger">
-      //     <div className="message-header">
-      //       <p>
-      //         <ErrorIcon /> Η σύνδεση σας απέτυχε!
-      //       </p>
-      //     </div>
-      //     <div className="message-body">
-      //       Τα στοιχεία που δώσατε είναι λανθασμένα! Παρακαλώ δοκιμάστε ξανά.
-      //     </div>
-      //   </article>
-      // );
-
       mess = (
         <Alert
           variant="danger"
