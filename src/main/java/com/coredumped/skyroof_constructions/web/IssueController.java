@@ -64,6 +64,11 @@ public class IssueController {
         return issue_dao.findByUser(id);
     }
     /*return issue by id*/
+    @ResponseBody
+    @GetMapping("/api/issues/find/{id}")
+    public Issue find(@PathVariable Long id) {
+        return issue_dao.findById(id).orElse(null);
+    }
 
     /////////////////////////////////////////////////////////////////////////////////
 

@@ -64,7 +64,7 @@ export class UpdateIssue extends Component {
       }
     };
 
-    fetch("/api/issues/" + this.props.issue, fetchConfig)
+    fetch("/api/issues/find/" + this.props.issue, fetchConfig)
       .then(response => response.json())
       .then(responseData => {
         this.setState({
@@ -504,6 +504,7 @@ export class UpdateIssue extends Component {
               <Button
                 variant="contained"
                 color="primary"
+                id="update-issue-btn"
                 onClick={this.CreateIssue}
                 startIcon={<UpdateIcon />}
               >
@@ -512,6 +513,7 @@ export class UpdateIssue extends Component {
               <Button
                 style={{ marginLeft: "5px" }}
                 onClick={this.props.search}
+                id="cancel-btn"
                 variant="contained"
                 color="secondary"
                 startIcon={<CancelIcon />}

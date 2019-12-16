@@ -475,6 +475,7 @@ export class CreateIssue extends Component {
               <Button
                 variant="contained"
                 color="primary"
+                id="create-issue-btn"
                 onClick={this.CreateIssue}
                 startIcon={<PlaylistAddIcon />}
               >
@@ -485,6 +486,7 @@ export class CreateIssue extends Component {
                 onClick={this.clearFields}
                 variant="contained"
                 color="secondary"
+                id="clear-btn"
                 startIcon={<DeleteIcon />}
               >
                 Καθαρισμός
