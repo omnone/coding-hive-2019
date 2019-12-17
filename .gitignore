@@ -33,5 +33,5 @@ build/
 .DS_STORE/
 
 
-#Ignore testing reports
+.mvn/*
 testing/reports/*
