@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
 public class BaseTest {
 
@@ -36,8 +37,9 @@ public class BaseTest {
 
     @AfterTest
     public void tearDown() {
-        driver.quit();
+        //driver.quit();
     }
+
 
 
     public void waitForLoad() {
@@ -58,4 +60,5 @@ public class BaseTest {
     public Boolean isElementPresent(By by) {
         return driver.findElements(by).size() > 0;
     }
+
 }
