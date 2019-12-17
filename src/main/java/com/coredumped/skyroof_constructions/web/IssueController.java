@@ -40,7 +40,7 @@ public class IssueController {
                 myRequest.getIssue_title(),
                 myRequest.getAssignee_id(),
                 myRequest.getAssignor_id(),
-                myRequest.getStatus_id(),
+                myRequest.getStatus_desc(),
                 myRequest.getCategory());
 
     }

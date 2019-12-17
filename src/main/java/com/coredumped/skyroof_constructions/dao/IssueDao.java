@@ -22,12 +22,12 @@ public interface IssueDao extends JpaRepository<Issue, Long> {
             "AND (issue.title = ?2 OR ?2 is null) " +
             "AND (issue.assignee.userId = ?3 OR ?3 is null )" +
             "AND (issue.assignor.userId = ?4 OR ?4 is null)" +
-            "AND (issue.status.statusId = ?5 OR ?5 is null)" +
+            "AND (issue.status.description = ?5 OR ?5 is null)" +
             "AND (issue.type_ = ?6 OR ?6 is null)")
     public ArrayList<Issue> searchQuery(Long project_id,
                                         String issue_title,
                                         Integer assignee_id,
                                         Integer assignor_id,
-                                        Long status_id,
+                                        String status_desc,
                                         Long category);
 }

@@ -432,6 +432,7 @@ export class CreateIssue extends Component {
             <Grid item xs={12} sm={6}>
               <FormControl
                 variant="outlined"
+                id="statusdesc"
                 style={{
                   margin: "spacing(1)",
                   minWidth: "120",
@@ -442,6 +443,7 @@ export class CreateIssue extends Component {
                 <Select
                   labelId="statuslabel"
                   value={this.state.statusDescription}
+                  // labelWidth={labelWidth}
                   onChange={this.handleChangeStatus}
                 >
                   <MenuItem value=""> Επιλέξτε κατάσταση... </MenuItem>
@@ -455,12 +457,12 @@ export class CreateIssue extends Component {
             <Grid item xs={12} sm={6}>
               <FormControl
                 variant="outlined"
+                id="type"
                 style={{ margin: "spacing(1)", minWidth: "120", width: "100%" }}
               >
                 <InputLabel id="typelabel">Κατηγορία</InputLabel>
                 <Select
                   labelId="typelabel"
-                  id="type"
                   value={this.state.type_}
                   onChange={this.handleChangeSelect}
                 >

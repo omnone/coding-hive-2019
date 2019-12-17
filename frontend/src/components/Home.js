@@ -21,6 +21,7 @@ import CreatePage from "./CreateIssue";
 import UpdatePage from "./UpdateIssue";
 
 import Table from "./Table1";
+import SearchBar from "./layout/SearchBar";
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -124,6 +125,7 @@ export default function Dashboard(props) {
   const [open, setOpen] = React.useState(true);
   const [mess, setMessage] = useState("");
   const [issue, setIssue] = useState("");
+  const [issues, setIssues] = useState("");
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -158,12 +160,13 @@ export default function Dashboard(props) {
         issue={setIssue}
         permissions={props.permissions}
         id={props.id}
+        issues={issues}
       />
     );
     searchbar = (
       <Paper className={classes.paper} style={{ marginBottom: "5px" }}>
         {/* searchbar*/}
-        <h3>Search Bar Here-</h3>
+        <SearchBar id={props.id} setIssues={setIssues}/>
       </Paper>
     );
     subtitle = "Αναζήτηση";

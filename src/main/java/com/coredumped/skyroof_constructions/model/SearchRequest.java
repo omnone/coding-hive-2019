@@ -5,7 +5,7 @@ public class SearchRequest {
     private String issue_title;
     private Integer assignee_id;
     private Integer assignor_id;
-    private Long status_id;
+    private String status_desc;
     private Long category; //0 error 1 improvement 2 other
 
     //Constructor
@@ -15,7 +15,7 @@ public class SearchRequest {
         this.issue_title = null;
         this.assignee_id = null;
         this.assignor_id = null;
-        this.status_id = null;
+        this.status_desc = null;
         this.category = null;
     }
 
@@ -36,14 +36,14 @@ public class SearchRequest {
         return assignor_id;
     }
 
-    public Long getStatus_id() {
-        return status_id;
+    public String getStatus_desc() {
+        return status_desc;
     }
+
 
     public Long getCategory() {
         return category;
     }
-
 
     public void setProject_id(Long project_id) {
         this.project_id = project_id;
@@ -61,8 +61,8 @@ public class SearchRequest {
         this.assignor_id = assignor_id;
     }
 
-    public void setStatus_id(Long status_id) {
-        this.status_id = status_id;
+    public void setStatus_desc(String status_desc) {
+        this.status_desc = status_desc;
     }
 
     public void setCategory(Long category) {
@@ -76,7 +76,7 @@ public class SearchRequest {
                 ", issue_title='" + issue_title + '\'' +
                 ", assignee_id=" + assignee_id +
                 ", assignor_id=" + assignor_id +
-                ", status_id=" + status_id +
+                ", status_desc=" + status_desc +
                 ", category=" + category +
                 '}';
     }
