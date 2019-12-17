@@ -1,8 +1,6 @@
 package com.skyroof.codinghive.test_cases.TS_CH_UI;
 
 import com.skyroof.codinghive.test_utils.BaseTest;
-import com.skyroof.codinghive.test_cases.TS_CH_UI.TC_CH_UI_001_Login;
-
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -36,6 +34,7 @@ public class TC_CH_UI_003_Create extends BaseTest {
 
         //dropdown for project
         driver.findElement(By.id("project")).click();
+        //driver.findElement(By.id("type")).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("MuiAutocomplete-popper")));
 
         driver.findElement(By.xpath("//div[contains(@class,'MuiAutocomplete-popper') and contains(.,'Construction project')]")).click();
@@ -66,11 +65,13 @@ public class TC_CH_UI_003_Create extends BaseTest {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class, 'MuiFormControl-root') and contains(.,'Κατάσταση')]")));
         driver.findElement(By.xpath("//li[contains(@class,'MuiListItem-button') and contains(.,'Closed')]")).click();
 
+        waitForLoad();
         //category
-        driver.findElement(By.xpath("//div[contains(@class,'MuiSelect-root')")).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class,'MuiFormControl-root') and contains(.,'Κατηγορία')]")));
+        driver.findElement(By.id("type")).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("type")));
         driver.findElement(By.xpath("//li[contains(@class,'MuiListItem-button') and contains(.,'Error')]")).click();
 
+        waitForLoad();
         //click create button
 
         driver.findElement(By.id("create-issue-btn")).click();
@@ -79,7 +80,7 @@ public class TC_CH_UI_003_Create extends BaseTest {
         waitForLoad();
 
         //check if successful creation message appeared
-        Assert.assertTrue(isElementPresent(By.className("fade.alert.alert-success show")));
+        Assert.assertTrue(isElementPresent(By.className("MuiSvgIcon-root")));
 
 
     }
