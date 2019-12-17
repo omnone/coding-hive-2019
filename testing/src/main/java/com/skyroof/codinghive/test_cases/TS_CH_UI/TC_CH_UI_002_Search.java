@@ -1,7 +1,7 @@
 package com.skyroof.codinghive.test_cases.TS_CH_UI;
 
 import com.skyroof.codinghive.test_utils.BaseTest;
-import org.junit.Assert;
+import org.testng.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.Test;
