@@ -39,7 +39,7 @@ export class SearchBar extends Component {
       searchTextProjects: "",
       searchTextAssignee: "",
       type_: null,
-      statusDescription: "Open",
+      statusDescription: null,
       title: null,
       otherDetails: "",
       projectID: null,
@@ -84,6 +84,8 @@ export class SearchBar extends Component {
       .catch(err => console.error(err));
   }
 
+  //   Search issue function
+  // ------------------------------------------------------------------
   searchIssue = () => {
     const jwtToken = localStorage.getItem("jwt");
 
@@ -111,6 +113,8 @@ export class SearchBar extends Component {
       });
   };
 
+  //Get all issues
+  // ------------------------------------------------------------------
   getIssues = () => {
     const jwtToken = localStorage.getItem("jwt");
 
@@ -134,7 +138,11 @@ export class SearchBar extends Component {
   };
 
   //////////////////////////////////////////////////////////////////////////////////////
-  handleChange = e =>
+  //   Handlers
+
+  handleChange = e => {
+
+    if(e.target.value !==""){
     this.setState(
       {
         [e.target.name]: e.target.value
@@ -154,6 +162,15 @@ export class SearchBar extends Component {
         );
       }
     );
+    }else{
+        this.setState(
+            {
+              [e.target.name]: null
+            }
+        );
+    }
+  }
+  // ------------------------------------------------------------------
 
   onProjectChange = (event, values) => {
     this.setState(
@@ -169,6 +186,7 @@ export class SearchBar extends Component {
       }
     );
   };
+  // ------------------------------------------------------------------
 
   onAssignorChange = (event, values) => {
     this.setState(
@@ -184,6 +202,7 @@ export class SearchBar extends Component {
       }
     );
   };
+  // ------------------------------------------------------------------
 
   onAssigneeChange = (event, values) => {
     this.setState(
@@ -199,6 +218,7 @@ export class SearchBar extends Component {
       }
     );
   };
+  // ------------------------------------------------------------------
 
   handleChangeSelect = e => {
     console.log("value" + e.target.value);
@@ -206,6 +226,7 @@ export class SearchBar extends Component {
       type_: e.target.value
     });
   };
+  // ------------------------------------------------------------------
 
   handleChangeStatus = e => {
     console.log("value" + e.target.value);
@@ -213,6 +234,7 @@ export class SearchBar extends Component {
       statusDescription: e.target.value
     });
   };
+  // ------------------------------------------------------------------
 
   hangleChangeFilterAll = e => {
     if (e.target.value === "all") {
@@ -234,6 +256,7 @@ export class SearchBar extends Component {
       this.getIssues();
     }
   };
+  // ------------------------------------------------------------------
 
   clearFields = () => {
     this.setState({
@@ -252,6 +275,8 @@ export class SearchBar extends Component {
     // this.searchIssue();
     document.getElementById("myForm").reset();
   };
+  /////////////////////////////////////////////////////////////////
+  //Render component
 
   render() {
     const projects = [];
@@ -314,8 +339,8 @@ export class SearchBar extends Component {
                   onChange={this.handleChangeSelect}
                 >
                   <MenuItem value="">Επιλέξτε κατηγορία...</MenuItem>
-                  <MenuItem value={0}>Improvement</MenuItem>
-                  <MenuItem value={1}>Error</MenuItem>
+                  <MenuItem value={0}>Error</MenuItem>
+                  <MenuItem value={1}>Improvement</MenuItem>
                   <MenuItem value={2}>Other</MenuItem>
                 </Select>
               </FormControl>
@@ -341,7 +366,6 @@ export class SearchBar extends Component {
               <FormControl component="fieldset">
                 <FormLabel component="legend">Εντολέας</FormLabel>
                 <RadioGroup
-                  defaultValue="female"
                   aria-label="gender"
                   name="assignor"
                   row
@@ -354,7 +378,7 @@ export class SearchBar extends Component {
                     id="radio-me"
                   />
                   <FormControlLabel
-                    value={null}
+                    value={"null"}
                     control={<Radio />}
                     label="Άλλος"
                     id="radio-other"
@@ -367,8 +391,6 @@ export class SearchBar extends Component {
                 <FormLabel component="legend">Θέματα</FormLabel>
                 <RadioGroup
                   defaultValue=""
-                  aria-label="gender"
-                  name="customized-radios"
                   row
                   onClick={this.hangleChangeFilterAll}
                 >

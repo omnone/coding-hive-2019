@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import MUIDataTable from "mui-datatables";
 
 export class Table1 extends Component {
+  ////////////////////////////////////////////////////////////////////
   state = {
     userId: ""
   };
@@ -21,9 +22,9 @@ export class Table1 extends Component {
 
     console.log(this.props);
   }
+  // -------------------------------------------------------------------------
 
   componentDidMount() {
-    console.log(this.props.issues);
     console.log("user id " + this.props.id);
     this.setState({
       userId: this.props.id
@@ -31,11 +32,13 @@ export class Table1 extends Component {
 
     this.getIssues();
   }
+  // -------------------------------------------------------------------------
 
   updateIssue = issueId => {
     this.props.issue(issueId);
-    return this.props.update;
+    return this.props.update();
   };
+  // -------------------------------------------------------------------------
 
   getIssues = () => {
     const jwtToken = localStorage.getItem("jwt");
@@ -54,12 +57,18 @@ export class Table1 extends Component {
     fetch("/api/issues/" + this.props.id, fetchConfig)
       .then(response => response.json())
       .then(responseData => {
+
+
         this.setState({
           issues: responseData
         });
+
+        this.props.setIssues(responseData);
+
       })
       .catch(err => console.error(err));
   };
+  // -------------------------------------------------------------------------
 
   delete = (issueId, issueTitle) => {
     const jwtToken = localStorage.getItem("jwt");
@@ -102,10 +111,12 @@ export class Table1 extends Component {
         );
       }
     });
+    
     this.getIssues();
   };
 
-  ///////////////////////////////////////////////////////////
+  // -------------------------------------------------------------------------
+
   getAllIssues = () => {
     const getConfig = {
       method: "GET",
@@ -149,6 +160,7 @@ export class Table1 extends Component {
       searchValue: searchText
     });
   };
+  // -------------------------------------------------------------------------
 
   //update issues when search returns new props.issues
   componentDidUpdate(prevProps) {
@@ -160,14 +172,13 @@ export class Table1 extends Component {
           issues: this.props.issues
         });
       }
+      this.forceUpdate();
     }
   }
-
-  ///////////////////////////////////////////////////////////
+  // -------------------------------------------------------------------------
 
   render() {
-    console.log(this.props.permissions);
-
+    console.log("Table rendered");
     const columns = [
       {
         name: "ID",
@@ -207,7 +218,8 @@ export class Table1 extends Component {
         );
       }
     };
-
+    
+    
     this.state.issues.map((issue, index) => {
       let type;
 
@@ -247,7 +259,9 @@ export class Table1 extends Component {
               id="update-button"
               variant="contained"
               color="primary"
-              onClick={this.updateIssue(issue.issueID)}
+              onClick={() => {
+                this.updateIssue(issue.issueID);
+              }}
             >
               ΤΡΟΠΟΠΟΙΗΣΗ{" "}
             </Button>{" "}
@@ -269,7 +283,9 @@ export class Table1 extends Component {
               id="update-button"
               variant="contained"
               color="primary"
-              onClick={this.updateIssue(issue.issueID)}
+              onClick={() => {
+                this.updateIssue(issue.issueID);
+              }}
             >
               ΤΡΟΠΟΠΟΙΗΣΗ{" "}
             </Button>{" "}
@@ -290,7 +306,9 @@ export class Table1 extends Component {
               id="update-button"
               variant="contained"
               color="primary"
-              onClick={this.updateIssue(issue.issueID)}
+              onClick={() => {
+                this.updateIssue(issue.issueID);
+              }}
             >
               ΤΡΟΠΟΠΟΙΗΣΗ{" "}
             </Button>{" "}

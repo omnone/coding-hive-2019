@@ -17,6 +17,7 @@ import ErrorIcon from "@material-ui/icons/Error";
 //////////////////////////////////////////////////////////////////////////////////////
 
 export class CreateIssue extends Component {
+  //State and constructor
   state = {
     issueID: "0",
     projectID: "",
@@ -92,7 +93,7 @@ export class CreateIssue extends Component {
       assignor: this.props.id
     });
   }
-
+  // -------------------------------------------------------------------------
   //Create new issue request
   CreateIssue = () => {
     const errors = [];
@@ -107,9 +108,10 @@ export class CreateIssue extends Component {
     });
 
     if (permission_to_apply === 0) {
-      error_message =
+      error_message +=
         "Δεν έχετε τα κατάλληλα δικαιώματα για να δημιουργήσετε θέμα στο έργο: " +
-        this.state.searchTextProjects;
+        this.state.searchTextProjects +
+        "\n";
     }
 
     if (this.state.projectID === "") {
@@ -146,7 +148,7 @@ export class CreateIssue extends Component {
     }
 
     if (errors.length) {
-      error_message = "Συμπληρώστε τα πεδία : " + errors.toString();
+      error_message += "Συμπληρώστε τα πεδία : " + errors.toString();
     }
 
     if (error_message === "") {
@@ -202,7 +204,6 @@ export class CreateIssue extends Component {
         }
       });
 
-      this.props.search();
     } else {
       this.props.mess(
         <Alert
@@ -217,10 +218,38 @@ export class CreateIssue extends Component {
       );
     }
 
-    // this.props.search();
+
+    this.getIssues();
+    this.props.search();
+  };
+
+  //Get all issues
+  // -------------------------------------------------------------------------
+
+  getIssues = () => {
+    const jwtToken = localStorage.getItem("jwt");
+
+    console.log(jwtToken);
+
+    const fetchConfig = {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + jwtToken,
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    };
+
+    fetch("/api/issues/" + this.props.id, fetchConfig)
+      .then(response => response.json())
+      .then(responseData => {
+        this.props.setIssues(responseData);
+      })
+      .catch(err => console.error(err));
   };
 
   //////////////////////////////////////////////////////////////////////////////////////
+  //Handlers
   handleChange = e =>
     this.setState(
       {
@@ -241,6 +270,7 @@ export class CreateIssue extends Component {
         );
       }
     );
+  // -------------------------------------------------------------------------
 
   onProjectChange = (event, values) => {
     this.setState(
@@ -256,6 +286,7 @@ export class CreateIssue extends Component {
       }
     );
   };
+  // -------------------------------------------------------------------------
 
   onAssignorChange = (event, values) => {
     this.setState(
@@ -271,6 +302,7 @@ export class CreateIssue extends Component {
       }
     );
   };
+  // -------------------------------------------------------------------------
 
   onAssigneeChange = (event, values) => {
     this.setState(
@@ -286,6 +318,7 @@ export class CreateIssue extends Component {
       }
     );
   };
+  // -------------------------------------------------------------------------
 
   handleChangeSelect = e => {
     console.log("value" + e.target.value);
@@ -293,6 +326,7 @@ export class CreateIssue extends Component {
       type_: e.target.value
     });
   };
+  // -------------------------------------------------------------------------
 
   handleChangeStatus = e => {
     console.log("value" + e.target.value);
@@ -300,6 +334,7 @@ export class CreateIssue extends Component {
       statusDescription: e.target.value
     });
   };
+  // -------------------------------------------------------------------------
 
   clearFields = () => {
     this.setState({
@@ -467,8 +502,8 @@ export class CreateIssue extends Component {
                   onChange={this.handleChangeSelect}
                 >
                   <MenuItem value="">Επιλέξτε κατηγορία...</MenuItem>
-                  <MenuItem value={0}>Improvement</MenuItem>
-                  <MenuItem value={1}>Error</MenuItem>
+                  <MenuItem value={0}>Error</MenuItem>
+                  <MenuItem value={1}>Improvement</MenuItem>
                   <MenuItem value={2}>Other</MenuItem>
                 </Select>
               </FormControl>

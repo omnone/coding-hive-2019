@@ -149,6 +149,7 @@ export default function Dashboard(props) {
         user={props.username}
         id={props.id}
         permissions={props.permissions}
+        setIssues={setIssues}
       />
     );
     subtitle = "Δημιουργία";
@@ -161,12 +162,14 @@ export default function Dashboard(props) {
         permissions={props.permissions}
         id={props.id}
         issues={issues}
+        setIssues={setIssues}
+
       />
     );
     searchbar = (
       <Paper className={classes.paper} style={{ marginBottom: "5px" }}>
         {/* searchbar*/}
-        <SearchBar id={props.id} setIssues={setIssues}/>
+        <SearchBar id={props.id} setIssues={setIssues} />
       </Paper>
     );
     subtitle = "Αναζήτηση";
@@ -177,6 +180,7 @@ export default function Dashboard(props) {
         mess={setMessage}
         issue={issue}
         id={props.id}
+        setIssues={setIssues}
       />
     );
     subtitle = "Τροποποίηση";
@@ -246,7 +250,7 @@ export default function Dashboard(props) {
           <Grid container spacing={3}>
             {/* Main Table */}
             <Grid item xs={12}>
-              {mess}
+              <div class="mess">{mess}</div>
               {searchbar}
               <Paper className={classes.paper}>
                 {/* render the main frame */}

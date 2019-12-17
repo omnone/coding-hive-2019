@@ -17,6 +17,7 @@ import CancelIcon from "@material-ui/icons/Cancel";
 //////////////////////////////////////////////////////////////////////////////////////
 
 export class UpdateIssue extends Component {
+  //States and constructor
   state = {
     issueID: "0",
     projectID: "",
@@ -117,9 +118,9 @@ export class UpdateIssue extends Component {
       })
       .catch(err => console.error(err));
   }
-
-  //Create new issue request
-  CreateIssue = () => {
+  // -------------------------------------------------------------------------
+  //Update issue request
+  UpdateIssue = () => {
     const errors = [];
 
     if (this.state.projectID === "") {
@@ -234,12 +235,38 @@ export class UpdateIssue extends Component {
           );
         }
       });
-
+      
+      this.getIssues();
       this.props.search();
     }
   };
 
+  // Get all issues
+  // -------------------------------------------------------------------------
+  getIssues = () => {
+    const jwtToken = localStorage.getItem("jwt");
+
+    console.log(jwtToken);
+
+    const fetchConfig = {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + jwtToken,
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    };
+
+    fetch("/api/issues/" + this.props.id, fetchConfig)
+      .then(response => response.json())
+      .then(responseData => {
+        this.props.setIssues(responseData);
+      })
+      .catch(err => console.error(err));
+  };
+
   //////////////////////////////////////////////////////////////////////////////////////
+  //Handlers
   handleChange = e =>
     this.setState(
       {
@@ -260,7 +287,7 @@ export class UpdateIssue extends Component {
         );
       }
     );
-
+  // -------------------------------------------------------------------------
   onProjectChange = (event, values) => {
     this.setState(
       {
@@ -275,7 +302,7 @@ export class UpdateIssue extends Component {
       }
     );
   };
-
+  // -------------------------------------------------------------------------
   onAssignorChange = (event, values) => {
     this.setState(
       {
@@ -290,7 +317,7 @@ export class UpdateIssue extends Component {
       }
     );
   };
-
+  // -------------------------------------------------------------------------
   onAssigneeChange = (event, values) => {
     this.setState(
       {
@@ -305,6 +332,7 @@ export class UpdateIssue extends Component {
       }
     );
   };
+  // -------------------------------------------------------------------------// -------------------------------------------------------------------------
 
   handleChangeSelect = e => {
     //console.log("value" + e.target.value);
@@ -312,6 +340,7 @@ export class UpdateIssue extends Component {
       type_: e.target.value
     });
   };
+  // -------------------------------------------------------------------------
 
   handleChangeStatus = e => {
     //console.log("value" + e.target.value);
@@ -319,6 +348,7 @@ export class UpdateIssue extends Component {
       statusDescription: e.target.value
     });
   };
+  // -------------------------------------------------------------------------
 
   clearFields = () => {
     this.setState({
@@ -339,7 +369,7 @@ export class UpdateIssue extends Component {
     document.getElementById("myForm").reset();
   };
   //////////////////////////////////////////////////////////////////////////////////////
-
+  //Render component
   render() {
     const projects = [];
     const users = [];
@@ -387,9 +417,8 @@ export class UpdateIssue extends Component {
                 name="title"
                 label="Τίτλος"
                 fullWidth
-                autoComplete="lname"
                 variant="outlined"
-                value={this.state.title}
+                value={this.state.title || ""}
                 onChange={this.handleChange}
                 shrink="true"
               />
@@ -401,7 +430,7 @@ export class UpdateIssue extends Component {
                 name="description_"
                 label="Περιγραφή"
                 variant="outlined"
-                value={this.state.description_}
+                value={this.state.description_ || ""}
                 fullWidth
                 autoComplete="billing address-line1"
                 onChange={this.handleChange}
@@ -413,7 +442,7 @@ export class UpdateIssue extends Component {
                 id="otherDetails"
                 name="otherDetails"
                 variant="outlined"
-                value={this.state.otherDetails}
+                value={this.state.otherDetails || ""}
                 label="Άλλες πληροφορίες"
                 fullWidth
                 autoComplete="billing address-line2"
@@ -505,7 +534,7 @@ export class UpdateIssue extends Component {
                 variant="contained"
                 color="primary"
                 id="update-issue-btn"
-                onClick={this.CreateIssue}
+                onClick={this.UpdateIssue}
                 startIcon={<UpdateIcon />}
               >
                 Ενημέρωση
