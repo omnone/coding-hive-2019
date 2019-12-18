@@ -159,9 +159,9 @@ export class SearchBar extends Component {
 
   showAssignor = e => {
     if (e.target.value === "null") {
-      this.setState({ showField: "block" });
+      this.setState({ showField: "block",assignor:null });
     } else {
-      this.setState({ showField: "none" });
+      this.setState({ showField: "none",assignor: this.props.id });
     }
   };
 
@@ -387,13 +387,12 @@ export class SearchBar extends Component {
               <FormControl component="fieldset">
                 <FormLabel component="legend">Εντολέας</FormLabel>
                 <RadioGroup
-                  aria-label="gender"
                   name="assignor"
                   row
-                  onClick={this.handleChange}
+                  onChange={this.handleChange}
                 >
                   <FormControlLabel
-                    value={this.props.id}
+                    value={String(this.props.id)}
                     control={<Radio />}
                     label="Εγώ"
                     id="radio-me"
