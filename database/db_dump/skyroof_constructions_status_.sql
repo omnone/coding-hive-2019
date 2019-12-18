@@ -26,7 +26,7 @@ CREATE TABLE `status_` (
   `statusID` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   `description_` varchar(255) NOT NULL,
   PRIMARY KEY (`statusID`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -35,7 +35,7 @@ CREATE TABLE `status_` (
 
 LOCK TABLES `status_` WRITE;
 /*!40000 ALTER TABLE `status_` DISABLE KEYS */;
-INSERT INTO `status_` VALUES (23,'Open'),(25,'Open'),(27,'Open'),(31,'Open'),(33,'Open'),(35,'Open'),(37,'Close'),(39,'Resolved'),(41,'Open'),(43,'Open'),(45,'Close'),(47,'Open'),(49,'Open'),(51,'Resolved'),(53,'Close'),(55,'Open'),(63,'Reopen');
+INSERT INTO `status_` VALUES (55,'Open'),(75,'Open'),(81,'Open'),(103,'Reopen'),(105,'Open'),(107,'Open'),(109,'Open'),(111,'Open'),(113,'Open'),(115,'Open'),(117,'Open'),(119,'Open'),(121,'Open'),(123,'Open'),(125,'Open'),(127,'Open');
 /*!40000 ALTER TABLE `status_` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-15 21:52:39
+-- Dump completed on 2019-12-18 19:33:10

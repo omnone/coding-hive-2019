@@ -32,7 +32,7 @@ CREATE TABLE `permission` (
   KEY `projectID` (`projectID`),
   CONSTRAINT `permission_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `user` (`userID`) ON UPDATE CASCADE,
   CONSTRAINT `permission_ibfk_2` FOREIGN KEY (`projectID`) REFERENCES `project` (`projectID`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `permission` (
 
 LOCK TABLES `permission` WRITE;
 /*!40000 ALTER TABLE `permission` DISABLE KEYS */;
-INSERT INTO `permission` VALUES (1,4,1,0),(2,4,2,1),(3,4,3,0),(4,4,5,2);
+INSERT INTO `permission` VALUES (1,4,1,0),(2,4,2,0),(3,4,4,2),(4,4,5,2),(15,4,3,2),(16,4,3,0),(17,4,6,0),(18,4,7,2),(19,4,8,1),(20,4,9,0);
 /*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-15 21:52:39
+-- Dump completed on 2019-12-18 19:33:10

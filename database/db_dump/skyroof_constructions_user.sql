@@ -29,7 +29,7 @@ CREATE TABLE `user` (
   `password_` varchar(80) NOT NULL,
   PRIMARY KEY (`userID`),
   UNIQUE KEY `username` (`username`,`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'giannhs','randomemail@gmail.com','32323a2'),(2,'miasdua','randomemawadwail@gmail.com','3zxz1'),(4,'user1','email@mail.com','$2a$10$eNr1L5GaVFWOTt2r6eK2QOZjMVSnf.qaWrWFzpPCUVxsk.w/Y5rgS');
+INSERT INTO `user` VALUES (1,'user2','user2@gmail.com','$2a$10$70JLcFn/e6i8sppzfTi1UuQFweLny5wWSqzkRDgZ7X7oAt1kPGHE.'),(2,'user3','user3@mail.com','$2a$10$70JLcFn/e6i8sppzfTi1UuQFweLny5wWSqzkRDgZ7X7oAt1kPGHE.'),(4,'user1','user1@mail.com','$2a$10$eNr1L5GaVFWOTt2r6eK2QOZjMVSnf.qaWrWFzpPCUVxsk.w/Y5rgS'),(78,'user4','user4@mail.com','$2a$10$70JLcFn/e6i8sppzfTi1UuQFweLny5wWSqzkRDgZ7X7oAt1kPGHE.');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-15 21:52:38
+-- Dump completed on 2019-12-18 19:33:10
