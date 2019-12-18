@@ -47,7 +47,7 @@ class CustomSearchRender extends React.Component {
       <Grow appear in={true} timeout={300}>
         <div className={classes.main} ref={el => (this.rootRef = el)}>
           <TextField
-            placeholder={'Custom Table Search without search icon'}
+            placeholder={'Αναζήτηση θέματος..'}
             className={classes.searchText}
             InputProps={{
               'aria-label': options.textLabels.toolbar.search,

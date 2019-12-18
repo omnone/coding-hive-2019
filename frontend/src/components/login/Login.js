@@ -44,6 +44,7 @@ export class Login extends Component {
   componentDidMount() {
     let auth = localStorage.getItem("isAuthenticated");
 
+    //the user is authenticated so get all auth parameters from localStorage
     if (auth === "true") {
       let perms = localStorage.getItem("permissions");
       this.setState({
@@ -56,8 +57,7 @@ export class Login extends Component {
   }
 
   //////////////////////////////////////////////////////////////////////////////////////
-  //Methods
-
+  //Functions
   //handle login process
   login = () => {
     const user = {
@@ -77,8 +77,10 @@ export class Login extends Component {
       .then(responseData => {
         console.log(responseData);
 
+        if (responseData["status"] !== 403) {
+          //user successfully logged in
 
-        if (responseData["status"]!==403) {
+          //save all authentications parameters to localStorage
           const permissions = responseData["user"].permission;
           const jwtToken = responseData["jwt"];
 
@@ -94,7 +96,8 @@ export class Login extends Component {
             userId: responseData["user"].userId
           });
           console.log(this.state.permissions_pr + "perms");
-        }else{
+        } else {
+          //user failed to loggin
           this.setState({ open: true, status: responseData["status"] });
           localStorage.setItem("isAuthenticated", false);
           $("#password").attr("error", true);
@@ -104,6 +107,7 @@ export class Login extends Component {
       .catch(err => console.error(err));
   };
 
+  // -------------------------------------------------------------------------
   //set state for username and password
   handleChange = e =>
     this.setState(
@@ -120,6 +124,7 @@ export class Login extends Component {
       }
     );
 
+  // -------------------------------------------------------------------------
   //if user is logging out remove jwt token from storage
   logout = () => {
     this.setState({
@@ -139,6 +144,7 @@ export class Login extends Component {
     localStorage.removeItem("jwt");
   };
 
+  // -------------------------------------------------------------------------
   //clear login forms fields
   clearFields = () => {
     this.setState({
@@ -149,6 +155,7 @@ export class Login extends Component {
     document.getElementById("password").value = "";
     document.getElementById("username").value = "";
   };
+  // -------------------------------------------------------------------------
 
   createIssue = () => {
     this.setState({
@@ -157,6 +164,7 @@ export class Login extends Component {
       isUpdateState: false
     });
   };
+  // -------------------------------------------------------------------------
 
   searchIssue = () => {
     this.setState({
@@ -165,6 +173,7 @@ export class Login extends Component {
       isUpdateState: false
     });
   };
+  // -------------------------------------------------------------------------
 
   updateIssue = () => {
     this.setState({
@@ -180,7 +189,10 @@ export class Login extends Component {
     let mess;
 
     if (this.state.isAuthenticated === true) {
+      //user is authenticated
       this.state.status = 1;
+
+      //return home component with user parameters
       return (
         <Home
           value={this.logout}
@@ -196,6 +208,7 @@ export class Login extends Component {
         />
       );
     } else if (this.state.status === 403) {
+      //user failed login , show proper message
       mess = (
         <Alert
           variant="danger"
@@ -208,6 +221,7 @@ export class Login extends Component {
       );
     }
 
+    //return login page
     return (
       <div id="login">
         <div
@@ -288,4 +302,5 @@ export class Login extends Component {
   }
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
 export default Login;

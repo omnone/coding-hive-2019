@@ -53,6 +53,7 @@ export class CreateIssue extends Component {
     this.onProjectChange = this.onProjectChange.bind(this);
   }
   //////////////////////////////////////////////////////////////////////////////////////
+  //FUNCTIONS
   //fetch all users and projects on mount
   componentDidMount() {
     this.props.mess("");
@@ -101,12 +102,14 @@ export class CreateIssue extends Component {
 
     let permission_to_apply = -1;
 
+    //Check if user has the proper permission in order to create an issue for the specific project
     this.props.permissions.map(perm => {
       if (perm.project.projectId === this.state.projectID) {
         permission_to_apply = perm.permissionId;
       }
     });
 
+    //add to error message the permission error
     if (permission_to_apply === 0) {
       error_message +=
         "Δεν έχετε τα κατάλληλα δικαιώματα για να δημιουργήσετε θέμα στο έργο: " +
@@ -114,6 +117,7 @@ export class CreateIssue extends Component {
         "\n";
     }
 
+    //Create the proper error message for the missing fields
     if (this.state.projectID === "") {
       console.log("error");
       errors.push("Έργο");
@@ -147,6 +151,7 @@ export class CreateIssue extends Component {
       error_message += "Συμπληρώστε τα πεδία : " + errors.toString();
     }
 
+    //if the creation form did not have any errors procced to the request
     if (error_message === "") {
       //no errors found on the form
       const jwtToken = localStorage.getItem("jwt");
@@ -172,8 +177,9 @@ export class CreateIssue extends Component {
 
       fetch("/api/issues/create", fetchConfig).then(response => {
         console.log(response.status);
-
+        //Check if the create of new issue was successful
         if (response.status === 201) {
+          //success
           this.props.mess(
             <Alert
               variant="success"
@@ -185,7 +191,12 @@ export class CreateIssue extends Component {
               δημιουργήθηκε επιτυχώς!
             </Alert>
           );
+
+          //refresh issues for the table
+          this.getIssues();
+          this.props.search();
         } else {
+          //failed
           this.props.mess(
             <Alert
               variant="danger"
@@ -197,12 +208,14 @@ export class CreateIssue extends Component {
               {this.state.title}" απέτυχε.
             </Alert>
           );
+
+          //refresh issues for the table
+          this.getIssues();
+          this.props.search();
         }
       });
-
-      this.getIssues();
-      this.props.search();
     } else {
+      //user had error when completed the form
       this.props.mess(
         <Alert
           variant="danger"
@@ -217,7 +230,7 @@ export class CreateIssue extends Component {
     }
   };
 
-  //Get all issues
+  //Get all open  issues for the user as assignee or assignor
   // -------------------------------------------------------------------------
 
   getIssues = () => {
@@ -242,8 +255,29 @@ export class CreateIssue extends Component {
       .catch(err => console.error(err));
   };
 
+  // -------------------------------------------------------------------------
+
+  clearFields = () => {
+    this.setState({
+      issueID: "0",
+      projectID: "",
+      statusDescription: "",
+      title: "",
+      description_: "",
+      assignor: "",
+      assignee: "",
+      type_: "",
+      otherDetails: "",
+      searchTextProjects: "",
+      searchTextAssignor: "",
+      searchTextAssignee: ""
+    });
+
+    document.getElementById("myForm").reset();
+  };
+
   //////////////////////////////////////////////////////////////////////////////////////
-  //Handlers
+  //Stae handlers
   handleChange = e =>
     this.setState(
       {
@@ -328,26 +362,14 @@ export class CreateIssue extends Component {
       statusDescription: e.target.value
     });
   };
-  // -------------------------------------------------------------------------
 
-  clearFields = () => {
+  clearAssignor = () => {
     this.setState({
-      issueID: "0",
-      projectID: "",
-      statusDescription: "",
-      title: "",
-      description_: "",
       assignor: "",
-      assignee: "",
-      type_: "",
-      otherDetails: "",
-      searchTextProjects: "",
-      searchTextAssignor: "",
-      searchTextAssignee: ""
+      searchTextAssignor: ""
     });
-
-    document.getElementById("myForm").reset();
   };
+
   //////////////////////////////////////////////////////////////////////////////////////
 
   render() {
@@ -432,6 +454,7 @@ export class CreateIssue extends Component {
                 inputValue={this.state.searchTextAssignor}
                 onChange={this.onAssignorChange}
                 getOptionLabel={option => option.username}
+                onClick={this.clearAssignor}
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -533,5 +556,5 @@ export class CreateIssue extends Component {
     );
   }
 }
-
+///////////////////////////////////////////////////////////////////////////////////
 export default CreateIssue;

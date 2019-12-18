@@ -91,14 +91,14 @@ export class UpdateIssue extends Component {
       })
       .catch(err => console.error(err));
 
-    fetch("/api/issues", fetchConfig)
-      .then(response => response.json())
-      .then(responseData => {
-        this.setState({
-          issues: responseData
-        });
-      })
-      .catch(err => console.error(err));
+    // fetch("/api/issues", fetchConfig)
+    //   .then(response => response.json())
+    //   .then(responseData => {
+    //     this.setState({
+    //       issues: responseData
+    //     });
+    //   })
+    //   .catch(err => console.error(err));
 
     fetch("/api/projects", fetchConfig)
       .then(response => response.json())
@@ -151,9 +151,9 @@ export class UpdateIssue extends Component {
       //console.log("error");
       errors.push("Κατηγορία");
     }
-    
 
     if (errors.length) {
+      //errors found in form
       this.props.mess(
         <Alert
           variant="danger"
@@ -181,6 +181,7 @@ export class UpdateIssue extends Component {
         </Alert>
       );
     } else {
+      //form is ok , procceed with the update request
       const jwtToken = localStorage.getItem("jwt");
 
       const fetchConfig = {
@@ -206,7 +207,8 @@ export class UpdateIssue extends Component {
       fetch("/api/issues/update", fetchConfig).then(response => {
         //console.log(response.status);
 
-        if (response.status === 200) {
+        if (response.status === 202) {
+          //update was successful
           this.props.mess(
             <Alert
               variant="success"
@@ -218,7 +220,11 @@ export class UpdateIssue extends Component {
               αναννεώθηκε επιτυχώς!
             </Alert>
           );
+
+          this.getIssues();
+          this.props.search();
         } else {
+          //update failed
           this.props.mess(
             <Alert
               variant="danger"
@@ -230,15 +236,15 @@ export class UpdateIssue extends Component {
               {this.state.title}" απέτυχε.
             </Alert>
           );
+
+          // this.getIssues();
+          this.props.search();
         }
       });
-
-      this.getIssues();
-      this.props.search();
     }
   };
 
-  // Get all issues
+  // Get all open issues for user
   // -------------------------------------------------------------------------
   getIssues = () => {
     const jwtToken = localStorage.getItem("jwt");
@@ -286,18 +292,20 @@ export class UpdateIssue extends Component {
     );
   // -------------------------------------------------------------------------
   onProjectChange = (event, values) => {
-    this.setState(
-      {
-        tags: values
-      },
-      () => {
-        this.setState({
-          projectID: this.state.tags.projectId,
-          searchTextProjects: this.state.tags.name
-        });
-        //console.log(this.state.tags.name);
-      }
-    );
+    if (values) {
+      this.setState(
+        {
+          tags: values
+        },
+        () => {
+          this.setState({
+            projectID: this.state.tags.projectId,
+            searchTextProjects: this.state.tags.name
+          });
+          //console.log(this.state.tags.name);
+        }
+      );
+    }
   };
   // -------------------------------------------------------------------------
   onAssignorChange = (event, values) => {
@@ -329,7 +337,7 @@ export class UpdateIssue extends Component {
       }
     );
   };
-  // -------------------------------------------------------------------------// -------------------------------------------------------------------------
+  // -------------------------------------------------------------------------
 
   handleChangeSelect = e => {
     //console.log("value" + e.target.value);
@@ -345,6 +353,7 @@ export class UpdateIssue extends Component {
       statusDescription: e.target.value
     });
   };
+
   // -------------------------------------------------------------------------
 
   clearFields = () => {
@@ -364,6 +373,20 @@ export class UpdateIssue extends Component {
     });
 
     document.getElementById("myForm").reset();
+  };
+
+  clearProject = () => {
+    this.setState({
+      projectID: "",
+      searchTextProjects: ""
+    });
+  };
+
+  clearAssignee = () => {
+    this.setState({
+      assignee: "",
+      searchTextAssignee: ""
+    });
   };
   //////////////////////////////////////////////////////////////////////////////////////
   //Render component
@@ -393,9 +416,9 @@ export class UpdateIssue extends Component {
                 clearText="Clear"
                 options={projects}
                 required
-                shrink="true"
                 inputValue={this.state.searchTextProjects}
                 onChange={this.onProjectChange}
+                onClick={this.clearProject}
                 getOptionLabel={option => option.name}
                 renderInput={params => (
                   <TextField
@@ -473,6 +496,7 @@ export class UpdateIssue extends Component {
                 shrink="true"
                 inputValue={this.state.searchTextAssignee}
                 onChange={this.onAssigneeChange}
+                onClick={this.clearAssignee}
                 getOptionLabel={option => option.username}
                 renderInput={params => (
                   <TextField

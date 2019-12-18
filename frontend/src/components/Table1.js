@@ -1,15 +1,18 @@
 import React, { Component } from "react";
+
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import ErrorIcon from "@material-ui/icons/Error";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import EditIcon from "@material-ui/icons/Edit";
 import CustomSearchRender from "../custom/CustomSearchRender";
 import Alert from "react-bootstrap/Alert";
-
 import Button from "@material-ui/core/Button";
 import MUIDataTable from "mui-datatables";
 
 export class Table1 extends Component {
   ////////////////////////////////////////////////////////////////////
   state = {
+    issues: [],
     userId: ""
   };
 
@@ -20,10 +23,9 @@ export class Table1 extends Component {
       userid: ""
     };
 
-    console.log(this.props);
   }
   // -------------------------------------------------------------------------
-
+  //When the component is mounted , set user id based on passed props and get all open issues for the user
   componentDidMount() {
     console.log("user id " + this.props.id);
     this.setState({
@@ -33,13 +35,14 @@ export class Table1 extends Component {
     this.getIssues();
   }
   // -------------------------------------------------------------------------
-
+  //When update button is pressed , get the id of the issue you wish to update
+  // and the frame state to update in order to return update page
   updateIssue = issueId => {
     this.props.issue(issueId);
     return this.props.update();
   };
   // -------------------------------------------------------------------------
-
+  //Get all open issues of the user
   getIssues = () => {
     const jwtToken = localStorage.getItem("jwt");
 
@@ -57,19 +60,16 @@ export class Table1 extends Component {
     fetch("/api/issues/" + this.props.id, fetchConfig)
       .then(response => response.json())
       .then(responseData => {
-
-
         this.setState({
           issues: responseData
         });
 
         this.props.setIssues(responseData);
-
       })
       .catch(err => console.error(err));
   };
   // -------------------------------------------------------------------------
-
+  //Delete specific issue
   delete = (issueId, issueTitle) => {
     const jwtToken = localStorage.getItem("jwt");
 
@@ -85,6 +85,7 @@ export class Table1 extends Component {
     };
 
     fetch("/api/issues/" + issueId, deleteConfig).then(response => {
+      //issue was deleted succesfuly by api
       if (response.status === 200) {
         this.props.mess(
           <Alert
@@ -97,7 +98,11 @@ export class Table1 extends Component {
             επιτυχώς!
           </Alert>
         );
+
+        //get all the updated issues
+        this.getIssues();
       } else {
+        //api failed to delete issue
         this.props.mess(
           <Alert
             variant="danger"
@@ -110,9 +115,8 @@ export class Table1 extends Component {
           </Alert>
         );
       }
+      this.getIssues();
     });
-    
-    this.getIssues();
   };
 
   // -------------------------------------------------------------------------
@@ -218,11 +222,12 @@ export class Table1 extends Component {
         );
       }
     };
-    
-    
+
+    //for every issue create a row for the table
     this.state.issues.map((issue, index) => {
       let type;
-
+      
+      //set the proper text for the status desc
       if (issue.type_ === 0) {
         type = "Error";
       } else if (issue.type_ === 1) {
@@ -233,6 +238,7 @@ export class Table1 extends Component {
 
       let permission_to_apply;
 
+      //check user permissions for the specific project
       this.props.permissions.map(perm => {
         if (perm.project.projectId === issue.project.projectId) {
           permission_to_apply = perm.permissionId;
@@ -242,6 +248,7 @@ export class Table1 extends Component {
       let buttons;
       // console.log(issue.project.name+perm.permissionId);
 
+      //Read-only permission
       if (permission_to_apply === 0) {
         buttons = (
           <div>
@@ -252,7 +259,7 @@ export class Table1 extends Component {
               variant="contained"
               color="secondary"
             >
-              ΔΙΑΓΡΑΦΗ{" "}
+              <DeleteForeverIcon /> διαγραφή{" "}
             </Button>{" "}
             <Button
               disabled
@@ -263,11 +270,12 @@ export class Table1 extends Component {
                 this.updateIssue(issue.issueID);
               }}
             >
-              ΤΡΟΠΟΠΟΙΗΣΗ{" "}
+              <EditIcon /> τροποποίηση{" "}
             </Button>{" "}
           </div>
         );
       } else if (permission_to_apply === 1) {
+        //Read Create Update permission
         buttons = (
           <div>
             <Button
@@ -277,7 +285,7 @@ export class Table1 extends Component {
               variant="contained"
               color="secondary"
             >
-              ΔΙΑΓΡΑΦΗ{" "}
+              <DeleteForeverIcon /> διαγραφή{" "}
             </Button>{" "}
             <Button
               id="update-button"
@@ -287,11 +295,12 @@ export class Table1 extends Component {
                 this.updateIssue(issue.issueID);
               }}
             >
-              ΤΡΟΠΟΠΟΙΗΣΗ{" "}
+              <EditIcon /> τροποποίηση{" "}
             </Button>{" "}
           </div>
         );
       } else {
+        //Read Create Update Delete
         buttons = (
           <div>
             <Button
@@ -300,7 +309,7 @@ export class Table1 extends Component {
               variant="contained"
               color="secondary"
             >
-              ΔΙΑΓΡΑΦΗ{" "}
+              <DeleteForeverIcon /> διαγραφή{" "}
             </Button>{" "}
             <Button
               id="update-button"
@@ -310,12 +319,13 @@ export class Table1 extends Component {
                 this.updateIssue(issue.issueID);
               }}
             >
-              ΤΡΟΠΟΠΟΙΗΣΗ{" "}
+              <EditIcon /> τροποποίηση{" "}
             </Button>{" "}
           </div>
         );
       }
-
+     
+      //push row to the table's data
       data.push([
         issue.project.projectId,
         issue.project.name,
@@ -327,7 +337,8 @@ export class Table1 extends Component {
         buttons
       ]);
     });
-
+    
+    //return table of issues
     return (
       <MUIDataTable
         title={"Θέματα"}
@@ -339,4 +350,5 @@ export class Table1 extends Component {
   }
 }
 
+///////////////////////////////////////////////////////////////////////////////////////
 export default Table1;

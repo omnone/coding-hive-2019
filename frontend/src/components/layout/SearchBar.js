@@ -11,8 +11,12 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
+import ClearIcon from "@material-ui/icons/Clear";
+import SearchIcon from "@material-ui/icons/Search";
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export class SearchBar extends Component {
+  //state and constructor
   state = {
     issueID: "0",
     projectID: "",
@@ -44,7 +48,8 @@ export class SearchBar extends Component {
     this.onProjectChange = this.onProjectChange.bind(this);
   }
   //////////////////////////////////////////////////////////////////////////////////////
-  //fetch all users and projects on mount
+  // FUNCTIONS -------------------------------------------------------------------------
+  //fetch all users and projects on mount in order to use the data in autocomplete fields
   componentDidMount() {
     const jwtToken = localStorage.getItem("jwt");
 
@@ -100,6 +105,7 @@ export class SearchBar extends Component {
       })
     };
 
+    //populate issues props with the response data
     fetch("/api/issues/search", fetchConfig)
       .then(response => response.json())
       .then(responseData => {
@@ -107,7 +113,7 @@ export class SearchBar extends Component {
       });
   };
 
-  //Get all issues
+  //Get all issues of the user as assignee or assignor
   // ------------------------------------------------------------------
   getIssues = () => {
     const jwtToken = localStorage.getItem("jwt");
@@ -131,9 +137,36 @@ export class SearchBar extends Component {
       .catch(err => console.error(err));
   };
 
-  //////////////////////////////////////////////////////////////////////////////////////
-  //   Handlers
+  // ------------------------------------------------------------------
+  // Clear all fields and states function
+  clearFields = () => {
+    this.setState({
+      searchTextProjects: "",
+      searchTextAssignee: "",
+      searchTextAssignor: "",
+      type_: null,
+      statusDescription: null,
+      title: null,
+      otherDetails: "",
+      projectID: null,
+      assignor: null,
+      assignee: null
+    });
 
+    // this.searchIssue();
+    document.getElementById("myForm").reset();
+  };
+
+  showAssignor = e => {
+    if (e.target.value === "null") {
+      this.setState({ showField: "block" });
+    } else {
+      this.setState({ showField: "none" });
+    }
+  };
+
+  //////////////////////////////////////////////////////////////////////////////////////
+  // State Handlers
   handleChange = e => {
     if (e.target.value !== "") {
       this.setState(
@@ -164,50 +197,56 @@ export class SearchBar extends Component {
   // ------------------------------------------------------------------
 
   onProjectChange = (event, values) => {
-    this.setState(
-      {
-        tags: values
-      },
-      () => {
-        this.setState({
-          projectID: this.state.tags.projectId,
-          searchTextProjects: this.state.tags.name
-        });
-        console.log(this.state.tags.name);
-      }
-    );
+    if (values) {
+      this.setState(
+        {
+          tags: values
+        },
+        () => {
+          this.setState({
+            projectID: this.state.tags.projectId,
+            searchTextProjects: this.state.tags.name
+          });
+          console.log(this.state.tags.name);
+        }
+      );
+    }
   };
   // ------------------------------------------------------------------
 
   onAssignorChange = (event, values) => {
-    this.setState(
-      {
-        tags: values
-      },
-      () => {
-        this.setState({
-          assignor: this.state.tags.userId,
-          searchTextAssignor: this.state.tags.username
-        });
-        console.log(this.state.tags);
-      }
-    );
+    if (values) {
+      this.setState(
+        {
+          tags: values
+        },
+        () => {
+          this.setState({
+            assignor: this.state.tags.userId,
+            searchTextAssignor: this.state.tags.username
+          });
+          console.log(this.state.tags);
+        }
+      );
+    }
   };
   // ------------------------------------------------------------------
 
   onAssigneeChange = (event, values) => {
-    this.setState(
-      {
-        tags: values
-      },
-      () => {
-        this.setState({
-          assignee: this.state.tags.userId,
-          searchTextAssignee: this.state.tags.username
-        });
-        console.log(this.state.tags.name);
-      }
-    );
+    if (values) {
+      this.setState(
+        {
+          tags: values
+        },
+        () => {
+          this.setState({
+            assignee: this.state.tags.userId,
+            searchTextAssignee: this.state.tags.username
+          });
+          console.log(this.state.tags.name);
+        }
+      );
+    }
   };
   // ------------------------------------------------------------------
 
@@ -244,34 +283,6 @@ export class SearchBar extends Component {
     this.searchIssue();
   };
 
-  // ------------------------------------------------------------------
-
-  clearFields = () => {
-    this.setState({
-      searchTextProjects: "",
-      searchTextAssignee: "",
-      searchTextAssignor: "",
-      type_: null,
-      statusDescription: null,
-      title: null,
-      otherDetails: "",
-      projectID: null,
-      assignor: null,
-      assignee: null
-    });
-
-    // this.searchIssue();
-    document.getElementById("myForm").reset();
-  };
-
-  showAssignor = e => {
-    
-    if (e.target.value === "null") {
-      this.setState({ showField: "block" });
-    } else {
-      this.setState({ showField: "none" });
-    }
-  };
   /////////////////////////////////////////////////////////////////
   //Render component
 
@@ -399,27 +410,6 @@ export class SearchBar extends Component {
               </FormControl>
             </Grid>
             <Grid item xs={6}>
-              {/* <FormControl component="fieldset">
-                <FormLabel component="legend">Θέματα</FormLabel>
-                <RadioGroup
-                  defaultValue=""
-                  row
-                  onClick={this.hangleChangeFilterAll}
-                >
-                  <FormControlLabel
-                    value="mine"
-                    control={<Radio />}
-                    label="Όλα τα ανοιχτά μου θέματα"
-                    id="all-issues-mine"
-                  />
-                  <FormControlLabel
-                    value="all"
-                    control={<Radio />}
-                    label="Όλα τα ανοιχτά θέματα"
-                    id="all-issues"
-                  />
-                </RadioGroup>
-              </FormControl> */}
               <div>
                 <Button
                   variant="outlined"
@@ -451,7 +441,7 @@ export class SearchBar extends Component {
                   style={{ marginRight: "5px" }}
                   onClick={this.searchIssue}
                 >
-                  Αναζήτηση
+                  <SearchIcon /> Αναζήτηση
                 </Button>
 
                 <Button
@@ -460,7 +450,7 @@ export class SearchBar extends Component {
                   id="clear-btn-s"
                   onClick={this.clearFields}
                 >
-                  Καθαρισμός
+                  <ClearIcon /> Καθαρισμός
                 </Button>
               </div>
             </Grid>
@@ -470,5 +460,5 @@ export class SearchBar extends Component {
     );
   }
 }
-
+/////////////////////////////////////////////////////////////////////////////
 export default SearchBar;

@@ -24,12 +24,12 @@ import Table from "./Table1";
 import SearchBar from "./layout/SearchBar";
 
 //////////////////////////////////////////////////////////////////////////////////////
-
+//template stuff
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color="inherit" href="">
         Skyroof Constructions
       </Link>{" "}
       {new Date().getFullYear()}
@@ -121,12 +121,18 @@ const useStyles = makeStyles(theme => ({
 //////////////////////////////////////////////////////////////////////////////////////
 
 export default function Dashboard(props) {
+  //state handling for function
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+
+  //message state and setter
   const [mess, setMessage] = useState("");
+  //issue state and setter - we use it in for the update and delete functionallity
   const [issue, setIssue] = useState("");
+  //issues state and setter - we use it in order to have dynamic update of the table
   const [issues, setIssues] = useState("");
 
+  //template stuff
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -137,11 +143,13 @@ export default function Dashboard(props) {
 
   //////////////////////////////////////////////////////////////////////////////////////
 
-  //Edw fortonontai ta components pou tha deixnei to kendriko frame analoga to state
   //get the state of the main frame in order to view the proper page
   let mainFrame, subtitle, searchbar;
 
+  // In each child component we pass setters functions in order
+  // to update home parent component state
   if (props.isCreate) {
+    //create state -set main frame to be the create page
     mainFrame = (
       <CreatePage
         search={props.search}
@@ -154,6 +162,7 @@ export default function Dashboard(props) {
     );
     subtitle = "Δημιουργία";
   } else if (props.isSearch) {
+    //search state - set main frame to be the search page
     mainFrame = (
       <Table
         mess={setMessage}
@@ -163,9 +172,10 @@ export default function Dashboard(props) {
         id={props.id}
         issues={issues}
         setIssues={setIssues}
-
       />
     );
+
+    //search bar component
     searchbar = (
       <Paper className={classes.paper} style={{ marginBottom: "5px" }}>
         {/* searchbar*/}
@@ -174,6 +184,7 @@ export default function Dashboard(props) {
     );
     subtitle = "Αναζήτηση";
   } else if (props.isUpdate) {
+    //update state - set main frame to be the  update page
     mainFrame = (
       <UpdatePage
         search={props.search}
@@ -232,7 +243,7 @@ export default function Dashboard(props) {
             <ChevronLeftIcon />
           </IconButton>
         </div>
-        {/* SideMenu */}
+        {/* Side menu component------------------------------------------------------------ */}
         <Divider />
         <SideMenu
           value={props.value}
@@ -242,13 +253,14 @@ export default function Dashboard(props) {
         />
         <Divider />
       </Drawer>
+      {/* ---------------------------------------------------------------------------------------- */}
       <main
         className={classes.content}
         style={{ backgroundColor: "rgba(255,255,255,0.95)" }}
       >
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {/* Main Table */}
+            {/* Main page------------------------------------------------------------------------------- */}
             <Grid item xs={12}>
               <div class="mess">{mess}</div>
               {searchbar}

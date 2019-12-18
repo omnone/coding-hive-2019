@@ -5,8 +5,11 @@ import com.coredumped.skyroof_constructions.dao.ProjectDao;
 import com.coredumped.skyroof_constructions.dao.StatusDao;
 import com.coredumped.skyroof_constructions.dao.UserDao;
 import com.coredumped.skyroof_constructions.model.*;
+import com.coredumped.skyroof_constructions.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,8 +31,9 @@ public class IssueController {
 
     @Autowired
     private UserDao userDao;
-    /////////////////////////////////////////////////////////////////////////////////
 
+    /////////////////////////////////////////////////////////////////////////////////
+    //Custom search - request from search bar
     @ResponseBody
     @PostMapping(value = "/api/issues/search")
     public ArrayList<Issue> searchIssue(@RequestBody SearchRequest myRequest) {
@@ -46,24 +50,25 @@ public class IssueController {
     }
     /////////////////////////////////////////////////////////////////////////////////
 
-    /*Return all issues*/
+    //Return all issues
     @ResponseBody
     @GetMapping("/api/issues")
     public Iterable<Issue> show() {
         System.out.println(issue_dao.findAll());
         return issue_dao.findAll();
     }
-    /*Return all issues*/
+
 
     /////////////////////////////////////////////////////////////////////////////////
 
-    /*return issue by id*/
+    //Return issues by assignee or assignor id
     @ResponseBody
     @GetMapping("/api/issues/{id}")
     public List<Issue> findByUser(@PathVariable Integer id) {
         return issue_dao.findByUser(id);
     }
-    /*return issue by id*/
+
+    //Return issues by id
     @ResponseBody
     @GetMapping("/api/issues/find/{id}")
     public Issue find(@PathVariable Long id) {
@@ -72,7 +77,7 @@ public class IssueController {
 
     /////////////////////////////////////////////////////////////////////////////////
 
-    /*create an issue*/
+    //Create a new issue
     @ResponseBody
     @PostMapping(value = "/api/issues/create")
     @ResponseStatus(HttpStatus.CREATED)
@@ -109,12 +114,17 @@ public class IssueController {
         issue_dao.save(issueTemp);
         return issueTemp;
     }
-    /*create an issue*/
+
     /////////////////////////////////////////////////////////////////////////////////
 
     /*update an issue*/
     @PutMapping("/api/issues/update")
-    public Issue update(@RequestBody CreateIssueRequest issueRequest) {
+    public ResponseEntity update(@RequestBody CreateIssueRequest issueRequest) {
+
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((CustomUserDetails) principal).getUsername();
+
 
 //        Example of update issue request:
 //        {
@@ -129,6 +139,13 @@ public class IssueController {
 //                "otherDetails" : "sd" ,
 //                "statusDescription" : "closed"
 //        }
+
+        User loggedUser = userDao.findByusername(username).orElse(null);
+
+        //if the user isnt the user who opened the issue and tries to close it return without update
+        if (issueRequest.getDescription_().equals("Closed") && loggedUser.getUserId() != issueRequest.getAssignor()) {
+            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+        }
 
         Issue issue_to_update = issue_dao.getOne(issueRequest.getIssueID());
 
@@ -156,7 +173,9 @@ public class IssueController {
         issue_to_update.setStatus(newStatus);
 
 
-        return issue_dao.save(issue_to_update);
+        issue_dao.save(issue_to_update);
+
+        return new ResponseEntity(HttpStatus.ACCEPTED);
 
 
     }
