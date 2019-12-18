@@ -35,8 +35,8 @@ export class SearchBar extends Component {
       users: [],
       searchTextProjects: "",
       searchTextAssignee: "",
-      type_: null,
-      statusDescription: null,
+      type_: "",
+      statusDescription: "",
       title: null,
       otherDetails: "",
       projectID: null,
@@ -86,6 +86,16 @@ export class SearchBar extends Component {
   //   Search issue function
   // ------------------------------------------------------------------
   searchIssue = () => {
+
+    // if(this.state.type_ === ""){
+    //   this.setState({type_:null});
+    // }
+
+    // if(this.state.statusDescription === ""){
+    //   this.setState({statusDescription:null});
+    // }
+    
+    
     const jwtToken = localStorage.getItem("jwt");
 
     const fetchConfig = {
@@ -100,8 +110,8 @@ export class SearchBar extends Component {
         issue_title: this.state.title,
         assignor_id: this.state.assignor,
         assignee_id: this.state.assignee,
-        category: this.state.type_,
-        status_desc: this.state.statusDescription
+        category: (this.state.type_ ==="" ? null : this.state.type_),
+        status_desc: (this.state.statusDescription === "" ? null : this.state.statusDescription)
       })
     };
 
@@ -144,8 +154,8 @@ export class SearchBar extends Component {
       searchTextProjects: "",
       searchTextAssignee: "",
       searchTextAssignor: "",
-      type_: null,
-      statusDescription: null,
+      type_: "",
+      statusDescription: "",
       title: null,
       otherDetails: "",
       projectID: null,
@@ -270,8 +280,8 @@ export class SearchBar extends Component {
     this.setState({
       searchTextProjects: "",
       searchTextAssignee: "",
-      type_: null,
-      statusDescription: null,
+      type_: "",
+      statusDescription: "",
       title: null,
       otherDetails: "",
       projectID: null,
