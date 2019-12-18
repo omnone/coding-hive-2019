@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface IssueDao extends JpaRepository<Issue, Long> {
 
-    @Query("SELECT issue FROM Issue issue WHERE issue.assignee.userId = ?1 or issue.assignor.userId = ?1")
+    @Query("SELECT issue FROM Issue issue WHERE (issue.assignee.userId = ?1 OR issue.assignor.userId = ?1) AND (issue.status.description='Open')")
     List<Issue> findByUser(Integer userID);
 
     @Query("SELECT issue FROM Issue issue WHERE (issue.project.projectId = ?1 OR ?1 is null ) " +

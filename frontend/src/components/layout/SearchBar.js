@@ -1,19 +1,12 @@
 import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import DeleteIcon from "@material-ui/icons/Delete";
-import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import Alert from "react-bootstrap/Alert";
-import ErrorIcon from "@material-ui/icons/Error";
-import Paper from "@material-ui/core/Paper";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -43,9 +36,10 @@ export class SearchBar extends Component {
       title: null,
       otherDetails: "",
       projectID: null,
-      searchTextAssignor: this.props.user,
+      searchTextAssignor: "",
       assignor: null,
-      assignee: null
+      assignee: null,
+      showField: "none"
     };
     this.onProjectChange = this.onProjectChange.bind(this);
   }
@@ -141,35 +135,32 @@ export class SearchBar extends Component {
   //   Handlers
 
   handleChange = e => {
-
-    if(e.target.value !==""){
-    this.setState(
-      {
-        [e.target.name]: e.target.value
-      },
-      function() {
-        console.log(
-          JSON.stringify({
-            projectID: this.state.projectID,
-            title: this.state.title,
-            description_: this.state.description_,
-            assignor: this.state.assignor,
-            assignee: this.state.assignee,
-            type_: this.state.type_,
-            otherDetails: this.state.otherDetails,
-            statusDescription: this.state.statusDescription
-          })
-        );
-      }
-    );
-    }else{
-        this.setState(
-            {
-              [e.target.name]: null
-            }
-        );
+    if (e.target.value !== "") {
+      this.setState(
+        {
+          [e.target.name]: e.target.value
+        },
+        function() {
+          console.log(
+            JSON.stringify({
+              projectID: this.state.projectID,
+              title: this.state.title,
+              description_: this.state.description_,
+              assignor: this.state.assignor,
+              assignee: this.state.assignee,
+              type_: this.state.type_,
+              otherDetails: this.state.otherDetails,
+              statusDescription: this.state.statusDescription
+            })
+          );
+        }
+      );
+    } else {
+      this.setState({
+        [e.target.name]: null
+      });
     }
-  }
+  };
   // ------------------------------------------------------------------
 
   onProjectChange = (event, values) => {
@@ -237,28 +228,6 @@ export class SearchBar extends Component {
   // ------------------------------------------------------------------
 
   hangleChangeFilterAll = e => {
-    if (e.target.value === "all") {
-      this.setState({
-        searchTextProjects: "",
-        searchTextAssignee: "",
-        type_: null,
-        statusDescription: null,
-        title: null,
-        otherDetails: "",
-        projectID: null,
-        searchTextAssignor: null,
-        assignor: null,
-        assignee: null
-      });
-
-      this.searchIssue();
-    } else {
-      this.getIssues();
-    }
-  };
-  // ------------------------------------------------------------------
-
-  clearFields = () => {
     this.setState({
       searchTextProjects: "",
       searchTextAssignee: "",
@@ -272,8 +241,36 @@ export class SearchBar extends Component {
       assignee: null
     });
 
+    this.searchIssue();
+  };
+
+  // ------------------------------------------------------------------
+
+  clearFields = () => {
+    this.setState({
+      searchTextProjects: "",
+      searchTextAssignee: "",
+      searchTextAssignor: "",
+      type_: null,
+      statusDescription: null,
+      title: null,
+      otherDetails: "",
+      projectID: null,
+      assignor: null,
+      assignee: null
+    });
+
     // this.searchIssue();
     document.getElementById("myForm").reset();
+  };
+
+  showAssignor = e => {
+    
+    if (e.target.value === "null") {
+      this.setState({ showField: "block" });
+    } else {
+      this.setState({ showField: "none" });
+    }
   };
   /////////////////////////////////////////////////////////////////
   //Render component
@@ -293,8 +290,8 @@ export class SearchBar extends Component {
     return (
       <div>
         <form id="myForm">
-          <Grid container spacing={3} alignItems="center" direction="row">
-            <Grid item xs={3}>
+          <Grid container spacing={2} alignItems="center" direction="row">
+            <Grid item xs={2}>
               <Autocomplete
                 id="project"
                 clearText="Clear"
@@ -307,7 +304,7 @@ export class SearchBar extends Component {
                 )}
               />
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={2}>
               <TextField
                 id="title"
                 name="title"
@@ -317,19 +314,7 @@ export class SearchBar extends Component {
                 onChange={this.handleChange}
               />
             </Grid>
-            <Grid item xs={3}>
-              <Autocomplete
-                id="assignee"
-                options={users}
-                inputValue={this.state.searchTextAssignee}
-                onChange={this.onAssigneeChange}
-                getOptionLabel={option => option.username}
-                renderInput={params => (
-                  <TextField {...params} label="Εντολοδόχος" fullWidth />
-                )}
-              />
-            </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={2}>
               <FormControl style={{ width: "100%" }}>
                 <InputLabel id="typelabel">Κατηγορία</InputLabel>
                 <Select
@@ -346,7 +331,7 @@ export class SearchBar extends Component {
               </FormControl>
             </Grid>
             <Grid item xs>
-              <FormControl style={{ width: "60%" }}>
+              <FormControl style={{ width: "100%" }}>
                 <InputLabel id="demo-simple-select-label">Κατάσταση</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
@@ -362,6 +347,31 @@ export class SearchBar extends Component {
                 </Select>
               </FormControl>
             </Grid>
+            <Grid item xs={2}>
+              <Autocomplete
+                id="assignee"
+                options={users}
+                inputValue={this.state.searchTextAssignee}
+                onChange={this.onAssigneeChange}
+                getOptionLabel={option => option.username}
+                renderInput={params => (
+                  <TextField {...params} label="Εντολοδόχος" fullWidth />
+                )}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <Autocomplete
+                style={{ display: this.state.showField }}
+                id="assignor"
+                options={users}
+                inputValue={this.state.searchTextAssignor}
+                onChange={this.onAssignorChange}
+                getOptionLabel={option => option.username}
+                renderInput={params => (
+                  <TextField {...params} label="Εντολέας" fullWidth />
+                )}
+              />
+            </Grid>
             <Grid item xs={3}>
               <FormControl component="fieldset">
                 <FormLabel component="legend">Εντολέας</FormLabel>
@@ -376,18 +386,20 @@ export class SearchBar extends Component {
                     control={<Radio />}
                     label="Εγώ"
                     id="radio-me"
+                    onClick={this.showAssignor}
                   />
                   <FormControlLabel
                     value={"null"}
                     control={<Radio />}
                     label="Άλλος"
                     id="radio-other"
+                    onClick={this.showAssignor}
                   />
                 </RadioGroup>
               </FormControl>
             </Grid>
             <Grid item xs={6}>
-              <FormControl component="fieldset">
+              {/* <FormControl component="fieldset">
                 <FormLabel component="legend">Θέματα</FormLabel>
                 <RadioGroup
                   defaultValue=""
@@ -407,7 +419,28 @@ export class SearchBar extends Component {
                     id="all-issues"
                   />
                 </RadioGroup>
-              </FormControl>
+              </FormControl> */}
+              <div>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  id="all-issues-mine"
+                  style={{ marginRight: "5px" }}
+                  value="mine"
+                  onClick={this.getIssues}
+                >
+                  Όλα τα ανοιχτά μου θέματα
+                </Button>
+
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  id="all"
+                  onClick={this.hangleChangeFilterAll}
+                >
+                  Όλα τα ανοιχτά θέματα
+                </Button>
+              </div>
             </Grid>
             <Grid item xs={12}>
               <div>

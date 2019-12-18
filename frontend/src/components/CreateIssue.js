@@ -142,10 +142,6 @@ export class CreateIssue extends Component {
       console.log("error");
       errors.push("Κατηγορία");
     }
-    if (this.state.otherDetails === "") {
-      console.log("error");
-      errors.push("Άλλες Πληροφορίες");
-    }
 
     if (errors.length) {
       error_message += "Συμπληρώστε τα πεδία : " + errors.toString();
@@ -204,6 +200,8 @@ export class CreateIssue extends Component {
         }
       });
 
+      this.getIssues();
+      this.props.search();
     } else {
       this.props.mess(
         <Alert
@@ -217,10 +215,6 @@ export class CreateIssue extends Component {
         </Alert>
       );
     }
-
-
-    this.getIssues();
-    this.props.search();
   };
 
   //Get all issues
@@ -434,6 +428,7 @@ export class CreateIssue extends Component {
               <Autocomplete
                 id="assignor"
                 options={users}
+                required
                 inputValue={this.state.searchTextAssignor}
                 onChange={this.onAssignorChange}
                 getOptionLabel={option => option.username}
@@ -451,6 +446,7 @@ export class CreateIssue extends Component {
               <Autocomplete
                 id="assignee"
                 options={users}
+                required
                 inputValue={this.state.searchTextAssignee}
                 onChange={this.onAssigneeChange}
                 getOptionLabel={option => option.username}
@@ -468,6 +464,7 @@ export class CreateIssue extends Component {
               <FormControl
                 variant="outlined"
                 id="statusdesc"
+                required
                 style={{
                   margin: "spacing(1)",
                   minWidth: "120",
@@ -493,6 +490,7 @@ export class CreateIssue extends Component {
               <FormControl
                 variant="outlined"
                 id="type"
+                required
                 style={{ margin: "spacing(1)", minWidth: "120", width: "100%" }}
               >
                 <InputLabel id="typelabel">Κατηγορία</InputLabel>

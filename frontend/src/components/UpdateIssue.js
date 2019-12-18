@@ -151,10 +151,7 @@ export class UpdateIssue extends Component {
       //console.log("error");
       errors.push("Κατηγορία");
     }
-    if (this.state.otherDetails === "") {
-      //console.log("error");
-      errors.push("Άλλες Πληροφορίες");
-    }
+    
 
     if (errors.length) {
       this.props.mess(
@@ -235,7 +232,7 @@ export class UpdateIssue extends Component {
           );
         }
       });
-      
+
       this.getIssues();
       this.props.search();
     }
