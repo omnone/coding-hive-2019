@@ -20,7 +20,7 @@ export class Login extends Component {
     status: 1,
     isCreateState: false,
     isUpdateState: false,
-    isSearchState: true
+    isSearchState: true,
   };
 
   constructor(props) {
@@ -35,7 +35,7 @@ export class Login extends Component {
       status: 1,
       isCreateState: false,
       isUpdateState: false,
-      isSearchState: true
+      isSearchState: true,
     };
     this.myRef = React.createRef();
   }
@@ -51,7 +51,7 @@ export class Login extends Component {
         isAuthenticated: true,
         username: localStorage.getItem("username"),
         userId: localStorage.getItem("userId"),
-        permissions_pr: JSON.parse(perms)
+        permissions_pr: JSON.parse(perms),
       });
     }
   }
@@ -62,19 +62,19 @@ export class Login extends Component {
   login = () => {
     const user = {
       username: this.state.username,
-      password: this.state.password
+      password: this.state.password,
     };
 
     fetch("/api/auth", {
       method: "POST",
       headers: {
         Accept: "application/json, text/plain",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(user)
+      body: JSON.stringify(user),
     })
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         console.log(responseData);
 
         if (responseData["status"] !== 403) {
@@ -93,7 +93,7 @@ export class Login extends Component {
           this.setState({
             isAuthenticated: true,
             permissions_pr: permissions,
-            userId: responseData["user"].userId
+            userId: responseData["user"].userId,
           });
           console.log(this.state.permissions_pr + "perms");
         } else {
@@ -104,21 +104,21 @@ export class Login extends Component {
           // document.getElementById("password").
         }
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   };
 
   // -------------------------------------------------------------------------
   //set state for username and password
-  handleChange = e =>
+  handleChange = (e) =>
     this.setState(
       {
-        [e.target.name]: e.target.value
+        [e.target.name]: e.target.value,
       },
-      function() {
+      function () {
         console.log(
           JSON.stringify({
             username: this.state.username,
-            password: this.state.password
+            password: this.state.password,
           })
         );
       }
@@ -137,7 +137,7 @@ export class Login extends Component {
       status: 1,
       isCreateState: false,
       isUpdateState: false,
-      isSearchState: true
+      isSearchState: true,
     });
 
     localStorage.clear();
@@ -149,7 +149,7 @@ export class Login extends Component {
   clearFields = () => {
     this.setState({
       username: "",
-      password: ""
+      password: "",
     });
 
     document.getElementById("password").value = "";
@@ -161,7 +161,7 @@ export class Login extends Component {
     this.setState({
       isCreateState: true,
       isSearchState: false,
-      isUpdateState: false
+      isUpdateState: false,
     });
   };
   // -------------------------------------------------------------------------
@@ -170,7 +170,7 @@ export class Login extends Component {
     this.setState({
       isCreateState: false,
       isSearchState: true,
-      isUpdateState: false
+      isUpdateState: false,
     });
   };
   // -------------------------------------------------------------------------
@@ -179,7 +179,7 @@ export class Login extends Component {
     this.setState({
       isCreateState: false,
       isSearchState: false,
-      isUpdateState: true
+      isUpdateState: true,
     });
   };
 
@@ -213,7 +213,7 @@ export class Login extends Component {
         <Alert
           variant="danger"
           style={{
-            backgroundColor: "rgb(248, 215, 218)"
+            backgroundColor: "rgb(248, 215, 218)",
           }}
         >
           <ErrorIcon /> Η σύνδεση απέτυχε! Παρακαλώ δοκιμάστε ξανά.
@@ -231,7 +231,7 @@ export class Login extends Component {
             borderRadius: "7px",
             padding: "10px",
             marginTop: "3%",
-            width: "30%"
+            width: "30%",
           }}
         >
           <div
@@ -241,7 +241,7 @@ export class Login extends Component {
               marginBottom: "3%",
               backgroundColor: "white",
               borderRadius: "7px",
-              witdh: "100%"
+              witdh: "100%",
             }}
           >
             <h3 className="title has-text-black">Login</h3>

@@ -24,7 +24,7 @@ export class SearchBar extends Component {
     title: "",
     assignor: "",
     assignee: "",
-    type_: ""
+    type_: "",
   };
 
   constructor(props) {
@@ -43,7 +43,7 @@ export class SearchBar extends Component {
       searchTextAssignor: "",
       assignor: null,
       assignee: null,
-      showField: "none"
+      showField: "none",
     };
     this.onProjectChange = this.onProjectChange.bind(this);
   }
@@ -60,33 +60,32 @@ export class SearchBar extends Component {
       headers: {
         Authorization: "Bearer " + jwtToken,
         Accept: "application/json",
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     };
 
     fetch("/api/projects", fetchConfig)
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         this.setState({
-          issues: responseData
+          issues: responseData,
         });
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
 
     fetch("/api/users", fetchConfig)
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         this.setState({
-          users: responseData
+          users: responseData,
         });
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   }
 
   //   Search issue function
   // ------------------------------------------------------------------
   searchIssue = () => {
-
     // if(this.state.type_ === ""){
     //   this.setState({type_:null});
     // }
@@ -94,8 +93,7 @@ export class SearchBar extends Component {
     // if(this.state.statusDescription === ""){
     //   this.setState({statusDescription:null});
     // }
-    
-    
+
     const jwtToken = localStorage.getItem("jwt");
 
     const fetchConfig = {
@@ -103,22 +101,25 @@ export class SearchBar extends Component {
       headers: {
         Authorization: "Bearer " + jwtToken,
         Accept: "application/json",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         project_id: this.state.projectID,
         issue_title: this.state.title,
         assignor_id: this.state.assignor,
         assignee_id: this.state.assignee,
-        category: (this.state.type_ ==="" ? null : this.state.type_),
-        status_desc: (this.state.statusDescription === "" ? null : this.state.statusDescription)
-      })
+        category: this.state.type_ === "" ? null : this.state.type_,
+        status_desc:
+          this.state.statusDescription === ""
+            ? null
+            : this.state.statusDescription,
+      }),
     };
 
     //populate issues props with the response data
     fetch("/api/issues/search", fetchConfig)
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         this.props.setIssues(responseData);
       });
   };
@@ -135,16 +136,16 @@ export class SearchBar extends Component {
       headers: {
         Authorization: "Bearer " + jwtToken,
         Accept: "application/json",
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     };
 
     fetch("/api/issues/" + this.props.id, fetchConfig)
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         this.props.setIssues(responseData);
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   };
 
   // ------------------------------------------------------------------
@@ -160,30 +161,30 @@ export class SearchBar extends Component {
       otherDetails: "",
       projectID: null,
       assignor: null,
-      assignee: null
+      assignee: null,
     });
 
     // this.searchIssue();
     document.getElementById("myForm").reset();
   };
 
-  showAssignor = e => {
+  showAssignor = (e) => {
     if (e.target.value === "null") {
-      this.setState({ showField: "block",assignor:null });
+      this.setState({ showField: "block", assignor: null });
     } else {
-      this.setState({ showField: "none",assignor: this.props.id });
+      this.setState({ showField: "none", assignor: this.props.id });
     }
   };
 
   //////////////////////////////////////////////////////////////////////////////////////
   // State Handlers
-  handleChange = e => {
+  handleChange = (e) => {
     if (e.target.value !== "") {
       this.setState(
         {
-          [e.target.name]: e.target.value
+          [e.target.name]: e.target.value,
         },
-        function() {
+        function () {
           console.log(
             JSON.stringify({
               projectID: this.state.projectID,
@@ -193,14 +194,14 @@ export class SearchBar extends Component {
               assignee: this.state.assignee,
               type_: this.state.type_,
               otherDetails: this.state.otherDetails,
-              statusDescription: this.state.statusDescription
+              statusDescription: this.state.statusDescription,
             })
           );
         }
       );
     } else {
       this.setState({
-        [e.target.name]: null
+        [e.target.name]: null,
       });
     }
   };
@@ -210,12 +211,12 @@ export class SearchBar extends Component {
     if (values) {
       this.setState(
         {
-          tags: values
+          tags: values,
         },
         () => {
           this.setState({
             projectID: this.state.tags.projectId,
-            searchTextProjects: this.state.tags.name
+            searchTextProjects: this.state.tags.name,
           });
           console.log(this.state.tags.name);
         }
@@ -228,12 +229,12 @@ export class SearchBar extends Component {
     if (values) {
       this.setState(
         {
-          tags: values
+          tags: values,
         },
         () => {
           this.setState({
             assignor: this.state.tags.userId,
-            searchTextAssignor: this.state.tags.username
+            searchTextAssignor: this.state.tags.username,
           });
           console.log(this.state.tags);
         }
@@ -246,12 +247,12 @@ export class SearchBar extends Component {
     if (values) {
       this.setState(
         {
-          tags: values
+          tags: values,
         },
         () => {
           this.setState({
             assignee: this.state.tags.userId,
-            searchTextAssignee: this.state.tags.username
+            searchTextAssignee: this.state.tags.username,
           });
           console.log(this.state.tags.name);
         }
@@ -260,23 +261,23 @@ export class SearchBar extends Component {
   };
   // ------------------------------------------------------------------
 
-  handleChangeSelect = e => {
+  handleChangeSelect = (e) => {
     console.log("value" + e.target.value);
     this.setState({
-      type_: e.target.value
+      type_: e.target.value,
     });
   };
   // ------------------------------------------------------------------
 
-  handleChangeStatus = e => {
+  handleChangeStatus = (e) => {
     console.log("value" + e.target.value);
     this.setState({
-      statusDescription: e.target.value
+      statusDescription: e.target.value,
     });
   };
   // ------------------------------------------------------------------
 
-  hangleChangeFilterAll = e => {
+  hangleChangeFilterAll = (e) => {
     this.setState({
       searchTextProjects: "",
       searchTextAssignee: "",
@@ -287,7 +288,7 @@ export class SearchBar extends Component {
       projectID: null,
       searchTextAssignor: null,
       assignor: null,
-      assignee: null
+      assignee: null,
     });
 
     this.searchIssue();
@@ -319,8 +320,8 @@ export class SearchBar extends Component {
                 options={projects}
                 inputValue={this.state.searchTextProjects}
                 onChange={this.onProjectChange}
-                getOptionLabel={option => option.name}
-                renderInput={params => (
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => (
                   <TextField {...params} label="Έργο" fullWidth />
                 )}
               />
@@ -374,8 +375,8 @@ export class SearchBar extends Component {
                 options={users}
                 inputValue={this.state.searchTextAssignee}
                 onChange={this.onAssigneeChange}
-                getOptionLabel={option => option.username}
-                renderInput={params => (
+                getOptionLabel={(option) => option.username}
+                renderInput={(params) => (
                   <TextField {...params} label="Εντολοδόχος" fullWidth />
                 )}
               />
@@ -387,8 +388,8 @@ export class SearchBar extends Component {
                 options={users}
                 inputValue={this.state.searchTextAssignor}
                 onChange={this.onAssignorChange}
-                getOptionLabel={option => option.username}
-                renderInput={params => (
+                getOptionLabel={(option) => option.username}
+                renderInput={(params) => (
                   <TextField {...params} label="Εντολέας" fullWidth />
                 )}
               />
@@ -396,11 +397,7 @@ export class SearchBar extends Component {
             <Grid item xs={3}>
               <FormControl component="fieldset">
                 <FormLabel component="legend">Εντολέας</FormLabel>
-                <RadioGroup
-                  name="assignor"
-                  row
-                  onChange={this.handleChange}
-                >
+                <RadioGroup name="assignor" row onChange={this.handleChange}>
                   <FormControlLabel
                     value={String(this.props.id)}
                     control={<Radio />}

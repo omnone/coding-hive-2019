@@ -13,23 +13,22 @@ export class Table1 extends Component {
   ////////////////////////////////////////////////////////////////////
   state = {
     issues: [],
-    userId: ""
+    userId: "",
   };
 
   constructor(props) {
     super(props);
     this.state = {
       issues: [],
-      userid: ""
+      userid: "",
     };
-
   }
   // -------------------------------------------------------------------------
   //When the component is mounted , set user id based on passed props and get all open issues for the user
   componentDidMount() {
     console.log("user id " + this.props.id);
     this.setState({
-      userId: this.props.id
+      userId: this.props.id,
     });
 
     this.getIssues();
@@ -37,7 +36,7 @@ export class Table1 extends Component {
   // -------------------------------------------------------------------------
   //When update button is pressed , get the id of the issue you wish to update
   // and the frame state to update in order to return update page
-  updateIssue = issueId => {
+  updateIssue = (issueId) => {
     this.props.issue(issueId);
     return this.props.update();
   };
@@ -53,20 +52,20 @@ export class Table1 extends Component {
       headers: {
         Authorization: "Bearer " + jwtToken,
         Accept: "application/json",
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     };
 
     fetch("/api/issues/" + this.props.id, fetchConfig)
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         this.setState({
-          issues: responseData
+          issues: responseData,
         });
 
         this.props.setIssues(responseData);
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   };
   // -------------------------------------------------------------------------
   //Delete specific issue
@@ -80,18 +79,18 @@ export class Table1 extends Component {
       headers: {
         Authorization: "Bearer " + jwtToken,
         Accept: "application/json",
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     };
 
-    fetch("/api/issues/" + issueId, deleteConfig).then(response => {
+    fetch("/api/issues/" + issueId, deleteConfig).then((response) => {
       //issue was deleted succesfuly by api
       if (response.status === 200) {
         this.props.mess(
           <Alert
             variant="success"
             style={{
-              backgroundColor: "rgb(212, 237, 218)"
+              backgroundColor: "rgb(212, 237, 218)",
             }}
           >
             <CheckCircleIcon /> Το θέμα με τίτλο: "{issueTitle}" διαγράφτηκε
@@ -107,7 +106,7 @@ export class Table1 extends Component {
           <Alert
             variant="danger"
             style={{
-              backgroundColor: "rgb(248, 215, 218)"
+              backgroundColor: "rgb(248, 215, 218)",
             }}
           >
             <ErrorIcon /> Η διαγραφή του θέματος με τίτλο: "{issueTitle}"
@@ -125,43 +124,43 @@ export class Table1 extends Component {
     const getConfig = {
       method: "GET",
       headers: {
-        Accept: "*/*"
-      }
+        Accept: "*/*",
+      },
     };
     fetch("/api/issues", getConfig)
-      .then(response => response.json())
-      .then(response => {
+      .then((response) => response.json())
+      .then((response) => {
         this.setState({
-          issues: response
+          issues: response,
         });
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   };
 
-  getDataBySearch = searchText => {
+  getDataBySearch = (searchText) => {
     const postConfig = {
       method: "POST",
       headers: {
         Accept: "*/*",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ issue_title: searchText })
+      body: JSON.stringify({ issue_title: searchText }),
     };
     fetch("/api/issues/search", postConfig)
-      .then(response => response.json())
-      .then(response => {
+      .then((response) => response.json())
+      .then((response) => {
         this.setState({
-          issues: response
+          issues: response,
         });
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   };
 
-  handleSearch = searchText => {
+  handleSearch = (searchText) => {
     searchText == "" ? this.getAllIssues() : this.getDataBySearch(searchText);
 
     this.setState({
-      searchValue: searchText
+      searchValue: searchText,
     });
   };
   // -------------------------------------------------------------------------
@@ -173,7 +172,7 @@ export class Table1 extends Component {
 
       if (this.props.issues) {
         this.setState({
-          issues: this.props.issues
+          issues: this.props.issues,
         });
       }
       this.forceUpdate();
@@ -187,8 +186,8 @@ export class Table1 extends Component {
       {
         name: "ID",
         options: {
-          display: "excluded"
-        }
+          display: "excluded",
+        },
       },
       { name: "Έργο" },
       { name: "Τίτλος" },
@@ -200,9 +199,9 @@ export class Table1 extends Component {
         name: "Actions",
         options: {
           download: false,
-          print: false
-        }
-      }
+          print: false,
+        },
+      },
     ];
 
     const data = [];
@@ -220,13 +219,13 @@ export class Table1 extends Component {
             options={options}
           />
         );
-      }
+      },
     };
 
     //for every issue create a row for the table
     this.state.issues.map((issue, index) => {
       let type;
-      
+
       //set the proper text for the status desc
       if (issue.type_ === 0) {
         type = "Error";
@@ -239,7 +238,7 @@ export class Table1 extends Component {
       let permission_to_apply;
 
       //check user permissions for the specific project
-      this.props.permissions.map(perm => {
+      this.props.permissions.map((perm) => {
         if (perm.project.projectId === issue.project.projectId) {
           permission_to_apply = perm.permissionId;
         }
@@ -324,7 +323,7 @@ export class Table1 extends Component {
           </div>
         );
       }
-     
+
       //push row to the table's data
       data.push([
         issue.project.projectId,
@@ -334,10 +333,10 @@ export class Table1 extends Component {
         issue.assignee.username,
         issue.status.description,
         type,
-        buttons
+        buttons,
       ]);
     });
-    
+
     //return table of issues
     return (
       <MUIDataTable

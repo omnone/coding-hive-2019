@@ -28,7 +28,7 @@ export class UpdateIssue extends Component {
     assignee: "",
     type_: "",
     otherDetails: "",
-    isCreated: ""
+    isCreated: "",
   };
 
   constructor(props) {
@@ -43,7 +43,7 @@ export class UpdateIssue extends Component {
       searchTextAssignee: "",
       type_: "",
       statusDescription: "",
-      isCreated: ""
+      isCreated: "",
     };
     this.onProjectChange = this.onProjectChange.bind(this);
   }
@@ -61,15 +61,15 @@ export class UpdateIssue extends Component {
       headers: {
         Authorization: "Bearer " + jwtToken,
         Accept: "application/json",
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     };
 
     fetch("/api/issues/find/" + this.props.issue, fetchConfig)
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         this.setState({
-          issue: responseData
+          issue: responseData,
         });
 
         //console.log(this.state.issue);
@@ -86,10 +86,10 @@ export class UpdateIssue extends Component {
           otherDetails: this.state.issue.otherDetails,
           searchTextProjects: this.state.issue.project.name,
           searchTextAssignor: this.state.issue.assignor.username,
-          searchTextAssignee: this.state.issue.assignee.username
+          searchTextAssignee: this.state.issue.assignee.username,
         });
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
 
     // fetch("/api/issues", fetchConfig)
     //   .then(response => response.json())
@@ -101,22 +101,22 @@ export class UpdateIssue extends Component {
     //   .catch(err => console.error(err));
 
     fetch("/api/projects", fetchConfig)
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         this.setState({
-          issues: responseData
+          issues: responseData,
         });
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
 
     fetch("/api/users", fetchConfig)
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         this.setState({
-          users: responseData
+          users: responseData,
         });
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   }
   // -------------------------------------------------------------------------
   //Update issue request
@@ -158,7 +158,7 @@ export class UpdateIssue extends Component {
         <Alert
           variant="danger"
           style={{
-            backgroundColor: "rgb(248, 215, 218)"
+            backgroundColor: "rgb(248, 215, 218)",
           }}
         >
           <ErrorIcon />
@@ -173,7 +173,7 @@ export class UpdateIssue extends Component {
         <Alert
           variant="danger"
           style={{
-            backgroundColor: "rgb(248, 215, 218)"
+            backgroundColor: "rgb(248, 215, 218)",
           }}
         >
           <ErrorIcon />
@@ -189,7 +189,7 @@ export class UpdateIssue extends Component {
         headers: {
           Authorization: "Bearer " + jwtToken,
           Accept: "application/json",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           issueID: this.state.issueID,
@@ -200,11 +200,11 @@ export class UpdateIssue extends Component {
           assignee: this.state.assignee,
           type_: this.state.type_,
           otherDetails: this.state.otherDetails,
-          statusDescription: this.state.statusDescription
-        })
+          statusDescription: this.state.statusDescription,
+        }),
       };
 
-      fetch("/api/issues/update", fetchConfig).then(response => {
+      fetch("/api/issues/update", fetchConfig).then((response) => {
         //console.log(response.status);
 
         if (response.status === 202) {
@@ -213,7 +213,7 @@ export class UpdateIssue extends Component {
             <Alert
               variant="success"
               style={{
-                backgroundColor: "rgb(212, 237, 218)"
+                backgroundColor: "rgb(212, 237, 218)",
               }}
             >
               <CheckCircleIcon /> Το θέμα με τίτλο: "{this.state.title}"
@@ -229,7 +229,7 @@ export class UpdateIssue extends Component {
             <Alert
               variant="danger"
               style={{
-                backgroundColor: "rgb(248, 215, 218)"
+                backgroundColor: "rgb(248, 215, 218)",
               }}
             >
               <ErrorIcon /> Η αναννέωση του θέματος με τίτλο: "
@@ -256,26 +256,26 @@ export class UpdateIssue extends Component {
       headers: {
         Authorization: "Bearer " + jwtToken,
         Accept: "application/json",
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     };
 
     fetch("/api/issues/" + this.props.id, fetchConfig)
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         this.props.setIssues(responseData);
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   };
 
   //////////////////////////////////////////////////////////////////////////////////////
   //Handlers
-  handleChange = e =>
+  handleChange = (e) =>
     this.setState(
       {
-        [e.target.name]: e.target.value
+        [e.target.name]: e.target.value,
       },
-      function() {
+      function () {
         console.log(
           JSON.stringify({
             projectID: this.state.projectID,
@@ -285,7 +285,7 @@ export class UpdateIssue extends Component {
             assignee: this.state.assignee,
             type_: this.state.type_,
             otherDetails: this.state.otherDetails,
-            statusDescription: this.state.statusDescription
+            statusDescription: this.state.statusDescription,
           })
         );
       }
@@ -295,12 +295,12 @@ export class UpdateIssue extends Component {
     if (values) {
       this.setState(
         {
-          tags: values
+          tags: values,
         },
         () => {
           this.setState({
             projectID: this.state.tags.projectId,
-            searchTextProjects: this.state.tags.name
+            searchTextProjects: this.state.tags.name,
           });
           //console.log(this.state.tags.name);
         }
@@ -311,12 +311,12 @@ export class UpdateIssue extends Component {
   onAssignorChange = (event, values) => {
     this.setState(
       {
-        tags: values
+        tags: values,
       },
       () => {
         this.setState({
           assignor: this.state.tags.userId,
-          searchTextAssignor: this.state.tags.username
+          searchTextAssignor: this.state.tags.username,
         });
         //console.log(this.state.tags);
       }
@@ -326,12 +326,12 @@ export class UpdateIssue extends Component {
   onAssigneeChange = (event, values) => {
     this.setState(
       {
-        tags: values
+        tags: values,
       },
       () => {
         this.setState({
           assignee: this.state.tags.userId,
-          searchTextAssignee: this.state.tags.username
+          searchTextAssignee: this.state.tags.username,
         });
         //console.log(this.state.tags.name);
       }
@@ -339,18 +339,18 @@ export class UpdateIssue extends Component {
   };
   // -------------------------------------------------------------------------
 
-  handleChangeSelect = e => {
+  handleChangeSelect = (e) => {
     //console.log("value" + e.target.value);
     this.setState({
-      type_: e.target.value
+      type_: e.target.value,
     });
   };
   // -------------------------------------------------------------------------
 
-  handleChangeStatus = e => {
+  handleChangeStatus = (e) => {
     //console.log("value" + e.target.value);
     this.setState({
-      statusDescription: e.target.value
+      statusDescription: e.target.value,
     });
   };
 
@@ -369,7 +369,7 @@ export class UpdateIssue extends Component {
       otherDetails: "",
       searchTextProjects: "",
       searchTextAssignor: "",
-      searchTextAssignee: ""
+      searchTextAssignee: "",
     });
 
     document.getElementById("myForm").reset();
@@ -378,14 +378,14 @@ export class UpdateIssue extends Component {
   clearProject = () => {
     this.setState({
       projectID: "",
-      searchTextProjects: ""
+      searchTextProjects: "",
     });
   };
 
   clearAssignee = () => {
     this.setState({
       assignee: "",
-      searchTextAssignee: ""
+      searchTextAssignee: "",
     });
   };
   //////////////////////////////////////////////////////////////////////////////////////
@@ -419,8 +419,8 @@ export class UpdateIssue extends Component {
                 inputValue={this.state.searchTextProjects}
                 onChange={this.onProjectChange}
                 onClick={this.clearProject}
-                getOptionLabel={option => option.name}
-                renderInput={params => (
+                getOptionLabel={(option) => option.name}
+                renderInput={(params) => (
                   <TextField
                     {...params}
                     label="Έργο"
@@ -478,8 +478,8 @@ export class UpdateIssue extends Component {
                 options={users}
                 inputValue={this.state.searchTextAssignor}
                 // onChange={this.onAssignorChange}
-                getOptionLabel={option => option.username}
-                renderInput={params => (
+                getOptionLabel={(option) => option.username}
+                renderInput={(params) => (
                   <TextField
                     {...params}
                     label="Εντολέας"
@@ -497,8 +497,8 @@ export class UpdateIssue extends Component {
                 inputValue={this.state.searchTextAssignee}
                 onChange={this.onAssigneeChange}
                 onClick={this.clearAssignee}
-                getOptionLabel={option => option.username}
-                renderInput={params => (
+                getOptionLabel={(option) => option.username}
+                renderInput={(params) => (
                   <TextField
                     {...params}
                     label="Εντολοδόχος"
@@ -514,7 +514,7 @@ export class UpdateIssue extends Component {
                 style={{
                   margin: "spacing(1)",
                   minWidth: "120",
-                  width: "100%"
+                  width: "100%",
                 }}
               >
                 <InputLabel id="statuslabel">Κατάσταση</InputLabel>
